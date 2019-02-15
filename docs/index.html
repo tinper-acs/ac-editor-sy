@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>目录结构</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="assets/css/bootstrap-responsive.css"/>
+    <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css"/>
+    <link type="text/css" rel="stylesheet" href="assets/css/hljs-github.min.css"/>
+    <link type="text/css" rel="stylesheet" href="assets/css/style.css"/>
+  </head>
+<body>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span3"><ul class="nav nav-list">
+    <li class="sidebar-header-3"><a href="#目录结构">目录结构</a></li>
+    <li class="sidebar-header-3"><a href="#常用命令">常用命令</a></li>
+</ul>
+      </div>
+      <div class="span9 main"><p>ac-tools init 时模版文件，用于react组件开发的模版</p>
+<p><b>开始之前确保安装了 ac-tools的全局包</b></p>
+<h3 id="目录结构">目录结构</h3>
+<pre class="hljs"><code>.
+├── config
+│   ├── webpack.base.js
+│   ├── webpack.config.dev.js       <span class="hljs-comment"># 开发环境配置</span>
+│   ├── webpack.config.ghpages.js   <span class="hljs-comment"># 打包放到github.io环境配置</span>
+│   ├── webpack.config.prod.js      <span class="hljs-comment"># 发布组件环境配置</span>
+├── demo
+│   ├── demolist
+│   │   └── Demo1.js                <span class="hljs-comment"># 实例1，调用src中的组件，进行展示</span>
+│   ├── demo.scss                   <span class="hljs-comment"># demo中需要的基础样式</span>
+│   ├── index-demo-base.js          <span class="hljs-comment"># demo模版文件</span>
+│   └── index.js                    <span class="hljs-comment"># ac-tools sample生成的文件</span>
+├── package.json
+├── docs
+│   ├── demolist
+│   │   └── Demo1.js                <span class="hljs-comment"># 实例1，调用src中的组件，进行展示</span>
+│   ├── demo.scss                   <span class="hljs-comment"># demo中需要的基础样式</span>
+│   ├── index-demo-base.js          <span class="hljs-comment"># demo模版文件</span>
+│   └── index.js                    <span class="hljs-comment"># ac-tools sample生成的文件</span>
+├── ghpages                         <span class="hljs-comment"># 实例打包文件</span>
+├── mock                            <span class="hljs-comment"># mock数据 </span>
+├── src
+│   ├── assets                      <span class="hljs-comment"># ac-tools md需要的静态文件</span>
+│   ├── temp                        
+│   │   └── index.js                <span class="hljs-comment"># 组件js逻辑 </span>
+│   │   └── style.scss                 <span class="hljs-comment"># 组件样式</span>
+│   └── index.js                    <span class="hljs-comment"># 组件出口</span>
+├── static                          <span class="hljs-comment"># 模版静态文件</span>
+├── .babelrc    
+├── .editorconfig                   <span class="hljs-comment"># 给编辑器的规范  </span>
+├── .eslitrc                        <span class="hljs-comment"># 代码规范(采用airbnb规范，默认不打开的，在webpack.config.dev.js 中注释部分放开就启用)                      </span>
+├── .package.json                  
+└── .postcss.config.js</code></pre><h3 id="常用命令">常用命令</h3>
+<p>将 demo合并到demolist的实例中</p>
+<pre class="hljs"><code><span class="hljs-keyword">ac</span>-tools <span class="hljs-keyword">sample</span> </code></pre><p>启动开发环境</p>
+<pre class="hljs"><code>npm <span class="hljs-keyword">run</span><span class="bash"> dev</span></code></pre><p>实例代码打包</p>
+<pre class="hljs"><code>npm <span class="hljs-keyword">run</span><span class="bash"> deploy</span></code></pre><p>将markdown 文件转为静态文件，并上传github.io网站</p>
+<pre class="hljs"><code>ac-tools <span class="hljs-built_in">md</span></code></pre><p>生成组件</p>
+<pre class="hljs"><code>npm <span class="hljs-keyword">run</span><span class="bash"> build</span></code></pre><p>上传ynpm或者npm</p>
+<pre class="hljs"><code><span class="hljs-attribute">ynpm</span> publish      <span class="hljs-comment"># npm publish</span></code></pre>      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "ossconfig": {
+    "accessKeyId": "...",
+    "accessKeySecret": "...",
+    "bucket": "...",
+    "region": "oss-cn-beijing"
+  },
+  "pushDirName":"dist",
+  "osspath":"yonyou-fed",
+  "exclude":["index.html"]
+}
