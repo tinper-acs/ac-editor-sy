@@ -108,6 +108,6 @@ export function initCheckbox(param) {
   return `<div>${checkboxString}</div>`;
 }
 
-export function initDate(){
-  return `<input type="text" id="eee" acType="date"/>`;
+export function initDate(id){
+  return `<input type="text" id="${id}" acType="date"/>`;
 }

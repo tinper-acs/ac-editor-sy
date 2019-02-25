@@ -173,7 +173,8 @@ class EditorSany extends Component {
   };
 
   onDate = () => {
-    this.insertContent(initDate());
+    const id = uuid();
+    this.insertContent(initDate(id));
   };
 
 
