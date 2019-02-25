@@ -164,12 +164,11 @@ class EditorSany extends Component {
           htmlString+=`<span>${title}</span>`+initSelect(temp);
         }
         if(type==='date'){
-          htmlString+=`<span>${title}</span>`+initDate();
+          htmlString+=`<span>${title}</span>`+initDate(id);
         }
       }
     }
     this.insertContent(`<div>${htmlString}</div>`);
-
   };
 
   onDate = () => {
