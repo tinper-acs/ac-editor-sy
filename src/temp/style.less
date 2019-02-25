@@ -1,0 +1,53 @@
+.editor-sany {
+
+  #editor-sany-content {
+    width: 100%;
+    min-height: 500px;
+    border: 1px solid #ccc;
+    p {
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+
+  .rich-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+    text-align: center;
+    td, th {
+      border: 1px solid #ccc;
+      color: #666;
+      height: 30px;
+    }
+  }
+}
+
+.ac-select {
+  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+  border: solid 1px #000;
+  /*很关键：将默认的select选择框样式清除*/
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  /*在选择框的最右侧中间显示小箭头图片*/
+  background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
+  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+  width: 180px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 4px 6px 4px 11px;
+  background-origin:content-box;
+
+}
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+.ac-select::-ms-expand {
+  display: none;
+}
+
+// 对日期进行处理
+#ac-date-body{
+  display: none;
+}
+
