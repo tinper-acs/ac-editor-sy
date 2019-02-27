@@ -10,12 +10,11 @@ import PreviewModal from './PreviewModal';
 import FixedModal from './FixedModal.js';
 
 
-
 import {
-  uuid, initTable, initInput, initSelect, initRadio, initCheckbox, initDate, fixedDate,
+  uuid, initTable, initInput, initSelect, initRadio, initCheckbox, initDate, fixedDate, popList,
 } from './utils';
 
-import  "./assets/font/iconfont.css";
+import './assets/font/iconfont.css';
 
 import './index.less';
 
@@ -179,11 +178,9 @@ class EditorSany extends Component {
   };
 
   // 插入命令
-  insertCommand=(cmd,value)=>{
-    console.log("-----");
-    debugger
-    document.execCommand(cmd, false, null);
-  }
+  insertCommand = (cmd, value = null) => {
+    window.document.execCommand(cmd, false, value);
+  };
 
   // 编辑框按键弹起和点击事件
   onKeyUpEditBody = (event) => {
@@ -237,7 +234,6 @@ class EditorSany extends Component {
 
   //编辑点击事件
   onChangeEditBody = (event) => {
-    const target = event.target;
     this.showCloseBar();
   };
 
@@ -253,6 +249,19 @@ class EditorSany extends Component {
     const target = event.target;
     this.insertContent(target.outerHTML);
     event.stopPropagation();
+  };
+
+  //通过下拉获取 命令和值
+  onPopSelect = (cmd, event) => {
+
+    const target = event.target;
+    const value = target.getAttribute('value');
+    const selectedText = this.lastEditRange.endContainer.data;
+
+    let title = `<span style="font-size:20px">${selectedText}</span>`;
+    this.insertContent(title);
+    
+
   };
 
   // 关闭或者打开弹框
@@ -280,7 +289,7 @@ class EditorSany extends Component {
 
   render() {
     const {
-      showDate, popObj, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
+      showDate, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
     } = this.state;
 
     const {
@@ -290,6 +299,8 @@ class EditorSany extends Component {
 
     return (
       <div className="editor-sany">
+
+        {/*<div onClick={this.insertCommand} style={{width:'20px',height:'20px'}}><span className="iconfont icon-bold" /></div>*/}
 
         <div className="w-e-toolbar">
           {/*保存*/}
@@ -376,31 +387,38 @@ class EditorSany extends Component {
             </div>
           </div>
 
-          {/*加粗*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-bold" onClick={()=>{this.insertCommand('bold')}}/>
+            <button onClick={() => {
+              this.insertCommand('bold');
+            }}
+            >
+              <span className="iconfont icon-bold"/>
+            </button>
           </div>
 
-          {/*字体加粗*/}
-          <div
-            className="w-e-menu"
-            onClick={() => {
-              this.showCloseBar('fontSize');
-            }}
-          >
-            <span className="iconfont icon-font-size"/>
+
+          {/*字体大小*/}
+
+
+          <div className="w-e-menu">
+            <span
+              className="iconfont icon-font-size"
+              onClick={() => {
+                this.showCloseBar('fontSize');
+              }}
+            />
             <div
               className={fontSize ? 'w-e-droplist' : 'w-e-droplist-h'}
               style={{ width: '160px' }}
             >
               <p className="w-e-dp-title">字号</p>
-              <ul className="w-e-list">
-                <li className="w-e-item"><span style={{ fontSize: 'x-small' }}>x-small</span></li>
-                <li className="w-e-item"><span style={{ fontSize: 'small' }}>small</span></li>
-                <li className="w-e-item"><span>normal</span></li>
-                <li className="w-e-item"><span style={{ fontSize: 'large' }}>large</span></li>
-                <li className="w-e-item"><span style={{ fontSize: 'x-large' }}>x-large</span></li>
-                <li className="w-e-item"><span style={{ fontSize: 'xx-large' }}>xx-large</span></li>
+              <ul className="w-e-list" onClick={event => this.onPopSelect('fontSize', event)}>
+                <li className="w-e-item" style={{ fontSize: 'x-small' }} value="1">x-small</li>
+                <li className="w-e-item" style={{ fontSize: 'small' }} value="2">small</li>
+                <li className="w-e-item" value='3'>normal</li>
+                <li className="w-e-item" style={{ fontSize: 'large' }} value="4">large</li>
+                <li className="w-e-item" style={{ fontSize: 'x-large' }} value="5">x-large</li>
+                <li className="w-e-item" style={{ fontSize: 'xx-large' }} value="6">xx-large</li>
               </ul>
             </div>
           </div>
@@ -422,17 +440,32 @@ class EditorSany extends Component {
 
           {/*斜体*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-italic"/>
+            <button onClick={() => {
+              this.insertCommand('italic');
+            }}
+            >
+              <span className="iconfont icon-italic"/>
+            </button>
           </div>
 
           {/*下划线*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-underline"/>
+            <button onClick={() => {
+              this.insertCommand('underline');
+            }}
+            >
+              <span className="iconfont icon-underline"/>
+            </button>
           </div>
 
           {/*删除线*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-strikethrough"/>
+            <button onClick={() => {
+              this.insertCommand('strikeThrough');
+            }}
+            >
+              <span className="iconfont icon-strikethrough"/>
+            </button>
           </div>
 
           {/*文字颜色*/}
@@ -524,14 +557,24 @@ class EditorSany extends Component {
             <span className="iconfont icon-line-height"/>
           </div>
 
-          {/*缩进*/}
+          {/*删除线*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-indent"/>
+            <button onClick={() => {
+              this.insertCommand('indent');
+            }}
+            >
+              <span className="iconfont icon-indent"/>
+            </button>
           </div>
 
           {/*清空缩进*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-outdent"/>
+            <button onClick={() => {
+              this.insertCommand('outdent');
+            }}
+            >
+              <span className="iconfont icon-outdent"/>
+            </button>
           </div>
 
           {/*超链接*/}
@@ -573,9 +616,13 @@ class EditorSany extends Component {
 
           {/*格式刷*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-geshishua"/>
+            <button onClick={() => {
+              this.insertCommand('removeFormat');
+            }}
+            >
+              <span className="iconfont icon-geshishua"/>
+            </button>
           </div>
-
         </div>
 
         <div

@@ -149,3 +149,21 @@ export var fixedDate = [
     status: false,
   },
 ];
+
+
+export var popList = [
+  {
+    cmd: "fontSize",
+    title: "字体大小",
+    selectList: [
+      {value: "1", title: "x-small"},
+      {value: "2", title: "small"},
+      {value: "3", title: "normal"},
+      {value: "4", title: "large"},
+      {value: "5", title: "x-large"},
+      {value: "6", title: "xx-large"},
+      {value: "7", title: "xxx-large"},
+    ]
+  }
+];
+
