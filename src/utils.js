@@ -75,11 +75,13 @@ export function initSelect(param) {
  * @returns {string}
  */
 export function initRadio(param) {
-  const { num, id, check, direction } = param;
+  const {
+    num, id, check, direction,
+  } = param;
   let radioString = '';
   for (let i = 0; i < num; i += 1) {
     // 默认选中
-    let checked = (i + 1) === check ? 'checked' : '';
+    const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
       radioString += `<span><input name="${id}" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
@@ -95,10 +97,12 @@ export function initRadio(param) {
  * @returns {string}
  */
 export function initCheckbox(param) {
-  const { num, id, check,direction } = param;
+  const {
+    num, id, check, direction,
+  } = param;
   let checkboxString = '';
   for (let i = 0; i < num; i += 1) {
-    let checked = (i + 1) === check ? 'checked' : '';
+    const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
       checkboxString += `<span><input name="${id}" type="checkbox"  ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
@@ -108,6 +112,40 @@ export function initCheckbox(param) {
   return `<div>${checkboxString}</div>`;
 }
 
-export function initDate(id){
+export function initDate(id) {
   return `<input type="text" id="${id}" acType="date"/>`;
 }
+
+
+export var fixedDate = [
+  {
+    id: 'aaa',
+    type: 'text',
+    type_cn: '文本',
+    title: '合同编号',
+    data: ['xxxx'],
+    defaultVal: 'xxxx',
+    isEdit: false,
+    status: false,
+  },
+  {
+    id: 'bbb',
+    type: 'select',
+    type_cn: '下拉',
+    title: '付款方式',
+    data: ['xxxx', 'yyyy'],
+    defaultVal: 'xxxx',
+    isEdit: false,
+    status: false,
+  },
+  {
+    id: 'ccc',
+    type: 'date',
+    title: '合同签订日期',
+    type_cn: '日期',
+    data: ['2019-02-20'],
+    defaultVal: '2019-02-20',
+    isEdit: false,
+    status: false,
+  },
+];

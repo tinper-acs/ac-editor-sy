@@ -9,9 +9,13 @@ import RadioModal from './RadioModal.js';
 import PreviewModal from './PreviewModal';
 import FixedModal from './FixedModal.js';
 
+
+
 import {
-  uuid, initTable, initInput, initSelect, initRadio, initCheckbox, initDate,
+  uuid, initTable, initInput, initSelect, initRadio, initCheckbox, initDate, fixedDate,
 } from './utils';
+
+import  "./assets/font/iconfont.css";
 
 import './index.less';
 
@@ -30,16 +34,6 @@ class EditorSany extends Component {
       currentDateId: '',
       currentDateLeft: '0px',
       currentDateTop: '0px',
-      popObj: {
-        popStatus: false,
-        tablePopStatus: false, //是否展示插入 table 弹框
-        inputPopStatus: false, //是否展示插入 input 弹框
-        selectPopStatus: false, //是否展示插入 select 弹框
-        radioPopStatus: false,  //是否展示插入 radio 弹框
-        checkboxPopStatus: false,  //是否展示插入 checkbox 弹框
-        previewPopStatus: false,  //是否展示插入 preview 弹框
-        fixedPopStatus: false,  //是否展示插入 fixed 弹框
-      },
       barObj: {
         title: false,
         fontSize: false,
@@ -52,7 +46,9 @@ class EditorSany extends Component {
         checkboxStatus: false,  //是否展示插入 checkbox 弹框
         inputStatus: false, //是否展示插入 input 弹框
         selectStatus: false, //是否展示插入 select 弹框
-        fixedStatus: false,  //是否展示插入 fixed 弹框
+        fixedStatus: false,  // 是否展示插入 fixed 弹框
+        previewStatus: false,  //是否展示插入 preview 弹框
+
       },
       previewHtml: '',
       idList: [],
@@ -62,28 +58,6 @@ class EditorSany extends Component {
 
   // 定义最后光标对象
   lastEditRange = null;
-
-  // 当前鼠标状态
-  mouseOverStatus = 0;
-
-  // componentDidMount() {
-  //
-  //   // this.refs.aaa.style.border = '5px solid yellow'
-  //   //
-  //   // this.refs.bbb.style.border = '5px solide red'
-  //
-  // }
-
-  // componentWillMount() {
-  //   let script = document.createElement('script');
-  //   script.type = 'text/javascript';
-  //   const srcList = ['/dist/dom.js'];
-  //   for (const item of srcList) {
-  //     script.src = item;
-  //     document.body.appendChild(script);
-  //   }
-  // }
-
 
   // 插入内容
   insertContent = (content) => {
@@ -164,9 +138,6 @@ class EditorSany extends Component {
     this.insertContent(initCheckbox(param));
   };
 
-  onInsertPreview = () => {
-    const textHtml = document.getElementById('editor-sany-content').innerHTML;
-  };
 
   // 插入固定字段
   onInsertFixed = (param) => {
@@ -201,11 +172,18 @@ class EditorSany extends Component {
     this.insertContent(`<div>${htmlString}</div>`);
   };
 
+  // 插入日期
   onDate = () => {
     const id = uuid();
     this.insertContent(initDate(id));
   };
 
+  // 插入命令
+  insertCommand=(cmd,value)=>{
+    console.log("-----");
+    debugger
+    document.execCommand(cmd, false, null);
+  }
 
   // 编辑框按键弹起和点击事件
   onKeyUpEditBody = (event) => {
@@ -266,35 +244,15 @@ class EditorSany extends Component {
   // 预览按钮
   onPreviewShow = () => {
     const textHtml = document.getElementById('editor-sany-content').innerHTML;
-    const { popObj } = this.state;
-    for (const item in popObj) {
-      popObj[item] = false;
-    }
-    popObj.previewPopStatus = true;
-    this.setState({
-      previewHtml: textHtml,
-      popObj,
-    });
+    this.setState({ previewHtml: textHtml });
+    this.showCloseBar('previewStatus');
   };
 
-
-  //打开弹框
-  onPopShow = (param) => {
-    const { popObj } = this.state;
-    for (const item in popObj) {
-      popObj[item] = false;
-    }
-    popObj[param] = true;
-    this.setState({ popObj });
-  };
-
-  //关闭弹框
-  onPopHidden = (param) => {
-    const { popObj } = this.state;
-    for (const item in popObj) {
-      popObj[item] = false;
-    }
-    this.setState({ popObj });
+  // 插入标题
+  onInsertTitle = (event) => {
+    const target = event.target;
+    this.insertContent(target.outerHTML);
+    event.stopPropagation();
   };
 
   // 关闭或者打开弹框
@@ -309,11 +267,6 @@ class EditorSany extends Component {
     this.setState({ barObj });
   };
 
-
-
-  handleChange(value) {
-    this.setState({ selectedValue: value });
-  }
 
   // 选择日期，将日期的值赋值给 选中的input
   onChangeDate = (param) => {
@@ -331,59 +284,22 @@ class EditorSany extends Component {
     } = this.state;
 
     const {
-      title, fontSize, fontName, brush, highlight, textAlign, tableStatus,radioStatus,checkboxStatus,inputStatus,selectStatus,fixedStatus,
+      title, fontSize, fontName, brush, highlight, textAlign, tableStatus, radioStatus, checkboxStatus, inputStatus, selectStatus, fixedStatus, previewStatus,
     } = barObj;
 
-    const {
-      inputPopStatus, selectPopStatus, radioPopStatus, checkboxPopStatus, previewPopStatus, fixedPopStatus,
-    } = popObj;
-
-    const fixedDate = [
-      {
-        id: 'aaa',
-        type: 'text',
-        type_cn: '文本',
-        title: '合同编号',
-        data: ['xxxx'],
-        defaultVal: 'xxxx',
-        isEdit: false,
-        status: false,
-      },
-      {
-        id: 'bbb',
-        type: 'select',
-        type_cn: '下拉',
-        title: '付款方式',
-        data: ['xxxx', 'yyyy'],
-        defaultVal: 'xxxx',
-        isEdit: false,
-        status: false,
-      },
-      {
-        id: 'ccc',
-        type: 'date',
-        title: '合同签订日期',
-        type_cn: '日期',
-        data: ['2019-02-20'],
-        defaultVal: '2019-02-20',
-        isEdit: false,
-        status: false,
-      },
-    ];
 
     return (
       <div className="editor-sany">
 
         <div className="w-e-toolbar">
-
           {/*保存*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-save" />
+            <span className="iconfont icon-save"/>
           </div>
 
           {/*对比*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-duibi" />
+            <span className="iconfont icon-duibi"/>
           </div>
 
           {/*预览*/}
@@ -412,7 +328,7 @@ class EditorSany extends Component {
 
           {/*日期*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-calendar" onClick={this.onDate} />
+            <span className="iconfont icon-calendar" onClick={this.onDate}/>
           </div>
 
           {/*下拉框*/}
@@ -445,11 +361,11 @@ class EditorSany extends Component {
               this.showCloseBar('title');
             }}
           >
-            <span className="iconfont icon-zitibiaoti" />
+            <span className="iconfont icon-zitibiaoti"/>
             {/*<div className="">*/}
             <div className={title ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
-              <ul className="w-e-list">
+              <ul className="w-e-list" onClick={this.onInsertTitle}>
                 <li className="w-e-item"><h1 className="clearWidth">H1</h1></li>
                 <li className="w-e-item"><h2 className="clearWidth">H2</h2></li>
                 <li className="w-e-item"><h3 className="clearWidth">H3</h3></li>
@@ -462,7 +378,7 @@ class EditorSany extends Component {
 
           {/*加粗*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-bold" />
+            <span className="iconfont icon-bold" onClick={()=>{this.insertCommand('bold')}}/>
           </div>
 
           {/*字体加粗*/}
@@ -472,7 +388,7 @@ class EditorSany extends Component {
               this.showCloseBar('fontSize');
             }}
           >
-            <span className="iconfont icon-font-size" />
+            <span className="iconfont icon-font-size"/>
             <div
               className={fontSize ? 'w-e-droplist' : 'w-e-droplist-h'}
               style={{ width: '160px' }}
@@ -491,7 +407,7 @@ class EditorSany extends Component {
 
           {/*字体名称*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-ai247" />
+            <span className="iconfont icon-ai247"/>
             <div className={fontName ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">字体</p>
               <ul className="w-e-list">
@@ -506,17 +422,17 @@ class EditorSany extends Component {
 
           {/*斜体*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-italic" />
+            <span className="iconfont icon-italic"/>
           </div>
 
           {/*下划线*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-underline" />
+            <span className="iconfont icon-underline"/>
           </div>
 
           {/*删除线*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-strikethrough" />
+            <span className="iconfont icon-strikethrough"/>
           </div>
 
           {/*文字颜色*/}
@@ -526,36 +442,36 @@ class EditorSany extends Component {
               this.showCloseBar('highlight');
             }}
           >
-            <span className="iconfont icon-highlight" />
+            <span className="iconfont icon-highlight"/>
             <div className={highlight ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">文字颜色</p>
               <ul className="w-e-block">
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#000000' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#000000' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: 'red' }} />
+                  <span className="iconfont icon-highlight" style={{ color: 'red' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#1c487f' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#1c487f' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#4d80bf' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#4d80bf' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#c24f4a' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#c24f4a' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#8baa4a' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#8baa4a' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#7b5ba1' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#7b5ba1' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#46acc8' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#46acc8' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#f9963b' }} />
+                  <span className="iconfont icon-highlight" style={{ color: '#f9963b' }}/>
                 </li>
               </ul>
             </div>
@@ -568,36 +484,36 @@ class EditorSany extends Component {
               this.showCloseBar('brush');
             }}
           >
-            <span className="iconfont icon-brush" />
+            <span className="iconfont icon-brush"/>
             <div className={brush ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">背景色</p>
               <ul className="w-e-block">
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#000000' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#000000' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: 'red' }} />
+                  <span className="iconfont icon-brush" style={{ color: 'red' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#1c487f' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#1c487f' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#4d80bf' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#4d80bf' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#c24f4a' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#c24f4a' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#8baa4a' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#8baa4a' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#7b5ba1' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#7b5ba1' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#46acc8' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#46acc8' }}/>
                 </li>
                 <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#f9963b' }} />
+                  <span className="iconfont icon-brush" style={{ color: '#f9963b' }}/>
                 </li>
               </ul>
             </div>
@@ -605,22 +521,22 @@ class EditorSany extends Component {
 
           {/*行高*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-line-height" />
+            <span className="iconfont icon-line-height"/>
           </div>
 
           {/*缩进*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-indent" />
+            <span className="iconfont icon-indent"/>
           </div>
 
           {/*清空缩进*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-outdent" />
+            <span className="iconfont icon-outdent"/>
           </div>
 
           {/*超链接*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-link" />
+            <span className="iconfont icon-link"/>
           </div>
 
           {/*文字对齐*/}
@@ -630,20 +546,20 @@ class EditorSany extends Component {
               this.showCloseBar('textAlign');
             }}
           >
-            <span className="iconfont icon-align-left" />
+            <span className="iconfont icon-align-left"/>
             <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
                 <li className="w-e-item">
-                  <span className="iconfont icon-align-left" />
+                  <span className="iconfont icon-align-left"/>
                   <span>&nbsp;&nbsp;靠左&nbsp;&nbsp;</span>
                 </li>
                 <li className="w-e-item">
-                  <span className="iconfont icon-align-center" />
+                  <span className="iconfont icon-align-center"/>
                   <span>&nbsp;&nbsp;居中&nbsp;&nbsp;</span>
                 </li>
                 <li className="w-e-item">
-                  <span className="iconfont icon-align-right" />
+                  <span className="iconfont icon-align-right"/>
                   <span>&nbsp;&nbsp;靠右&nbsp;&nbsp;</span>
                 </li>
               </ul>
@@ -652,43 +568,16 @@ class EditorSany extends Component {
 
           {/*插入图片*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-image" />
+            <span className="iconfont icon-image"/>
           </div>
 
           {/*格式刷*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-geshishua" />
+            <span className="iconfont icon-geshishua"/>
           </div>
 
         </div>
 
-
-        {/*<span className="iconfont icon-bold title-icon"></span>*/}
-        {/*<span className="iconfont icon-font-size title-icon"></span>*/}
-        {/*<span className="iconfont icon-ai247 title-icon"></span>*/}
-        {/*<span className="iconfont icon-italic title-icon"></span>*/}
-        {/*<span className="iconfont icon-underline title-icon"></span>*/}
-        {/*<span className="iconfont icon-strikethrough title-icon"></span>*/}
-        {/*<span className="iconfont icon-highlight title-icon"></span>*/}
-        {/*<span className="iconfont icon-brush title-icon"></span>*/}
-        {/*<span className="iconfont icon-link title-icon"></span>*/}
-        {/*<span className="iconfont icon-align-left title-icon"></span>*/}
-        {/*<span className="iconfont icon-table title-icon"></span>*/}
-        {/*<span className="iconfont icon-calendar title-icon"></span>*/}
-        {/*<span className="iconfont icon-image title-icon"></span>*/}
-
-        {/*<button onClick={this.onPreviewShow}>预览</button>*/}
-        {/*<button onClick={this.onSave}>保存</button>*/}
-        {/*<button>对比</button>*/}
-        {/*<button onClick={() => {*/}
-        {/*this.onPopShow('fixedPopStatus');*/}
-        {/*}}>固定字段*/}
-        {/*</button>*/}
-        {/*<button onClick={this.onPopShow.bind(this, 'tablePopStatus')}>表格</button>*/}
-        {/*<button onClick={this.onPopShow.bind(this, 'inputPopStatus')}>输入框</button>*/}
-        {/*<button onClick={this.onPopShow.bind(this, 'selectPopStatus')}>下拉框</button>*/}
-        {/*<button onClick={this.onPopShow.bind(this, 'radioPopStatus')}>单选框</button>*/}
-        {/*<button onClick={this.onPopShow.bind(this, 'checkboxPopStatus')}>多选框</button>*/}
         <div
           id="editor-sany-content"
           name="edit"
@@ -705,24 +594,11 @@ class EditorSany extends Component {
           {/*<label><input name="aa" type="radio" value="2" id="yyy"/>苹果a</label>*/}
         </div>
 
-        <SelectModal
-          visible={selectPopStatus}
-          colsePop={this.onPopHidden}
-          onInsertSelect={this.onInsertSelect}
-        />
-
         <PreviewModal
-          visible={previewPopStatus}
-          colsePop={this.onPopHidden}
-          onInsertPreview={this.onInsertPreview}
+          visible={previewStatus}
+          colsePop={this.showCloseBar}
           htmlString={previewHtml}
           idList={idList}
-        />
-        <FixedModal
-          visible={fixedPopStatus}
-          colsePop={this.onPopHidden}
-          onInsertFixed={this.onInsertFixed}
-          fixedDate={fixedDate}
         />
         <div id="ac-date-body">
           <DatePicker

@@ -24,6 +24,17 @@ module.exports = webpackMerge(baseConfig, {
   module: {
     rules: [
       {
+        test: /\.(eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[hash:8].[ext]',
+            outputPath: 'fonts',
+            publicPath: path.join(__dirname, '../src/assets/font/')
+          },
+        }],
+      },
+      {
         test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
