@@ -32,7 +32,7 @@ class PreviewModal extends Component {
         visible={visible}
         cancel={this.onCancel}
         title="预览"
-        width="800px"
+        width="1000px"
       >
         <div className="pop-content-preview">
           <div dangerouslySetInnerHTML={{ __html: htmlString }}/>

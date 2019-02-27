@@ -1,36 +1,35 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,jsx-a11y/click-events-have-key-events */
 import React, { Component } from 'react';
-import EditorModal from '../EditorModal';
 import { Table, Checkbox } from 'tinper-bee';
-import multiSelect from 'tinper-bee/lib/multiSelect.js';
-
 
 import './index.less';
 
-const MultiSelectTable = multiSelect(Table, Checkbox);
 
 class FixedModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dropStatus: false,
       fixedDate: this.props.fixedDate,
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { dropStatus } = nextProps;
+    this.setState({ dropStatus });
+  }
 
-  // 获取选中的字段
-  getTableSetting = () => {
+  // 获取单选框设置
+  getInputSetting = () => {
     const { fixedDate } = this.state;
     this.props.onInsertFixed(fixedDate);
-    this.setState({ fixedDate: this.props.fixedDate });
-    this.onCancel();
+    this.setState({ fixedDate: this.props.fixedDate,dropStatus: false });
   };
 
-  // 关闭弹框
-  onCancel = () => {
-    this.props.colsePop('fixedPopStatus');
+  // 打开弹框
+  onShow = () => {
+    this.props.showCloseBar('fixedStatus');
   };
-
 
   onClickCheck = (index, param) => {
     const { fixedDate } = this.state;
@@ -88,20 +87,20 @@ class FixedModal extends Component {
 
 
   render() {
-    const { visible } = this.props;
-    const { fixedDate } = this.state;
+    const { dropStatus,fixedDate } = this.state;
+
     return (
-      <EditorModal
-        onInsert={this.getTableSetting}
-        visible={visible}
-        cancel={this.onCancel}
-        title="插入固定字段"
-      >
-        <Table
-          columns={this.columns}
-          data={fixedDate}
-        />
-      </EditorModal>
+      <div className="w-e-menu">
+        <span className="iconfont icon-menu" onClick={this.onShow}/>
+        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '300px' }}>
+          <p className="w-e-dp-title">插入固定字段</p>
+          <Table
+            columns={this.columns}
+            data={fixedDate}
+          />
+          <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
+        </div>
+      </div>
     );
   }
 }

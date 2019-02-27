@@ -1,13 +1,13 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions */
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
-import TableModal from './TableModal';
-import InputModal from './InputModal';
-import SelectModal from './SelectModal';
-import CheckboxModal from './CheckboxModal';
-import RadioModal from './RadioModal';
+import TableModal from './TableModal.js';
+import InputModal from './InputModal.js';
+import SelectModal from './SelectModal.js';
+import CheckboxModal from './CheckboxModal.js';
+import RadioModal from './RadioModal.js';
 import PreviewModal from './PreviewModal';
-import FixedModal from './FixedModal';
+import FixedModal from './FixedModal.js';
 
 import {
   uuid, initTable, initInput, initSelect, initRadio, initCheckbox, initDate,
@@ -30,7 +30,7 @@ class EditorSany extends Component {
       currentDateId: '',
       currentDateLeft: '0px',
       currentDateTop: '0px',
-      popObj:{
+      popObj: {
         popStatus: false,
         tablePopStatus: false, //是否展示插入 table 弹框
         inputPopStatus: false, //是否展示插入 input 弹框
@@ -40,13 +40,31 @@ class EditorSany extends Component {
         previewPopStatus: false,  //是否展示插入 preview 弹框
         fixedPopStatus: false,  //是否展示插入 fixed 弹框
       },
+      barObj: {
+        title: false,
+        fontSize: false,
+        fontName: false,
+        brush: false,
+        highlight: false,
+        textAlign: false,
+        tableStatus: false,
+        radioStatus: false,
+        checkboxStatus: false,  //是否展示插入 checkbox 弹框
+        inputStatus: false, //是否展示插入 input 弹框
+        selectStatus: false, //是否展示插入 select 弹框
+        fixedStatus: false,  //是否展示插入 fixed 弹框
+      },
       previewHtml: '',
       idList: [],
+
     };
   }
 
   // 定义最后光标对象
   lastEditRange = null;
+
+  // 当前鼠标状态
+  mouseOverStatus = 0;
 
   // componentDidMount() {
   //
@@ -96,6 +114,7 @@ class EditorSany extends Component {
       sel.removeAllRanges();                //移出所有选区
       sel.addRange(contentRange);           //添加修改后的选区
     }
+    this.showCloseBar();
   };
 
   // 插入table
@@ -151,20 +170,31 @@ class EditorSany extends Component {
 
   // 插入固定字段
   onInsertFixed = (param) => {
-    let htmlString="";
-    for(const item of param){
-      const {data,type,status,id,title}=item;
-      if(status){
-        if(type==='text'){
-          const temp={category:type, defVal:data[0],minWidth:80, placeholder:data, id};
-          htmlString+=`<span>${title}</span>`+initInput(temp);
+    let htmlString = '';
+    for (const item of param) {
+      const {
+        data, type, status, id, title,
+      } = item;
+      if (status) {
+        if (type === 'text') {
+          const temp = {
+            category: type,
+            defVal: data[0],
+            minWidth: 80,
+            placeholder: data,
+            id,
+          };
+          htmlString += `<span>${title}</span>${initInput(temp)}`;
         }
-        if(type==='select'){
-          const temp={textArray:data,id};
-          htmlString+=`<span>${title}</span>`+initSelect(temp);
+        if (type === 'select') {
+          const temp = {
+            textArray: data,
+            id,
+          };
+          htmlString += `<span>${title}</span>${initSelect(temp)}`;
         }
-        if(type==='date'){
-          htmlString+=`<span>${title}</span>`+initDate(id);
+        if (type === 'date') {
+          htmlString += `<span>${title}</span>${initDate(id)}`;
         }
       }
     }
@@ -182,6 +212,7 @@ class EditorSany extends Component {
     // 缓存光标
     this.lastEditRange = window.getSelection()
       .getRangeAt(0);
+    this.showCloseBar();
   };
 
   //编辑点击事件
@@ -214,8 +245,8 @@ class EditorSany extends Component {
     // 判断是否为日期 input
     if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'date') {
       const currentDateId = target.getAttribute('id');
-      const currentDateLeft = event.clientX + 'px';
-      const currentDateTop = event.clientY + 'px';
+      const currentDateLeft = `${event.clientX}px`;
+      const currentDateTop = `${event.clientY}px`;
       _this.setState({
         currentDateId,
         currentDateLeft,
@@ -223,40 +254,62 @@ class EditorSany extends Component {
         showDate: true,
       });
     }
+    this.showCloseBar();
   };
+
   //编辑点击事件
   onChangeEditBody = (event) => {
     const target = event.target;
+    this.showCloseBar();
   };
 
   // 预览按钮
   onPreviewShow = () => {
     const textHtml = document.getElementById('editor-sany-content').innerHTML;
+    const { popObj } = this.state;
+    for (const item in popObj) {
+      popObj[item] = false;
+    }
+    popObj.previewPopStatus = true;
     this.setState({
-      previewPopStatus: true,
       previewHtml: textHtml,
+      popObj,
     });
   };
 
 
   //打开弹框
   onPopShow = (param) => {
-    const {popObj}=this.state;
-    for(let item in popObj ){
-      popObj[item]=false;
+    const { popObj } = this.state;
+    for (const item in popObj) {
+      popObj[item] = false;
     }
-    popObj[param]=true;
-    this.setState({popObj});
+    popObj[param] = true;
+    this.setState({ popObj });
   };
 
   //关闭弹框
   onPopHidden = (param) => {
-    const {popObj}=this.state;
-    for(let item in popObj ){
-      popObj[item]=false;
+    const { popObj } = this.state;
+    for (const item in popObj) {
+      popObj[item] = false;
     }
-    this.setState({popObj});
+    this.setState({ popObj });
   };
+
+  // 关闭或者打开弹框
+  showCloseBar = (param) => {
+    const { barObj } = this.state;
+    for (const item in barObj) {
+      barObj[item] = false;
+    }
+    if (param) {
+      barObj[param] = true;
+    }
+    this.setState({ barObj });
+  };
+
+
 
   handleChange(value) {
     this.setState({ selectedValue: value });
@@ -274,10 +327,16 @@ class EditorSany extends Component {
 
   render() {
     const {
-      showDate,popObj, currentDateLeft, currentDateTop, idList,  previewHtml,
+      showDate, popObj, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
     } = this.state;
 
-    const {tablePopStatus, inputPopStatus, selectPopStatus, radioPopStatus, checkboxPopStatus, previewPopStatus,fixedPopStatus,}=popObj;
+    const {
+      title, fontSize, fontName, brush, highlight, textAlign, tableStatus,radioStatus,checkboxStatus,inputStatus,selectStatus,fixedStatus,
+    } = barObj;
+
+    const {
+      inputPopStatus, selectPopStatus, radioPopStatus, checkboxPopStatus, previewPopStatus, fixedPopStatus,
+    } = popObj;
 
     const fixedDate = [
       {
@@ -309,21 +368,327 @@ class EditorSany extends Component {
         defaultVal: '2019-02-20',
         isEdit: false,
         status: false,
-      }
+      },
     ];
 
     return (
       <div className="editor-sany">
-        <button onClick={this.onPreviewShow}>预览</button>
-        <button onClick={this.onSave}>保存</button>
-        <button>对比</button>
-        <button onClick={()=>{this.onPopShow('fixedPopStatus')}}>固定字段</button>
-        <button onClick={this.onDate}>日期</button>
-        <button onClick={this.onPopShow.bind(this, 'tablePopStatus')}>表格</button>
-        <button onClick={this.onPopShow.bind(this, 'inputPopStatus')}>输入框</button>
-        <button onClick={this.onPopShow.bind(this, 'selectPopStatus')}>下拉框</button>
-        <button onClick={this.onPopShow.bind(this, 'radioPopStatus')}>单选框</button>
-        <button onClick={this.onPopShow.bind(this, 'checkboxPopStatus')}>多选框</button>
+
+        <div className="w-e-toolbar">
+
+          {/*保存*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-save" />
+          </div>
+
+          {/*对比*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-duibi" />
+          </div>
+
+          {/*预览*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
+          </div>
+
+          {/*单选*/}
+          <RadioModal
+            dropStatus={radioStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertRadio={this.onInsertRadio}
+          />
+          {/*多选*/}
+          <CheckboxModal
+            dropStatus={checkboxStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertCheckbox={this.onInsertCheckbox}
+          />
+          {/*文本 输入*/}
+          <InputModal
+            dropStatus={inputStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertInput={this.onInsertInput}
+          />
+
+          {/*日期*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-calendar" onClick={this.onDate} />
+          </div>
+
+          {/*下拉框*/}
+          <SelectModal
+            dropStatus={selectStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertSelect={this.onInsertSelect}
+          />
+
+          {/*固定字段*/}
+          <FixedModal
+            dropStatus={fixedStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertFixed={this.onInsertFixed}
+            fixedDate={fixedDate}
+          />
+
+          {/*插入表格*/}
+          <TableModal
+            dropStatus={tableStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertTable={this.onInsertTable}
+          />
+
+
+          {/*标题*/}
+          <div
+            className="w-e-menu"
+            onClick={() => {
+              this.showCloseBar('title');
+            }}
+          >
+            <span className="iconfont icon-zitibiaoti" />
+            {/*<div className="">*/}
+            <div className={title ? 'w-e-droplist' : 'w-e-droplist-h'}>
+              <p className="w-e-dp-title">设置标题</p>
+              <ul className="w-e-list">
+                <li className="w-e-item"><h1 className="clearWidth">H1</h1></li>
+                <li className="w-e-item"><h2 className="clearWidth">H2</h2></li>
+                <li className="w-e-item"><h3 className="clearWidth">H3</h3></li>
+                <li className="w-e-item"><h4 className="clearWidth">H4</h4></li>
+                <li className="w-e-item"><h5 className="clearWidth">H5</h5></li>
+                <li className="w-e-item"><p className="clearWidth">正文</p></li>
+              </ul>
+            </div>
+          </div>
+
+          {/*加粗*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-bold" />
+          </div>
+
+          {/*字体加粗*/}
+          <div
+            className="w-e-menu"
+            onClick={() => {
+              this.showCloseBar('fontSize');
+            }}
+          >
+            <span className="iconfont icon-font-size" />
+            <div
+              className={fontSize ? 'w-e-droplist' : 'w-e-droplist-h'}
+              style={{ width: '160px' }}
+            >
+              <p className="w-e-dp-title">字号</p>
+              <ul className="w-e-list">
+                <li className="w-e-item"><span style={{ fontSize: 'x-small' }}>x-small</span></li>
+                <li className="w-e-item"><span style={{ fontSize: 'small' }}>small</span></li>
+                <li className="w-e-item"><span>normal</span></li>
+                <li className="w-e-item"><span style={{ fontSize: 'large' }}>large</span></li>
+                <li className="w-e-item"><span style={{ fontSize: 'x-large' }}>x-large</span></li>
+                <li className="w-e-item"><span style={{ fontSize: 'xx-large' }}>xx-large</span></li>
+              </ul>
+            </div>
+          </div>
+
+          {/*字体名称*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-ai247" />
+            <div className={fontName ? 'w-e-droplist' : 'w-e-droplist-h'}>
+              <p className="w-e-dp-title">字体</p>
+              <ul className="w-e-list">
+                <li className="w-e-item"><span style={{ fontFamily: '宋体' }}>宋体</span></li>
+                <li className="w-e-item"><span style={{ fontFamily: '微软雅黑' }}>微软雅黑</span></li>
+                <li className="w-e-item"><span style={{ fontFamily: 'Arial' }}>Arial</span></li>
+                <li className="w-e-item"><span style={{ fontFamily: 'Tahoma' }}>Tahoma</span></li>
+                <li className="w-e-item"><span style={{ fontFamily: 'Verdana' }}>Verdana</span></li>
+              </ul>
+            </div>
+          </div>
+
+          {/*斜体*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-italic" />
+          </div>
+
+          {/*下划线*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-underline" />
+          </div>
+
+          {/*删除线*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-strikethrough" />
+          </div>
+
+          {/*文字颜色*/}
+          <div
+            className="w-e-menu"
+            onClick={() => {
+              this.showCloseBar('highlight');
+            }}
+          >
+            <span className="iconfont icon-highlight" />
+            <div className={highlight ? 'w-e-droplist' : 'w-e-droplist-h'}>
+              <p className="w-e-dp-title">文字颜色</p>
+              <ul className="w-e-block">
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#000000' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: 'red' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#1c487f' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#4d80bf' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#c24f4a' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#8baa4a' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#7b5ba1' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#46acc8' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-highlight" style={{ color: '#f9963b' }} />
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/*背景色*/}
+          <div
+            className="w-e-menu"
+            onClick={() => {
+              this.showCloseBar('brush');
+            }}
+          >
+            <span className="iconfont icon-brush" />
+            <div className={brush ? 'w-e-droplist' : 'w-e-droplist-h'}>
+              <p className="w-e-dp-title">背景色</p>
+              <ul className="w-e-block">
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#000000' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: 'red' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#1c487f' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#4d80bf' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#c24f4a' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#8baa4a' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#7b5ba1' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#46acc8' }} />
+                </li>
+                <li className="w-e-list-level">
+                  <span className="iconfont icon-brush" style={{ color: '#f9963b' }} />
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/*行高*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-line-height" />
+          </div>
+
+          {/*缩进*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-indent" />
+          </div>
+
+          {/*清空缩进*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-outdent" />
+          </div>
+
+          {/*超链接*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-link" />
+          </div>
+
+          {/*文字对齐*/}
+          <div
+            className="w-e-menu"
+            onClick={() => {
+              this.showCloseBar('textAlign');
+            }}
+          >
+            <span className="iconfont icon-align-left" />
+            <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
+              <p className="w-e-dp-title">对齐方式</p>
+              <ul className="w-e-list">
+                <li className="w-e-item">
+                  <span className="iconfont icon-align-left" />
+                  <span>&nbsp;&nbsp;靠左&nbsp;&nbsp;</span>
+                </li>
+                <li className="w-e-item">
+                  <span className="iconfont icon-align-center" />
+                  <span>&nbsp;&nbsp;居中&nbsp;&nbsp;</span>
+                </li>
+                <li className="w-e-item">
+                  <span className="iconfont icon-align-right" />
+                  <span>&nbsp;&nbsp;靠右&nbsp;&nbsp;</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/*插入图片*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-image" />
+          </div>
+
+          {/*格式刷*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-geshishua" />
+          </div>
+
+        </div>
+
+
+        {/*<span className="iconfont icon-bold title-icon"></span>*/}
+        {/*<span className="iconfont icon-font-size title-icon"></span>*/}
+        {/*<span className="iconfont icon-ai247 title-icon"></span>*/}
+        {/*<span className="iconfont icon-italic title-icon"></span>*/}
+        {/*<span className="iconfont icon-underline title-icon"></span>*/}
+        {/*<span className="iconfont icon-strikethrough title-icon"></span>*/}
+        {/*<span className="iconfont icon-highlight title-icon"></span>*/}
+        {/*<span className="iconfont icon-brush title-icon"></span>*/}
+        {/*<span className="iconfont icon-link title-icon"></span>*/}
+        {/*<span className="iconfont icon-align-left title-icon"></span>*/}
+        {/*<span className="iconfont icon-table title-icon"></span>*/}
+        {/*<span className="iconfont icon-calendar title-icon"></span>*/}
+        {/*<span className="iconfont icon-image title-icon"></span>*/}
+
+        {/*<button onClick={this.onPreviewShow}>预览</button>*/}
+        {/*<button onClick={this.onSave}>保存</button>*/}
+        {/*<button>对比</button>*/}
+        {/*<button onClick={() => {*/}
+        {/*this.onPopShow('fixedPopStatus');*/}
+        {/*}}>固定字段*/}
+        {/*</button>*/}
+        {/*<button onClick={this.onPopShow.bind(this, 'tablePopStatus')}>表格</button>*/}
+        {/*<button onClick={this.onPopShow.bind(this, 'inputPopStatus')}>输入框</button>*/}
+        {/*<button onClick={this.onPopShow.bind(this, 'selectPopStatus')}>下拉框</button>*/}
+        {/*<button onClick={this.onPopShow.bind(this, 'radioPopStatus')}>单选框</button>*/}
+        {/*<button onClick={this.onPopShow.bind(this, 'checkboxPopStatus')}>多选框</button>*/}
         <div
           id="editor-sany-content"
           name="edit"
@@ -339,31 +704,13 @@ class EditorSany extends Component {
           {/*<label><input name="aa" type="radio" value="1" id="xx"/>苹果</label>*/}
           {/*<label><input name="aa" type="radio" value="2" id="yyy"/>苹果a</label>*/}
         </div>
-        <TableModal
-          visible={tablePopStatus}
-          colsePop={this.onPopHidden}
-          onInsertTable={this.onInsertTable}
-        />
-        <InputModal
-          visible={inputPopStatus}
-          colsePop={this.onPopHidden}
-          onInsertInput={this.onInsertInput}
-        />
+
         <SelectModal
           visible={selectPopStatus}
           colsePop={this.onPopHidden}
           onInsertSelect={this.onInsertSelect}
         />
-        <RadioModal
-          visible={radioPopStatus}
-          colsePop={this.onPopHidden}
-          onInsertRadio={this.onInsertRadio}
-        />
-        <CheckboxModal
-          visible={checkboxPopStatus}
-          colsePop={this.onPopHidden}
-          onInsertCheckbox={this.onInsertCheckbox}
-        />
+
         <PreviewModal
           visible={previewPopStatus}
           colsePop={this.onPopHidden}
@@ -377,17 +724,6 @@ class EditorSany extends Component {
           onInsertFixed={this.onInsertFixed}
           fixedDate={fixedDate}
         />
-
-        {/*<EditorModal*/}
-        {/*onInsert={this.getSelect}*/}
-        {/*visible={visible}*/}
-        {/*cancel={this.onCancel}*/}
-        {/*title="插入条款"*/}
-        {/*>*/}
-        {/*<div className="pop-content-select">*/}
-        {/*<div className="ac-auto-height" contentEditable="true" id="select-textarea"/>*/}
-        {/*</div>*/}
-        {/*</EditorModal>*/}
         <div id="ac-date-body">
           <DatePicker
             open={showDate}

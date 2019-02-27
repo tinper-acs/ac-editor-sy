@@ -1,9 +1,97 @@
 .editor-sany {
+  padding-right: 20px;
+  padding-left: 20px;
+  color: #050505;
 
+  .w-e-toolbar {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0 5px;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #f1f1f15e;
+    border: 1px solid #ccc;
+  }
+  .w-e-menu {
+    position: relative;
+    text-align: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .w-e-menu:hover {
+    background-color: #f1f1f1;
+    color: #333;
+  }
+
+  .iconfont {
+    font-weight: bold;
+    color: #666666b5;
+  }
+
+  .w-e-droplist {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    border: 1px solid #f1f1f1;
+    border-right-color: #ccc;
+    border-bottom-color: #ccc;
+    margin-top: 35px;
+    min-width: 100px;
+  }
+
+  .w-e-droplist-h {
+    display: none;
+  }
+
+  .w-e-dp-title {
+    text-align: center;
+    color: #999;
+    line-height: 2;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 13px;
+    margin: 0px;
+  }
+  .w-e-block {
+    list-style: none;
+    text-align: left;
+    padding: 5px;
+    .w-e-list-level {
+      display: inline-block;
+      float: left;
+      padding: 2px 6px;
+    }
+    .w-e-list-level:hover {
+      background-color: #f1f1f1;
+    }
+  }
+
+  .w-e-list {
+    list-style: none;
+    line-height: 1;
+    .w-e-item {
+      color: #333;
+      padding: 8px 0;
+      .clearWidth {
+        margin: 0px;
+        padding: 0px;
+      }
+    }
+    .w-e-item:hover {
+      background-color: #f1f1f1;
+      color: #333;
+    }
+  }
+
+  // tilte结束
   #editor-sany-content {
     width: 100%;
     min-height: 500px;
     border: 1px solid #ccc;
+    outline: none;
     p {
       margin: 0px;
       padding: 0px;
@@ -38,16 +126,77 @@
   border-radius: 4px;
   font-size: 14px;
   padding: 4px 6px 4px 11px;
-  background-origin:content-box;
+  background-origin: content-box;
 
 }
+
 /*清除ie的默认选择框样式清除，隐藏下拉箭头*/
 .ac-select::-ms-expand {
   display: none;
 }
 
 // 对日期进行处理
-#ac-date-body{
+#ac-date-body {
   display: none;
 }
+
+// 弹框插入
+.ac-pop-action {
+  float: right;
+  margin-right: 4px;
+  font-size: 14px;
+  color: #1e88e5;
+  border: none;
+  padding: 5px 10px;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.ac-pop-action:hover {
+  background-color: #f1f1f1;
+
+}
+
+// 单选框,多选
+.ac-input-body {
+  .ac-input-item {
+    margin: 10px 0px;
+    //margin-bottom: 10px;
+    .ac-item-label {
+      display: inline-block;
+      text-align: right;
+      padding-right: 10px;
+      width: 55px;
+    }
+    .ac-input-number {
+      width: 180px;
+    }
+  }
+}
+
+// 下拉框
+.pop-content-select {
+
+  .ac-auto-height {
+    min-height: 60px;
+    _height: 120px;
+    outline: 0;
+    border: 1px solid rgba(82, 168, 236, 0.8);
+    font-size: 14px;
+    line-height: 24px;
+    padding: 2px 12px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    //box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
+    text-align: left;
+    margin: 8px 5px;
+  }
+
+}
+
+
+
+
 
