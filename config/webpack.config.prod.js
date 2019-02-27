@@ -30,7 +30,7 @@ module.exports = webpackMerge(baseConfig, {
           options: {
             name: '[name].[hash:8].[ext]',
             outputPath: 'fonts',
-            publicPath: path.join(__dirname, '../src/assets/font/')
+            // publicPath: path.join(__dirname, '../src/assets/font/'),
           },
         }],
       },
