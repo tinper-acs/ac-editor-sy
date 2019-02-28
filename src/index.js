@@ -8,6 +8,7 @@ import CheckboxModal from './CheckboxModal.js';
 import RadioModal from './RadioModal.js';
 import PreviewModal from './PreviewModal';
 import FixedModal from './FixedModal.js';
+import HrefModal from './HrefModal.js';
 
 import {
   uuid,
@@ -42,12 +43,13 @@ class EditorSany extends Component {
       currentDateLeft: '0px',
       currentDateTop: '0px',
       barObj: {
-        title: false,
+        hTitle: false,
         fontSize: false,
         fontName: false,
         backColor: false,
         highlight: false,
         textAlign: false,
+        lineHeight: false,
         tableStatus: false,
         radioStatus: false,
         checkboxStatus: false,  //是否展示插入 checkbox 弹框
@@ -55,6 +57,7 @@ class EditorSany extends Component {
         selectStatus: false, //是否展示插入 select 弹框
         fixedStatus: false,  // 是否展示插入 fixed 弹框
         previewStatus: false,  //是否展示插入 preview 弹框
+        hrefStatus: false,  //是否展示插入 链接 弹框
 
       },
       previewHtml: '',
@@ -65,16 +68,17 @@ class EditorSany extends Component {
 
   // 定义最后光标对象
   lastEditRange = null;
+  hrefTitle = '';
 
   // 插入内容
-  insertContent = (content) => {
+  insertContent = (content, isCss) => {
     // this.handleCacheHtml();
     if (!content || !this.lastEditRange) { //如果插入的内容为空则返回
       return;
     }
     const sel = window.getSelection();
     // 判断是否有最后光标对象存在
-    if (this.lastEditRange) {
+    if (this.lastEditRange && !isCss) {
       // 存在最后光标对象，选定对象清除所有光标并添加最后光标还原之前的状态
       sel.removeAllRanges();
       sel.addRange(this.lastEditRange);
@@ -97,6 +101,7 @@ class EditorSany extends Component {
     }
     this.showCloseBar();
   };
+
 
   // 插入table
   onInsertTable = (rowNum, colNum) => {
@@ -195,6 +200,7 @@ class EditorSany extends Component {
     // 缓存光标
     this.lastEditRange = window.getSelection()
       .getRangeAt(0);
+    this.hrefTitle = this.getChangeText();
     this.showCloseBar();
   };
 
@@ -238,6 +244,7 @@ class EditorSany extends Component {
       });
     }
     this.showCloseBar();
+    this.hrefTitle = this.getChangeText();
   };
 
   //编辑点击事件
@@ -259,16 +266,39 @@ class EditorSany extends Component {
     event.stopPropagation();
   };
 
+  // 添加href
+  onInsertURl = (data) => {
+    const { url, text } = data;
+    const htmlString = `<a href="${url}">${text}</a>`;
+    this.insertContent(htmlString);
+  };
+
+  // 修改行高 letter-spacing: 3px;
+  onUpdateHeightSpacing = (value, status) => {
+    const selectionObj = window.getSelection();
+    const element = selectionObj.focusNode.parentElement;  //获取选择的元素
+    if (status === 'lineHeight') {
+      element.style.lineHeight = value;
+    } else {
+      element.style.letterSpacing = value;
+    }
+  };
+
   //通过下拉获取 命令和值
   onPopSelect = (cmd, event) => {
     const target = event.target;
     const value = target.getAttribute('value');
-    debugger;
-    window.document.execCommand(cmd, false, value);
-    // const selectedText = this.lastEditRange.endContainer.data;
-    //
-    // let title = `<span style="font-size:20px">${selectedText}</span>`;
-    // this.insertContent(title);
+    switch (cmd) {
+      case 'lineHeight':
+        this.onUpdateHeightSpacing(value, 'lineHeight');
+        break;
+      case 'letterSpacing':
+        this.onUpdateHeightSpacing(value, 'letterSpacing');
+        break;
+      default:
+        window.document.execCommand(cmd, false, value);
+    }
+    this.showCloseBar();
   };
 
   // 关闭或者打开弹框
@@ -279,6 +309,14 @@ class EditorSany extends Component {
     }
     if (param) {
       barObj[param] = true;
+    }
+    // 打开链接
+    if (param === 'hrefStatus') {
+      const selectionObj = window.getSelection();
+      const title = selectionObj.toString();
+      if (title) {
+        this.hrefTitle = title;
+      }
     }
     this.setState({ barObj });
   };
@@ -294,15 +332,21 @@ class EditorSany extends Component {
     this.setState({ showDate: false });
   };
 
+  getChangeText = () => {
+    const selectionObj = window.getSelection();
+    const selectedText = selectionObj.toString();
+    return selectedText ? selectedText : '';
+  };
+
+
   render() {
     const {
       showDate, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
     } = this.state;
 
     const {
-      title, fontSize, fontName, brush, highlight, textAlign, tableStatus, radioStatus, checkboxStatus, inputStatus, selectStatus, fixedStatus, previewStatus,
+      hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, inputStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
-
 
     return (
       <div className="editor-sany">
@@ -311,19 +355,19 @@ class EditorSany extends Component {
         <div className="w-e-toolbar">
           {/*保存*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-save" />
+            <span className="iconfont icon-save"/>
             <span className="tooltip-text">保存</span>
           </div>
 
           {/*对比*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi" />
+            <span className="iconfont icon-duibi"/>
             <span className="tooltip-text">对比</span>
           </div>
 
           {/*预览*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
             <span className="tooltip-text">预览</span>
           </div>
 
@@ -348,7 +392,7 @@ class EditorSany extends Component {
 
           {/*日期*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate} />
+            <span className="iconfont icon-calendar" onClick={this.onDate}/>
             <span className="tooltip-text">日期</span>
           </div>
 
@@ -374,18 +418,17 @@ class EditorSany extends Component {
             onInsertTable={this.onInsertTable}
           />
 
-
           {/*标题*/}
           <div
             className="w-e-menu"
             onMouseOut={this.showCloseBar}
             onMouseOver={() => {
-              this.showCloseBar('title');
+              this.showCloseBar('hTitle');
             }}
           >
-            <span className="iconfont icon-zitibiaoti" />
+            <span className="iconfont icon-zitibiaoti"/>
             {/*<div className="">*/}
-            <div className={title ? 'w-e-droplist' : 'w-e-droplist-h'}>
+            <div className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
               <ul className="w-e-list" onClick={this.onInsertTitle}>
                 <li className="w-e-item"><h1 className="clearWidth">H1</h1></li>
@@ -408,12 +451,13 @@ class EditorSany extends Component {
                     this.insertCommand(cmd);
                   }}
                   >
-                    <span className={`iconfont ${icon}`} />
+                    <span className={`iconfont ${icon}`}/>
                   </button>
                   <span className="tooltip-text">{title}</span>
                 </div>
               );
-            })}
+            })
+          }
 
 
           {/*文字对齐*/}
@@ -424,7 +468,7 @@ class EditorSany extends Component {
               this.showCloseBar('textAlign');
             }}
           >
-            <span className="iconfont icon-align-left" />
+            <span className="iconfont icon-align-left"/>
             <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
@@ -433,8 +477,12 @@ class EditorSany extends Component {
                   return (
                     <li className="w-e-item" onClick={event => this.onPopSelect(cmd, event)}>
                       <button>
-                        <span value={cmd} className={`iconfont ${icon}`} />
-                        <span style={{ fontSize: '14px',marginLeft:'8px' }}>
+                        <span value={cmd} className={`iconfont ${icon}`}/>
+                        <span style={{
+                          fontSize: '14px',
+                          marginLeft: '8px',
+                        }}
+                        >
                           {title}
                         </span>
                       </button>
@@ -462,7 +510,7 @@ class EditorSany extends Component {
                     this.showCloseBar(cmd);
                   }}
                 >
-                  <span className={`iconfont ${icon}`} />
+                  <span className={`iconfont ${icon}`}/>
                   <div
                     className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
                     // className="w-e-droplist"
@@ -502,21 +550,18 @@ class EditorSany extends Component {
             })
           }
 
-          {/*行高*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-line-height" />
-          </div>
 
-          {/*超链接*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-link" />
-          </div>
-
+          {/*链接*/}
+          <HrefModal
+            dropStatus={hrefStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertURl={this.onInsertURl}
+          />
 
 
           {/*插入图片*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-image" />
+            <span className="iconfont icon-image"/>
           </div>
 
         </div>
@@ -529,7 +574,7 @@ class EditorSany extends Component {
           onClick={this.onClickEditBody}
           onChange={this.onChangeEditBody}
         >
-          <p data="xxxxx">xxxxxxxxxx</p>
+          <p>asfasdfasfd afdsfasdf</p>
           {/* <h2>xxxxxxxxx</h2> */}
           {/* <span>开始日期</span><input type="text" className="date" defaultValue="2019-01-12"/> */}
           {/* <span>结束日期</span><input type="text" className="date" defaultValue="2019-01-15"/> */}

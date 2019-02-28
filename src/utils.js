@@ -151,6 +151,9 @@ export var fixedDate = [
 ];
 
 
+// 行高
+export var heightSpaceList = [];
+
 // CMD
 export var iconCmdList = [
   {
@@ -378,4 +381,75 @@ export var popList = [
       },
     ],
   },
+  {
+    cmd: 'lineHeight',
+    pTitle: '行高',
+    icon: 'icon-line-height',
+    ulCss: 'w-e-list',
+    liCss: 'w-e-item',
+    selectList: [
+      {
+        title: '正常',
+        value: '1',
+      },
+      {
+        title: '1.2倍',
+        value: '1.2',
+      },
+      {
+        title: '1.5倍',
+        value: '1.5',
+      }, {
+        title: '1.8倍',
+        value: '1.8',
+      }, {
+        title: '2.0倍',
+        value: '2.0',
+      }, {
+        title: '2.5倍',
+        value: '2.5',
+      },
+      {
+        title: '3.0倍',
+        value: '3.0',
+      }, {
+        title: '4.0倍',
+        value: '4.0',
+      },
+    ]
+  }, {
+    cmd: 'letterSpacing',
+    pTitle: '字间距',
+    icon: 'icon-fuwei',
+    ulCss: 'w-e-list',
+    liCss: 'w-e-item',
+    selectList: [
+      {
+        title: '正常',
+        value: '0px',
+      },
+      {
+        title: '1px',
+        value: '1px',
+      },
+      {
+        title: '2px',
+        value: '2px',
+      }, {
+        title: '3px',
+        value: '3px',
+      }, {
+        title: '4px',
+        value: '4px',
+      }, {
+        title: '5px',
+        value: '5px',
+      },
+      {
+        title: '6px',
+        value: '6px',
+      }
+    ]
+  }
+
 ];
