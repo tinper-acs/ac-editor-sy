@@ -9,13 +9,21 @@ import RadioModal from './RadioModal.js';
 import PreviewModal from './PreviewModal';
 import FixedModal from './FixedModal.js';
 
-
 import {
-  uuid, initTable, initInput, initSelect, initRadio, initCheckbox, initDate, fixedDate, popList,
+  uuid,
+  initTable,
+  initInput,
+  initSelect,
+  initRadio,
+  initCheckbox,
+  initDate,
+  fixedDate,
+  popList,
+  textAlignList,
+  iconCmdList,
 } from './utils';
 
 import './assets/font/iconfont.css';
-
 import './index.less';
 
 
@@ -37,7 +45,7 @@ class EditorSany extends Component {
         title: false,
         fontSize: false,
         fontName: false,
-        brush: false,
+        backColor: false,
         highlight: false,
         textAlign: false,
         tableStatus: false,
@@ -253,15 +261,14 @@ class EditorSany extends Component {
 
   //通过下拉获取 命令和值
   onPopSelect = (cmd, event) => {
-
     const target = event.target;
     const value = target.getAttribute('value');
-    const selectedText = this.lastEditRange.endContainer.data;
-
-    let title = `<span style="font-size:20px">${selectedText}</span>`;
-    this.insertContent(title);
-    
-
+    debugger;
+    window.document.execCommand(cmd, false, value);
+    // const selectedText = this.lastEditRange.endContainer.data;
+    //
+    // let title = `<span style="font-size:20px">${selectedText}</span>`;
+    // this.insertContent(title);
   };
 
   // 关闭或者打开弹框
@@ -300,22 +307,24 @@ class EditorSany extends Component {
     return (
       <div className="editor-sany">
 
-        {/*<div onClick={this.insertCommand} style={{width:'20px',height:'20px'}}><span className="iconfont icon-bold" /></div>*/}
 
         <div className="w-e-toolbar">
           {/*保存*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-save"/>
+          <div className="w-e-menu tooltip">
+            <span className="iconfont icon-save" />
+            <span className="tooltip-text">保存</span>
           </div>
 
           {/*对比*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-duibi"/>
+          <div className="w-e-menu tooltip">
+            <span className="iconfont icon-duibi" />
+            <span className="tooltip-text">对比</span>
           </div>
 
           {/*预览*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
+          <div className="w-e-menu tooltip">
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
+            <span className="tooltip-text">预览</span>
           </div>
 
           {/*单选*/}
@@ -338,8 +347,9 @@ class EditorSany extends Component {
           />
 
           {/*日期*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-calendar" onClick={this.onDate}/>
+          <div className="w-e-menu tooltip">
+            <span className="iconfont icon-calendar" onClick={this.onDate} />
+            <span className="tooltip-text">日期</span>
           </div>
 
           {/*下拉框*/}
@@ -368,11 +378,12 @@ class EditorSany extends Component {
           {/*标题*/}
           <div
             className="w-e-menu"
-            onClick={() => {
+            onMouseOut={this.showCloseBar}
+            onMouseOver={() => {
               this.showCloseBar('title');
             }}
           >
-            <span className="iconfont icon-zitibiaoti"/>
+            <span className="iconfont icon-zitibiaoti" />
             {/*<div className="">*/}
             <div className={title ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
@@ -387,242 +398,127 @@ class EditorSany extends Component {
             </div>
           </div>
 
-          <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('bold');
-            }}
-            >
-              <span className="iconfont icon-bold"/>
-            </button>
-          </div>
+          {/*加粗*/}
+          {
+            iconCmdList.map((item) => {
+              const { cmd, icon, title } = item;
+              return (
+                <div className="w-e-menu tooltip">
+                  <button onClick={() => {
+                    this.insertCommand(cmd);
+                  }}
+                  >
+                    <span className={`iconfont ${icon}`} />
+                  </button>
+                  <span className="tooltip-text">{title}</span>
+                </div>
+              );
+            })}
 
-
-          {/*字体大小*/}
-
-
-          <div className="w-e-menu">
-            <span
-              className="iconfont icon-font-size"
-              onClick={() => {
-                this.showCloseBar('fontSize');
-              }}
-            />
-            <div
-              className={fontSize ? 'w-e-droplist' : 'w-e-droplist-h'}
-              style={{ width: '160px' }}
-            >
-              <p className="w-e-dp-title">字号</p>
-              <ul className="w-e-list" onClick={event => this.onPopSelect('fontSize', event)}>
-                <li className="w-e-item" style={{ fontSize: 'x-small' }} value="1">x-small</li>
-                <li className="w-e-item" style={{ fontSize: 'small' }} value="2">small</li>
-                <li className="w-e-item" value='3'>normal</li>
-                <li className="w-e-item" style={{ fontSize: 'large' }} value="4">large</li>
-                <li className="w-e-item" style={{ fontSize: 'x-large' }} value="5">x-large</li>
-                <li className="w-e-item" style={{ fontSize: 'xx-large' }} value="6">xx-large</li>
-              </ul>
-            </div>
-          </div>
-
-          {/*字体名称*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-ai247"/>
-            <div className={fontName ? 'w-e-droplist' : 'w-e-droplist-h'}>
-              <p className="w-e-dp-title">字体</p>
-              <ul className="w-e-list">
-                <li className="w-e-item"><span style={{ fontFamily: '宋体' }}>宋体</span></li>
-                <li className="w-e-item"><span style={{ fontFamily: '微软雅黑' }}>微软雅黑</span></li>
-                <li className="w-e-item"><span style={{ fontFamily: 'Arial' }}>Arial</span></li>
-                <li className="w-e-item"><span style={{ fontFamily: 'Tahoma' }}>Tahoma</span></li>
-                <li className="w-e-item"><span style={{ fontFamily: 'Verdana' }}>Verdana</span></li>
-              </ul>
-            </div>
-          </div>
-
-          {/*斜体*/}
-          <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('italic');
-            }}
-            >
-              <span className="iconfont icon-italic"/>
-            </button>
-          </div>
-
-          {/*下划线*/}
-          <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('underline');
-            }}
-            >
-              <span className="iconfont icon-underline"/>
-            </button>
-          </div>
-
-          {/*删除线*/}
-          <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('strikeThrough');
-            }}
-            >
-              <span className="iconfont icon-strikethrough"/>
-            </button>
-          </div>
-
-          {/*文字颜色*/}
-          <div
-            className="w-e-menu"
-            onClick={() => {
-              this.showCloseBar('highlight');
-            }}
-          >
-            <span className="iconfont icon-highlight"/>
-            <div className={highlight ? 'w-e-droplist' : 'w-e-droplist-h'}>
-              <p className="w-e-dp-title">文字颜色</p>
-              <ul className="w-e-block">
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#000000' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: 'red' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#1c487f' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#4d80bf' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#c24f4a' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#8baa4a' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#7b5ba1' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#46acc8' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-highlight" style={{ color: '#f9963b' }}/>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/*背景色*/}
-          <div
-            className="w-e-menu"
-            onClick={() => {
-              this.showCloseBar('brush');
-            }}
-          >
-            <span className="iconfont icon-brush"/>
-            <div className={brush ? 'w-e-droplist' : 'w-e-droplist-h'}>
-              <p className="w-e-dp-title">背景色</p>
-              <ul className="w-e-block">
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#000000' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: 'red' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#1c487f' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#4d80bf' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#c24f4a' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#8baa4a' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#7b5ba1' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#46acc8' }}/>
-                </li>
-                <li className="w-e-list-level">
-                  <span className="iconfont icon-brush" style={{ color: '#f9963b' }}/>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/*行高*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-line-height"/>
-          </div>
-
-          {/*删除线*/}
-          <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('indent');
-            }}
-            >
-              <span className="iconfont icon-indent"/>
-            </button>
-          </div>
-
-          {/*清空缩进*/}
-          <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('outdent');
-            }}
-            >
-              <span className="iconfont icon-outdent"/>
-            </button>
-          </div>
-
-          {/*超链接*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-link"/>
-          </div>
 
           {/*文字对齐*/}
           <div
             className="w-e-menu"
-            onClick={() => {
+            onMouseOut={this.showCloseBar}
+            onMouseOver={() => {
               this.showCloseBar('textAlign');
             }}
           >
-            <span className="iconfont icon-align-left"/>
+            <span className="iconfont icon-align-left" />
             <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
-                <li className="w-e-item">
-                  <span className="iconfont icon-align-left"/>
-                  <span>&nbsp;&nbsp;靠左&nbsp;&nbsp;</span>
-                </li>
-                <li className="w-e-item">
-                  <span className="iconfont icon-align-center"/>
-                  <span>&nbsp;&nbsp;居中&nbsp;&nbsp;</span>
-                </li>
-                <li className="w-e-item">
-                  <span className="iconfont icon-align-right"/>
-                  <span>&nbsp;&nbsp;靠右&nbsp;&nbsp;</span>
-                </li>
+                {textAlignList.map((item) => {
+                  const { cmd, title, icon } = item;
+                  return (
+                    <li className="w-e-item" onClick={event => this.onPopSelect(cmd, event)}>
+                      <button>
+                        <span value={cmd} className={`iconfont ${icon}`} />
+                        <span style={{ fontSize: '14px',marginLeft:'8px' }}>
+                          {title}
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
 
-          {/*插入图片*/}
+
+          {/*字体大小*/}
+          {/*字体名称*/}
+          {/*文字颜色*/}
+          {
+            popList.map((pop, popIndex) => {
+              const {
+                icon, pTitle, width, cmd, selectList, ulCss, liCss,
+              } = pop;
+              return (
+                <div
+                  className="w-e-menu"
+                  onMouseOut={this.showCloseBar}
+                  onMouseOver={() => {
+                    this.showCloseBar(cmd);
+                  }}
+                >
+                  <span className={`iconfont ${icon}`} />
+                  <div
+                    className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
+                    // className="w-e-droplist"
+                    style={{ width }}
+                  >
+                    <p className="w-e-dp-title">{pTitle}</p>
+                    <ul className={ulCss} onClick={event => this.onPopSelect(cmd, event)}>
+                      {
+                        selectList.map((selectItem, selectIndex) => {
+                          const {
+                            value, liCssText, spanCssText, title,
+                          } = selectItem;
+                          return (
+                            <li className={liCss} style={liCssText} value={value}>
+                              {liCss === 'w-e-item'
+                              && <button value={value}>{title}</button>
+                              }
+                              {liCss === 'w-e-list-level'
+                              && (
+                                <button value={value}>
+                                  <span
+                                    className={`iconfont ${icon}`}
+                                    style={spanCssText}
+                                    value={value}
+                                  />
+                                </button>
+                              )}
+
+                            </li>
+                          );
+                        })
+                      }
+                    </ul>
+                  </div>
+                </div>
+              );
+            })
+          }
+
+          {/*行高*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-image"/>
+            <span className="iconfont icon-line-height" />
           </div>
 
-          {/*格式刷*/}
+          {/*超链接*/}
           <div className="w-e-menu">
-            <button onClick={() => {
-              this.insertCommand('removeFormat');
-            }}
-            >
-              <span className="iconfont icon-geshishua"/>
-            </button>
+            <span className="iconfont icon-link" />
           </div>
+
+
+
+          {/*插入图片*/}
+          <div className="w-e-menu">
+            <span className="iconfont icon-image" />
+          </div>
+
         </div>
 
         <div

@@ -35,8 +35,10 @@ class TableModal extends Component {
     return (
       <div
         className="w-e-menu"
+        onMouseOut={this.props.showCloseBar}
+        onMouseOver={this.onShow}
       >
-        <span className="iconfont icon-table" onClick={this.onShow} />
+        <span className="iconfont icon-table"  />
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
           <p className="w-e-dp-title">插入表格</p>
           <div className="ac-input-body">

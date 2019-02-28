@@ -91,8 +91,11 @@ class FixedModal extends Component {
     const { dropStatus,fixedDate } = this.state;
 
     return (
-      <div className="w-e-menu">
-        <span className="iconfont icon-menu" onClick={this.onShow}/>
+      <div className="w-e-menu"
+           onMouseOut={this.props.showCloseBar}
+           onMouseOver={this.onShow}
+      >
+        <span className="iconfont icon-menu"/>
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '300px' }}>
           <p className="w-e-dp-title">插入固定字段</p>
           <Table

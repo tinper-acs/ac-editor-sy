@@ -151,19 +151,231 @@ export var fixedDate = [
 ];
 
 
-export var popList = [
+// CMD
+export var iconCmdList = [
   {
-    cmd: "fontSize",
-    title: "字体大小",
-    selectList: [
-      {value: "1", title: "x-small"},
-      {value: "2", title: "small"},
-      {value: "3", title: "normal"},
-      {value: "4", title: "large"},
-      {value: "5", title: "x-large"},
-      {value: "6", title: "xx-large"},
-      {value: "7", title: "xxx-large"},
-    ]
+    cmd: 'bold',
+    icon: 'icon-bold',
+    title: '加粗',
+  },
+  {
+    cmd: 'italic',
+    icon: 'icon-italic',
+    title: '斜体',
+  },
+  {
+    cmd: 'underline',
+    icon: 'icon-underline',
+    title: '下划线',
+  },
+  {
+    cmd: 'strikeThrough',
+    icon: 'icon-strikethrough',
+    title: '删除线',
+  }, {
+    cmd: 'indent',
+    icon: 'icon-indent',
+    title: '前进',
+  }, {
+    cmd: 'outdent',
+    icon: 'icon-outdent',
+    title: '后退',
+  }, {
+    cmd: 'removeFormat',
+    icon: 'icon-geshishua',
+    title: '格式刷'
   }
 ];
 
+
+// 文字对齐
+export var textAlignList = [
+  {
+    cmd: 'justifyLeft',
+    title: '靠左',
+    icon: 'icon-align-left',
+  }, {
+    cmd: 'justifyCenter',
+    title: '居中',
+    icon: 'icon-align-center',
+  },
+  {
+    cmd: 'justifyRight',
+    title: '靠右',
+    icon: 'icon-align-right',
+  },
+];
+
+// 下拉列表
+export var popList = [
+  {
+    cmd: 'fontSize',
+    pTitle: '字体大小',
+    width: '160px',
+    icon: 'icon-font-size',
+    ulCss: 'w-e-list',
+    liCss: 'w-e-item',
+    selectList: [
+      {
+        value: '1',
+        title: 'x-small',
+        liCssText: { fontSize: 'x-small' },
+      },
+      {
+        value: '2',
+        title: 'small',
+        liCssText: { fontSize: 'small' },
+      },
+      {
+        value: '3',
+        title: 'normal',
+        liCssText: { fontSize: 'normal' },
+      },
+      {
+        value: '4',
+        title: 'large',
+        liCssText: { fontSize: 'large' },
+      },
+      {
+        value: '5',
+        title: 'x-large',
+        liCssText: { fontSize: 'x-large' },
+      },
+      {
+        value: '6',
+        title: 'xx-large',
+        liCssText: { fontSize: 'xx-large' },
+      },
+    ],
+  },
+  {
+    cmd: 'fontName',
+    pTitle: '字体名称',
+    width: '120px',
+    icon: 'icon-ai247',
+    ulCss: 'w-e-list',
+    liCss: 'w-e-item',
+    selectList: [
+      {
+        value: '宋体',
+        title: '宋体',
+        liCssText: { fontFamily: '宋体' },
+      },
+      {
+        value: '微软雅黑',
+        title: '微软雅黑',
+        liCssText: { fontFamily: '微软雅黑' },
+      },
+      {
+        value: 'Arial',
+        title: 'Arial',
+        liCssText: { fontFamily: 'Arial' },
+      },
+      {
+        value: 'Tahoma',
+        title: 'Tahoma',
+        liCssText: { fontFamily: 'Tahoma' },
+      },
+      {
+        value: 'Verdana',
+        title: 'Verdana',
+        liCssText: { fontFamily: 'Verdana' },
+      },
+    ],
+  }, {
+    cmd: 'forecolor',
+    pTitle: '字体颜色',
+    width: '100px',
+    icon: 'icon-highlight',
+    ulCss: 'w-e-block',
+    liCss: 'w-e-list-level',
+    selectList: [
+      {
+        value: '#000000',
+        title: '黑色',
+        spanCssText: { color: '#000000' },
+      },
+      {
+        value: 'red',
+        title: '红色',
+        spanCssText: { color: 'red' },
+      }, {
+        value: '#1c487f',
+        title: '',
+        spanCssText: { color: '#1c487f' },
+      }, {
+        value: '#4d80bf',
+        title: '',
+        spanCssText: { color: '#4d80bf' },
+      }, {
+        value: '#c24f4a',
+        title: '',
+        spanCssText: { color: '#c24f4a' },
+      }, {
+        value: '#8baa4a',
+        title: '',
+        spanCssText: { color: '#8baa4a' },
+      }, {
+        value: '#7b5ba1',
+        title: '',
+        spanCssText: { color: '#7b5ba1' },
+      }, {
+        value: '#46acc8',
+        title: '',
+        spanCssText: { color: '#46acc8' },
+      }, {
+        value: '#f9963b',
+        title: '',
+        spanCssText: { color: '#f9963b' },
+      },
+    ],
+  },
+  {
+    cmd: 'backColor',
+    pTitle: '背景色',
+    width: '100px',
+    icon: 'icon-brush',
+    ulCss: 'w-e-block',
+    liCss: 'w-e-list-level',
+    selectList: [
+      {
+        value: '#000000',
+        title: '',
+        spanCssText: { color: '#000000' },
+      },
+      {
+        value: 'red',
+        title: '',
+        spanCssText: { color: 'red' },
+      }, {
+        value: '#1c487f',
+        title: '',
+        spanCssText: { color: '#1c487f' },
+      }, {
+        value: '#4d80bf',
+        title: '',
+        spanCssText: { color: '#4d80bf' },
+      }, {
+        value: '#c24f4a',
+        title: '',
+        spanCssText: { color: '#c24f4a' },
+      }, {
+        value: '#8baa4a',
+        title: '',
+        spanCssText: { color: '#8baa4a' },
+      }, {
+        value: '#7b5ba1',
+        title: '',
+        spanCssText: { color: '#7b5ba1' },
+      }, {
+        value: '#46acc8',
+        title: '',
+        spanCssText: { color: '#46acc8' },
+      }, {
+        value: '#f9963b',
+        title: '',
+        spanCssText: { color: '#f9963b' },
+      },
+    ],
+  },
+];
