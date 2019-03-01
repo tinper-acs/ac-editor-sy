@@ -52,7 +52,7 @@ export function initInput(param) {
     category, defVal, minWidth, placeholder, id,
   } = param;
   // 输入框类型为文本
-  let inputText = `<input type="${category}" className="ac-input" id="${id}" style="width: ${minWidth}px;" defaultValue="${defVal}" placeholder="${placeholder}"/>`;
+  let inputText = `<input type="${category}" className="ac-input" id="${id}" style="width: ${minWidth}px;" defaultValue="${defVal}" placeholder="${placeholder}" />`;
   if (category === 'text') {
     inputText = `<!--<textarea rows="1" cols="30" id="${id}" onchange="onChangeTextArea('sssss')" style="resize: horizontal;width: ${minWidth}px;">${defVal}</textarea>-->`;
     inputText = `<textarea rows="1" cols="30" id="${id}" onkeyup="onKeyUpTextArea('${id}')" style="resize: horizontal;width: ${minWidth}px;">${defVal}</textarea>`;
