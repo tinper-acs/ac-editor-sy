@@ -33,6 +33,7 @@ import moment from 'moment';
 
 const formatRule = 'YYYY-MM-DD';
 
+
 class AcEditorSany extends Component {
   constructor(props) {
     super(props);
@@ -63,11 +64,24 @@ class AcEditorSany extends Component {
       idList: [],
 
     };
+    window.onChangeSelect = () => this.onChangeSelect();
   }
 
   // 定义最后光标对象
   lastEditRange = null;
   hrefTitle = '';
+
+  // 下拉框选择
+  onChangeSelect = () => {
+    const target = event.target;
+    const index = target.selectedIndex;
+    const options = document.getElementsByName(target.id);
+    for (let i = 0; i < options.length; i += 1) {
+      options[i].removeAttribute('selected');
+    }
+    target[index].setAttribute('selected', true);
+  };
+
 
   // 插入内容
   insertContent = (content, isCss) => {
@@ -255,7 +269,7 @@ class AcEditorSany extends Component {
   onPreviewShow = () => {
     const textHtml = document.getElementById('editor-sany-content').innerHTML;
     this.setState({ previewHtml: textHtml });
-    console.log(textHtml)
+    console.log(textHtml);
     this.showCloseBar('previewStatus');
   };
 
@@ -339,6 +353,13 @@ class AcEditorSany extends Component {
   };
 
 
+  //保存方法回调
+  onClickSave = () => {
+    const textHtml = document.getElementById('editor-sany-content').innerHTML;
+    this.props.saveFunc(textHtml);
+
+  };
+
   render() {
     const {
       showDate, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
@@ -353,7 +374,7 @@ class AcEditorSany extends Component {
 
         <div className="w-e-toolbar">
           {/*保存*/}
-          <div className="w-e-menu tooltip">
+          <div className="w-e-menu tooltip" onClick={this.onClickSave}>
             <span className="iconfont icon-save"/>
             <span className="tooltip-text">保存</span>
           </div>

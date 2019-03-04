@@ -60,13 +60,17 @@ export function initInput(param) {
   return inputText;
 }
 
+
+
+
 /**
  * 插入下拉框
  */
 export function initSelect(param) {
   const { textArray, id } = param;
   const option = textArray.map((item, index) => `<option name="${id}" value="${index}">${item}</option>`);
-  return `<select id="${id}" class="select ac-select" onchange="const target=event.target;const index=target.selectedIndex;const options=document.getElementsByName(target.id);for(let i=0;i<options.length;i++){options[i].removeAttribute('selected')};target[index].setAttribute('selected', true);"}">${option}</select>`;
+  return `<select id="${id}" class="select ac-select" onchange="onChangeSelect()">${option}</select>`;
+  // return `<select id="${id}" class="select ac-select" onchange="const target=event.target;const index=target.selectedIndex;const options=document.getElementsByName(target.id);for(let i=0;i<options.length;i++){options[i].removeAttribute('selected')};target[index].setAttribute('selected', true);"}">${option}</select>`;
 }
 
 /**
@@ -151,8 +155,6 @@ export var fixedDate = [
 ];
 
 
-// 行高
-export var heightSpaceList = [];
 
 // CMD
 export var iconCmdList = [
