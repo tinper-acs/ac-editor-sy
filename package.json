@@ -1,6 +1,6 @@
 {
   "name": "ac-editor-sany",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -87,6 +87,7 @@
     "prop-types": "^15.6.0"
   },
   "dependencies": {
-    "bee-checkbox": "^2.0.1"
+    "bee-checkbox": "^2.0.1",
+    "print-js": "^1.0.54"
   }
 }

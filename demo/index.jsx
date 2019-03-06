@@ -9,7 +9,6 @@ const pkg = require('../package.json')
 
 
 
-
 const CARET = <i className="uf uf-arrow-down"></i>;
 
 const CARETUP = <i className="uf uf-arrow-up"></i>;

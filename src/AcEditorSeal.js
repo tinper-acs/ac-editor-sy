@@ -13,10 +13,12 @@ class AcEditorSeal extends Component {
         {
           boxId: 'boxId',
           scaleId: 'scaleId',
+          deleteId: 'deleteId',
         },
         {
           boxId: 'boxId1',
           scaleId: 'scaleId1',
+          deleteId: 'deleteId1',
         }
       ]
     };
@@ -109,6 +111,11 @@ class AcEditorSeal extends Component {
   };
 
 
+  onMouseDownDelete = () => {
+    console.log('------');
+  };
+
+
   render() {
     const { sealList } = this.state;
     return (
@@ -119,7 +126,7 @@ class AcEditorSeal extends Component {
           <div id="sealFather" className="seal-fa">
             {
               sealList.map((item) => {
-                const { boxId, scaleId } = item;
+                const { boxId, scaleId, deleteId } = item;
                 return (
                   <div
                     id={boxId}
@@ -128,6 +135,15 @@ class AcEditorSeal extends Component {
                       this.onMouseDownBox(boxId, 'sealFather', event);
                     }}
                   >
+                    <div
+                      className="delete-icon"
+                      id={deleteId}
+                      onMouseDown={(event) => {
+                        this.onMouseDownDelete(boxId, 'sealFather', scaleId, event);
+                      }}
+                    >
+                      <span className="iconfont kujialeqiyezhan_mohutuozhuaichicun"></span>
+                    </div>
                     <img src={seal} className="seal-img"/>
                     <div
                       className="scale-icon"
@@ -135,7 +151,9 @@ class AcEditorSeal extends Component {
                       onMouseDown={(event) => {
                         this.onMouseDownScale(boxId, 'sealFather', scaleId, event);
                       }}
-                    />
+                    >
+                      <span className="iconfont icon-shanchu"></span>
+                    </div>
                   </div>
                 );
 
