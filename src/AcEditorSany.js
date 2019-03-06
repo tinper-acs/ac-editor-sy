@@ -18,6 +18,8 @@ import {
   initRadio,
   initCheckbox,
   initDate,
+  initFixedRadio,
+  initFixedCheckbox,
   fixedDate,
   popList,
   textAlignList,
@@ -64,10 +66,14 @@ class AcEditorSany extends Component {
 
     };
     window.onChangeSelect = () => this.onChangeSelect();
+    window.onKeyUpTextArea = id => this.onKeyUpTextArea(id);
+    window.onClickRadio = id => this.onClickRadio(id);
+    window.onClickCheckbox = id => this.onClickCheckbox(id);
   }
 
   // 定义最后光标对象
   lastEditRange = null;
+
   hrefTitle = '';
 
 
@@ -76,6 +82,32 @@ class AcEditorSany extends Component {
     document.getElementById(editorId).innerHTML = htmlString;
   }
 
+  // 实时更新checkbox 值
+  onClickCheckbox = () => {
+    const target = event.target;
+    const checked = target.getAttribute('checked');
+    if (!checked) {
+      target.setAttribute('checked', true);
+    } else {
+      target.removeAttribute('checked');
+    }
+  };
+
+  // 实时更新 radio值
+  onClickRadio = (id) => {
+    const target = event.target;
+    const radios = document.getElementsByName(id);
+    for (let i = 0; i < radios.length; i += 1) {
+      radios[i].removeAttribute('checked');
+    }
+    target.setAttribute('checked', true);
+  };
+
+  // 实时更新 TextArea值
+  onKeyUpTextArea = (id) => {
+    const doc = document.getElementById(id);
+    doc.innerHTML = doc.value;
+  };
 
   // 下拉框选择
   onChangeSelect = () => {
@@ -121,23 +153,15 @@ class AcEditorSany extends Component {
     this.showCloseBar();
   };
 
-
   // 插入table
   onInsertTable = (rowNum, colNum) => {
     this.insertContent(initTable(rowNum, colNum));
   };
 
   // 插入Input
-  onInsertInput = (param) => {
+  onInsertInput = () => {
     const id = uuid();
-    param.id = id;
-    this.insertContent(initInput(param));
-    const { idList } = this.state;
-    idList.push({
-      id,
-      type: 'input',
-    });
-    this.setState({ idList });
+    this.insertContent(initInput(id));
   };
 
   // 插入select
@@ -179,14 +203,7 @@ class AcEditorSany extends Component {
       } = item;
       if (status) {
         if (type === 'text') {
-          const temp = {
-            category: type,
-            defVal: data[0],
-            minWidth: 80,
-            placeholder: data,
-            id,
-          };
-          htmlString += `<span>${title}</span>${initInput(temp)}`;
+          htmlString += `<span>${title}</span>${initInput(id)}`;
         }
         if (type === 'select') {
           const temp = {
@@ -197,6 +214,12 @@ class AcEditorSany extends Component {
         }
         if (type === 'date') {
           htmlString += `<span>${title}</span>${initDate(id)}`;
+        }
+        if (type === 'radio') {
+          htmlString += `<span>${title}</span>${initFixedRadio(item)}`;
+        }
+        if (type === 'checkbox') {
+          htmlString += `<span>${title}</span>${initFixedCheckbox(item)}`;
         }
       }
     }
@@ -230,29 +253,8 @@ class AcEditorSany extends Component {
     this.lastEditRange = window.getSelection()
       .getRangeAt(0);
     const target = event.target;
-
     // 强制关闭日期
     _this.setState({ showDate: false });
-
-    // 点击单选框
-    if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'radio') {
-      const name = target.getAttribute('name');
-      const radios = document.getElementsByName(name);
-      for (let i = 0; i < radios.length; i += 1) {
-        radios[i].removeAttribute('checked');
-      }
-      target.setAttribute('checked', true);
-    }
-
-    // 点击多选框
-    if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'checkbox') {
-      const checked = target.getAttribute('checked');
-      if (!checked) {
-        target.setAttribute('checked', true);
-      } else {
-        target.removeAttribute('checked');
-      }
-    }
     // 判断是否为日期 input
     if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'date') {
       const currentDateId = target.getAttribute('id');
@@ -358,7 +360,7 @@ class AcEditorSany extends Component {
   getChangeText = () => {
     const selectionObj = window.getSelection();
     const selectedText = selectionObj.toString();
-    return selectedText ? selectedText : '';
+    return selectedText || '';
   };
 
 
@@ -375,7 +377,7 @@ class AcEditorSany extends Component {
     } = this.state;
 
     const {
-      hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, inputStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
+      hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
     const { editorId } = this.props;
@@ -414,12 +416,12 @@ class AcEditorSany extends Component {
             showCloseBar={this.showCloseBar}
             onInsertCheckbox={this.onInsertCheckbox}
           />
+
           {/*文本 输入*/}
-          <InputModal
-            dropStatus={inputStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertInput={this.onInsertInput}
-          />
+          <div className="w-e-menu tooltip">
+            <span className="iconfont icon-021caozuo_shuru" onClick={this.onInsertInput}/>
+            <span className="tooltip-text">输入框</span>
+          </div>
 
           {/*日期*/}
           <div className="w-e-menu tooltip">
@@ -509,8 +511,11 @@ class AcEditorSany extends Component {
                 {textAlignList.map((item) => {
                   const { cmd, title, icon } = item;
                   return (
-                    <li className="w-e-item" key={uuid()}
-                        onClick={event => this.onPopSelect(cmd, event)}>
+                    <li
+                      className="w-e-item"
+                      key={uuid()}
+                      onClick={event => this.onPopSelect(cmd, event)}
+                    >
                       <button>
                         <span value={cmd} className={`iconfont ${icon}`}/>
                         <span style={{
@@ -610,8 +615,7 @@ class AcEditorSany extends Component {
           onKeyUp={this.onKeyUpEditBody}
           onClick={this.onClickEditBody}
           onChange={this.onChangeEditBody}
-        >
-        </div>
+        />
 
         <PreviewModal
           visible={previewStatus}

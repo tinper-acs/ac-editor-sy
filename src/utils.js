@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment';
+
 
 /**
  * 生成唯一字符串
@@ -47,19 +49,10 @@ export function initTable(rowNum, colNum) {
  * @param param
  * @returns {string}
  */
-export function initInput(param) {
-  const {
-    category, defVal, minWidth, placeholder, id,
-  } = param;
+export function initInput(id) {
   // 输入框类型为文本
-  let inputText = `<input type="${category}" className="ac-input" id="${id}" style="width: ${minWidth}px;" defaultValue="${defVal}" placeholder="${placeholder}" />`;
-  if (category === 'text') {
-    inputText = `<!--<textarea rows="1" cols="30" id="${id}" onchange="onChangeTextArea('sssss')" style="resize: horizontal;width: ${minWidth}px;">${defVal}</textarea>-->`;
-    inputText = `<textarea rows="1" cols="30" id="${id}" onkeyup="onKeyUpTextArea('${id}')" style="resize: horizontal;vertical-align: bottom;width: ${minWidth}px;">${defVal}</textarea>`;
-  }
-  return inputText;
+  return `<textarea rows="1" cols="30" id="${id}" onkeyup="onKeyUpTextArea('${id}')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea>`;
 }
-
 
 
 /**
@@ -69,7 +62,6 @@ export function initSelect(param) {
   const { textArray, id } = param;
   const option = textArray.map((item, index) => `<option name="${id}" value="${index}">${item}</option>`);
   return `<select id="${id}" class="select ac-select" onchange="onChangeSelect()">${option}</select>`;
-  // return `<select id="${id}" class="select ac-select" onchange="const target=event.target;const index=target.selectedIndex;const options=document.getElementsByName(target.id);for(let i=0;i<options.length;i++){options[i].removeAttribute('selected')};target[index].setAttribute('selected', true);"}">${option}</select>`;
 }
 
 /**
@@ -86,9 +78,9 @@ export function initRadio(param) {
     // 默认选中
     const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
-      radioString += `<span><input name="${id}" type="radio" ${checked} style="vertical-align: middle;" value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+      radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} style="vertical-align: middle;" value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
-      radioString += `<div><span><input name="${id}" style="vertical-align: middle;" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx</span></div>`;
+      radioString += `<div><span><input name="${id}"  onclick="onClickRadio('${id}')" style="vertical-align: middle;" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx</span></div>`;
     }
   }
   return `<div>${radioString}</div>`;
@@ -107,52 +99,111 @@ export function initCheckbox(param) {
   for (let i = 0; i < num; i += 1) {
     const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
-      checkboxString += `<span><input name="${id}" style="vertical-align: middle;" type="checkbox"  ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+      checkboxString += `<span><input name="${id}" onclick="onClickCheckbox()" type="checkbox"  ${checked} value=${num}  />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
-      checkboxString += `<div><span><input name="${id}" style="vertical-align: middle;" type="checkbox" ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY</span></div>`;
+      checkboxString += `<div><input name="${id}" onclick="onClickCheckbox()"  type="checkbox" ${checked} value=${num} />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY</div>`;
     }
   }
   return `<div>${checkboxString}</div>`;
 }
 
 export function initDate(id) {
-  return `<input type="text" id="${id}" acType="date"/>`;
+  const date = moment()
+    .format('YYYY-MM-DD');
+  return `<input type="text" id="${id}" value="${date}" acType="date" style="width: 90px"/>`;
+}
+
+
+export function initFixedRadio(param) {
+  const { data, id, defaultVal } = param;
+  let radioString = '';
+  for (const item of data) {
+    // 默认选中
+    const checked = item === defaultVal ? 'checked' : '';
+    radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} value=${item} />&nbsp;&nbsp;&nbsp;&nbsp;${item}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+  }
+  return radioString;
+}
+
+
+export function initFixedCheckbox(param) {
+  const { data, id, defaultVal } = param;
+  let checkboxString = '';
+  for (const item of data) {
+    // 默认选中
+    const checked = item === defaultVal ? 'checked' : '';
+    checkboxString += `<span><input name="${id}" onclick="onClickCheckbox()" type="checkbox"  ${checked} value=${item}  />&nbsp;&nbsp;&nbsp;&nbsp;${item}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+  }
+  return checkboxString;
 }
 
 
 export var fixedDate = [
   {
-    id: 'aaa',
+    id: 'buyer',
     type: 'text',
     type_cn: '文本',
-    title: '合同编号',
+    title: '买方名称',
     data: ['xxxx'],
     defaultVal: 'xxxx',
-    isEdit: false,
     status: false,
   },
   {
-    id: 'bbb',
-    type: 'select',
-    type_cn: '下拉',
-    title: '付款方式',
-    data: ['xxxx', 'yyyy'],
+    id: 'salername',
+    type: 'text',
+    type_cn: '文本',
+    title: '卖方名称',
+    data: ['xxxx'],
     defaultVal: 'xxxx',
-    isEdit: false,
     status: false,
   },
   {
-    id: 'ccc',
+    id: 'contractsign',
     type: 'date',
     title: '合同签订日期',
     type_cn: '日期',
     data: ['2019-02-20'],
     defaultVal: '2019-02-20',
+    status: false,
+  },
+  {
+    id: 'contractstr',
+    type: 'date',
+    title: '合同开始日期',
+    type_cn: '日期',
+    data: ['2019-02-20'],
+    defaultVal: '2019-02-20',
+    status: false,
+  },
+  {
+    id: 'contractend',
+    type: 'date',
+    title: '合同结束日期',
+    type_cn: '日期',
+    data: ['2019-02-20'],
+    defaultVal: '2019-02-20',
+    status: false,
+  },
+  {
+    id: 'payterm',
+    type: 'select',
+    type_cn: '下拉',
+    title: '付款条件',
+    data: ['现金支付', '微信支付', '支付宝支付'],
+    defaultVal: '现金支付',
     isEdit: false,
     status: false,
   },
+  {
+    id: 'isrebate',
+    type: 'radio',
+    type_cn: '单选',
+    title: '是否返利',
+    data: ['是', '否'],
+    defaultVal: '是',
+    status: false,
+  },
 ];
-
 
 
 // CMD
@@ -187,8 +238,8 @@ export var iconCmdList = [
   }, {
     cmd: 'removeFormat',
     icon: 'icon-geshishua',
-    title: '格式刷'
-  }
+    title: '格式刷',
+  },
 ];
 
 
@@ -417,7 +468,7 @@ export var popList = [
         title: '4.0倍',
         value: '4.0',
       },
-    ]
+    ],
   }, {
     cmd: 'letterSpacing',
     pTitle: '字间距',
@@ -449,8 +500,8 @@ export var popList = [
       {
         title: '6px',
         value: '6px',
-      }
-    ]
-  }
+      },
+    ],
+  },
 
 ];

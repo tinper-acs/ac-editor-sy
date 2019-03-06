@@ -68,22 +68,22 @@ class FixedModal extends Component {
       key: 'type_cn',
       width: '60px',
     },
-    {
-      title: '是否编辑',
-      dataIndex: 'isEdit',
-      key: 'isEdit',
-      width: '30px',
-      render: (text, record, index) => {
-        return (
-          <Checkbox
-            checked={text}
-            onClick={() => {
-              this.onClickCheck(index, 'isEdit');
-            }}
-          />
-        );
-      }
-    },
+    // {
+    //   title: '是否编辑',
+    //   dataIndex: 'isEdit',
+    //   key: 'isEdit',
+    //   width: '30px',
+    //   render: (text, record, index) => {
+    //     return (
+    //       <Checkbox
+    //         checked={text}
+    //         onClick={() => {
+    //           this.onClickCheck(index, 'isEdit');
+    //         }}
+    //       />
+    //     );
+    //   }
+    // },
   ];
 
 
@@ -99,7 +99,7 @@ class FixedModal extends Component {
            }}
       >
         <span className="iconfont icon-menu"/>
-        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '300px' }}>
+        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '250px' }}>
           <p className="w-e-dp-title">插入固定字段</p>
           <Table
             rowKey={(r, i) => i} //生成行的key
