@@ -71,6 +71,13 @@ class AcEditorSany extends Component {
   lastEditRange = null;
   hrefTitle = '';
 
+
+  componentDidMount() {
+    const { htmlString="" } = this.props;
+    document.getElementById('editor-sany-content').innerHTML = htmlString;
+  }
+
+
   // 下拉框选择
   onChangeSelect = () => {
     const target = event.target;
@@ -225,6 +232,9 @@ class AcEditorSany extends Component {
       .getRangeAt(0);
     const target = event.target;
 
+    // 强制关闭日期
+    _this.setState({ showDate: false});
+
     // 点击单选框
     if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'radio') {
       const name = target.getAttribute('name');
@@ -269,7 +279,6 @@ class AcEditorSany extends Component {
   onPreviewShow = () => {
     const textHtml = document.getElementById('editor-sany-content').innerHTML;
     this.setState({ previewHtml: textHtml });
-    console.log(textHtml);
     this.showCloseBar('previewStatus');
   };
 
@@ -357,7 +366,6 @@ class AcEditorSany extends Component {
   onClickSave = () => {
     const textHtml = document.getElementById('editor-sany-content').innerHTML;
     this.props.saveFunc(textHtml);
-
   };
 
   render() {
@@ -466,7 +474,7 @@ class AcEditorSany extends Component {
             iconCmdList.map((item) => {
               const { cmd, icon, title } = item;
               return (
-                <div className="w-e-menu tooltip">
+                <div className="w-e-menu tooltip" key={uuid()}>
                   <button onClick={() => {
                     this.insertCommand(cmd);
                   }}
@@ -495,7 +503,7 @@ class AcEditorSany extends Component {
                 {textAlignList.map((item) => {
                   const { cmd, title, icon } = item;
                   return (
-                    <li className="w-e-item" onClick={event => this.onPopSelect(cmd, event)}>
+                    <li className="w-e-item" key={uuid()} onClick={event => this.onPopSelect(cmd, event)}>
                       <button>
                         <span value={cmd} className={`iconfont ${icon}`}/>
                         <span style={{
@@ -524,6 +532,7 @@ class AcEditorSany extends Component {
               } = pop;
               return (
                 <div
+                  key={uuid()}
                   className="w-e-menu"
                   onMouseOut={this.showCloseBar}
                   onMouseOver={() => {
@@ -544,7 +553,7 @@ class AcEditorSany extends Component {
                             value, liCssText, spanCssText, title,
                           } = selectItem;
                           return (
-                            <li className={liCss} style={liCssText} value={value}>
+                            <li className={liCss} style={liCssText} value={value} key={uuid()}>
                               {liCss === 'w-e-item'
                               && <button value={value}>{title}</button>
                               }
@@ -594,12 +603,6 @@ class AcEditorSany extends Component {
           onClick={this.onClickEditBody}
           onChange={this.onChangeEditBody}
         >
-          <p>asfasdfasfd afdsfasdf</p>
-          {/* <h2>xxxxxxxxx</h2> */}
-          {/* <span>开始日期</span><input type="text" className="date" defaultValue="2019-01-12"/> */}
-          {/* <span>结束日期</span><input type="text" className="date" defaultValue="2019-01-15"/> */}
-          {/*<label><input name="aa" type="radio" value="1" id="xx"/>苹果</label>*/}
-          {/*<label><input name="aa" type="radio" value="2" id="yyy"/>苹果a</label>*/}
         </div>
 
         <PreviewModal

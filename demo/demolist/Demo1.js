@@ -36,6 +36,12 @@ class Demo1 extends Component {
     alert('等待开发');
   };
 
+
+  printPDF=()=>{
+
+  }
+
+
   render() {
 
     let htmlString = `
@@ -83,9 +89,11 @@ class Demo1 extends Component {
     return (
       <div className="demoPadding">
 
-        <AcEditorPDF
-          htmlString={htmlString}
-        />
+        {/*<AcEditorPDF*/}
+          {/*htmlString={htmlString}*/}
+          {/*printPDF={this.printPDF}*/}
+          {/*title={<button type="button">导出PDF</button>}*/}
+        {/*/>*/}
 
         {/*<AcEditorSeal*/}
         {/*htmlString={htmlString}*/}
@@ -99,6 +107,7 @@ class Demo1 extends Component {
         <AcEditorSany
           saveFunc={this.saveFunc}
           contrastFunc={this.contrastFunc}
+          htmlString={htmlString}
         />
       </div>
     );

@@ -26,10 +26,6 @@ class AcEditorPDF extends Component {
                  body {
                    -webkit-print-color-adjust: exact;
                 }
-                 /*div {color: red}*/
-                 /*h1 {page-break-after: always;}*/
-                 /*p {page-break-inside: avoid;} */
-                 /*#nav-area {display: none;}*/
                  input{
                      border: none;
                      border-bottom: 1px solid #000;
@@ -60,11 +56,6 @@ class AcEditorPDF extends Component {
             }
                        
            </style>`);
-
-    WinPrint.document.write(`<style>
-           /*html{padding:1cm;background-color: rgba(0, 0, 0, 0.25)}*/
-           </style>`);
-
     WinPrint.document.close();
     WinPrint.focus();
     WinPrint.print();
@@ -72,9 +63,10 @@ class AcEditorPDF extends Component {
   };
 
   render() {
+    const { title = '导出PDF' } = this.props;
     return (
       <span className="editor-pdf">
-        <button type="button" onClick={this.onClickPrint}>导出PDF</button>
+        <span onClick={this.onClickPrint}>{title}</span>
         <div id="html2Pdf" className="html2Pdf"/>
       </span>
     );

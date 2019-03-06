@@ -55,11 +55,10 @@ export function initInput(param) {
   let inputText = `<input type="${category}" className="ac-input" id="${id}" style="width: ${minWidth}px;" defaultValue="${defVal}" placeholder="${placeholder}" />`;
   if (category === 'text') {
     inputText = `<!--<textarea rows="1" cols="30" id="${id}" onchange="onChangeTextArea('sssss')" style="resize: horizontal;width: ${minWidth}px;">${defVal}</textarea>-->`;
-    inputText = `<textarea rows="1" cols="30" id="${id}" onkeyup="onKeyUpTextArea('${id}')" style="resize: horizontal;width: ${minWidth}px;">${defVal}</textarea>`;
+    inputText = `<textarea rows="1" cols="30" id="${id}" onkeyup="onKeyUpTextArea('${id}')" style="resize: horizontal;vertical-align: bottom;width: ${minWidth}px;">${defVal}</textarea>`;
   }
   return inputText;
 }
-
 
 
 
@@ -87,9 +86,9 @@ export function initRadio(param) {
     // 默认选中
     const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
-      radioString += `<span><input name="${id}" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+      radioString += `<span><input name="${id}" type="radio" ${checked} style="vertical-align: middle;" value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
-      radioString += `<div><span><input name="${id}" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx</span></div>`;
+      radioString += `<div><span><input name="${id}" style="vertical-align: middle;" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx</span></div>`;
     }
   }
   return `<div>${radioString}</div>`;
@@ -108,9 +107,9 @@ export function initCheckbox(param) {
   for (let i = 0; i < num; i += 1) {
     const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
-      checkboxString += `<span><input name="${id}" type="checkbox"  ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+      checkboxString += `<span><input name="${id}" style="vertical-align: middle;" type="checkbox"  ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
-      checkboxString += `<div><span><input name="${id}" type="checkbox" ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY</span></div>`;
+      checkboxString += `<div><span><input name="${id}" style="vertical-align: middle;" type="checkbox" ${checked} value=${num} acType="checkbox" />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY</span></div>`;
     }
   }
   return `<div>${checkboxString}</div>`;
