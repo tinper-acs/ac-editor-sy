@@ -36,6 +36,10 @@ class Demo1 extends Component {
     alert('等待开发');
   };
 
+  getInfoHtml=()=>{
+    const textHtml = document.getElementById('editorId').innerHTML;
+  }
+
 
   printPDF=()=>{
 
@@ -45,7 +49,6 @@ class Demo1 extends Component {
   render() {
 
     let htmlString = `
-<div class="xxxx"></div>
 <div>
 <h1>萨摩耶犬</h1>
 <ul>
@@ -61,7 +64,7 @@ class Demo1 extends Component {
 <li>
 <h3>问卷</h3>
 <div class="form">
-<div class="row">名字：<input type="text" value="请留下您的名字阿士大夫" style="z-index: -1"></div>
+<div class="row">名字：<input type="text" value="字阿士大夫"></div>
 <div class="row">选择：<select>
   <option value ="volvo">Volvo</option>
   <option value ="saab">Saab</option>
@@ -105,6 +108,7 @@ class Demo1 extends Component {
         {/*/>*/}
 
         <AcEditorSany
+          editorId="editorId"
           saveFunc={this.saveFunc}
           contrastFunc={this.contrastFunc}
           htmlString={htmlString}

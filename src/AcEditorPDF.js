@@ -1,7 +1,5 @@
 /* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions */
 import React, { Component } from 'react';
-import print from 'print-js';
-import { uuid } from './utils';
 
 import './index.less';
 
@@ -13,7 +11,11 @@ class AcEditorPDF extends Component {
 
   componentDidMount() {
     const { htmlString } = this.props;
-    document.getElementById('html2Pdf').innerHTML = htmlString;
+    const backColor = `<div class="sany-pdf-bgColor" style="position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.65);"></div>`;
+    document.getElementById('html2Pdf').innerHTML = `${backColor}${htmlString}`;
   }
 
   onClickPrint = () => {
@@ -53,6 +55,9 @@ class AcEditorPDF extends Component {
                   background-color: #fff;
                   padding: 0px 6px;
                  }
+                 .sany-pdf-bgColor{
+                  display: none;
+                 }
             }
                        
            </style>`);
@@ -65,7 +70,7 @@ class AcEditorPDF extends Component {
   render() {
     const { title = '导出PDF' } = this.props;
     return (
-      <span className="editor-pdf">
+      <span className="editor-sany-pdf">
         <span onClick={this.onClickPrint}>{title}</span>
         <div id="html2Pdf" className="html2Pdf"/>
       </span>

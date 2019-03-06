@@ -27,7 +27,6 @@ import {
 import './assets/font/iconfont.css';
 import './index.less';
 
-
 import zhCN from 'rc-calendar/lib/locale/zh_CN';
 import moment from 'moment';
 
@@ -73,8 +72,8 @@ class AcEditorSany extends Component {
 
 
   componentDidMount() {
-    const { htmlString="" } = this.props;
-    document.getElementById('editor-sany-content').innerHTML = htmlString;
+    const { htmlString = '', editorId } = this.props;
+    document.getElementById(editorId).innerHTML = htmlString;
   }
 
 
@@ -233,7 +232,7 @@ class AcEditorSany extends Component {
     const target = event.target;
 
     // 强制关闭日期
-    _this.setState({ showDate: false});
+    _this.setState({ showDate: false });
 
     // 点击单选框
     if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'radio') {
@@ -277,7 +276,8 @@ class AcEditorSany extends Component {
 
   // 预览按钮
   onPreviewShow = () => {
-    const textHtml = document.getElementById('editor-sany-content').innerHTML;
+    const { editorId } = this.props;
+    const textHtml = document.getElementById(editorId).innerHTML;
     this.setState({ previewHtml: textHtml });
     this.showCloseBar('previewStatus');
   };
@@ -364,7 +364,8 @@ class AcEditorSany extends Component {
 
   //保存方法回调
   onClickSave = () => {
-    const textHtml = document.getElementById('editor-sany-content').innerHTML;
+    const { editorId } = this.props;
+    const textHtml = document.getElementById(editorId).innerHTML;
     this.props.saveFunc(textHtml);
   };
 
@@ -376,6 +377,8 @@ class AcEditorSany extends Component {
     const {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, inputStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
+
+    const { editorId } = this.props;
 
     return (
       <div className="editor-sany">
@@ -503,7 +506,8 @@ class AcEditorSany extends Component {
                 {textAlignList.map((item) => {
                   const { cmd, title, icon } = item;
                   return (
-                    <li className="w-e-item" key={uuid()} onClick={event => this.onPopSelect(cmd, event)}>
+                    <li className="w-e-item" key={uuid()}
+                        onClick={event => this.onPopSelect(cmd, event)}>
                       <button>
                         <span value={cmd} className={`iconfont ${icon}`}/>
                         <span style={{
@@ -534,8 +538,8 @@ class AcEditorSany extends Component {
                 <div
                   key={uuid()}
                   className="w-e-menu"
-                  onMouseOut={this.showCloseBar}
-                  onMouseOver={() => {
+                  // onMouseLeave={this.showCloseBar}
+                  onClick={() => {
                     this.showCloseBar(cmd);
                   }}
                 >
@@ -592,12 +596,11 @@ class AcEditorSany extends Component {
           <div className="w-e-menu">
             <span className="iconfont icon-image"/>
           </div>
-
         </div>
 
         <div
-          id="editor-sany-content"
-          name="edit"
+          id={editorId}
+          className="editor-sany-content"
           contentEditable="true"
           onKeyUp={this.onKeyUpEditBody}
           onClick={this.onClickEditBody}
