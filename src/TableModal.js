@@ -35,20 +35,25 @@ class TableModal extends Component {
     return (
       <div
         className="w-e-menu"
-        onMouseOut={this.props.showCloseBar}
-        onMouseOver={this.onShow}
+        onMouseOver={() => {
+          if (!dropStatus) {
+            this.onShow();
+          }
+        }}
       >
-        <span className="iconfont icon-table"  />
+        <span className="iconfont icon-table"/>
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
           <p className="w-e-dp-title">插入表格</p>
           <div className="ac-input-body">
             <div className="ac-input-item">
               <label className="ac-item-label">行数</label>
-              <input type="number" className="ac-input-number" id="tab-row" min="1" defaultValue="1"/>
+              <input type="number" className="ac-input-number" id="tab-row" min="1"
+                     defaultValue="1"/>
             </div>
             <div className="ac-input-item">
               <label className="ac-item-label">列数</label>
-              <input type="number" className="ac-input-number" id="tab-col" min="1" defaultValue="1"/>
+              <input type="number" className="ac-input-number" id="tab-col" min="1"
+                     defaultValue="1"/>
             </div>
           </div>
           <div className="ac-pop-action" onClick={this.getTableRowCol}>插入</div>

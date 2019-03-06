@@ -98,21 +98,21 @@ class Demo1 extends Component {
           {/*title={<button type="button">导出PDF</button>}*/}
         {/*/>*/}
 
-        {/*<AcEditorSeal*/}
-        {/*htmlString={htmlString}*/}
-        {/*sealList={sealList}*/}
-        {/*/>*/}
+        <AcEditorSeal
+          htmlString={htmlString}
+          sealList={sealList}
+        />
 
         {/*<AcEditorShow*/}
-        {/*htmlString={htmlString}*/}
+            {/*htmlString={htmlString}*/}
         {/*/>*/}
 
-        <AcEditorSany
-          editorId="editorId"
-          saveFunc={this.saveFunc}
-          contrastFunc={this.contrastFunc}
-          htmlString={htmlString}
-        />
+        {/*<AcEditorSany*/}
+          {/*editorId="editorId"*/}
+          {/*saveFunc={this.saveFunc}*/}
+          {/*contrastFunc={this.contrastFunc}*/}
+          {/*htmlString={htmlString}*/}
+        {/*/>*/}
       </div>
     );
   }

@@ -32,8 +32,11 @@ class SelectModal extends Component {
     const { dropStatus } = this.state;
     return (
       <div className="w-e-menu"
-           onMouseOut={this.props.showCloseBar}
-           onMouseOver={this.onShow}
+           onMouseOver={() => {
+             if (!dropStatus) {
+               this.onShow();
+             }
+           }}
       >
         <span className="iconfont icon-xialakuang"/>
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>

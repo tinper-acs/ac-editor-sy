@@ -11,11 +11,6 @@ class AcEditorSeal extends Component {
     this.state = {
       sealList: [
         {
-          boxId: 'boxId',
-          scaleId: 'scaleId',
-          deleteId: 'deleteId',
-        },
-        {
           boxId: 'boxId1',
           scaleId: 'scaleId1',
           deleteId: 'deleteId1',

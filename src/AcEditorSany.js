@@ -452,9 +452,10 @@ class AcEditorSany extends Component {
           {/*标题*/}
           <div
             className="w-e-menu"
-            onMouseOut={this.showCloseBar}
             onMouseOver={() => {
-              this.showCloseBar('hTitle');
+              if (!hTitle) {
+                this.showCloseBar('hTitle');
+              }
             }}
           >
             <span className="iconfont icon-zitibiaoti"/>
@@ -494,9 +495,11 @@ class AcEditorSany extends Component {
           {/*文字对齐*/}
           <div
             className="w-e-menu"
-            onMouseOut={this.showCloseBar}
+            // onMouseLeave={this.showCloseBar}
             onMouseOver={() => {
-              this.showCloseBar('textAlign');
+              if (!textAlign) {
+                this.showCloseBar('textAlign');
+              }
             }}
           >
             <span className="iconfont icon-align-left"/>
@@ -539,8 +542,10 @@ class AcEditorSany extends Component {
                   key={uuid()}
                   className="w-e-menu"
                   // onMouseLeave={this.showCloseBar}
-                  onClick={() => {
-                    this.showCloseBar(cmd);
+                  onMouseOver={() => {
+                    if (!barObj[cmd]) {
+                      this.showCloseBar(cmd);
+                    }
                   }}
                 >
                   <span className={`iconfont ${icon}`}/>
