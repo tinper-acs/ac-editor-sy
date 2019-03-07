@@ -168,7 +168,7 @@
 }
 
 // 对日期进行处理
-#ac-date-body {
+.ac-date-body {
   display: none;
 }
 
@@ -304,3 +304,44 @@
   }
 }
 
+/**----------------------
+ *
+ *
+ * 条款样式
+ *
+ *
+ *-----------------------
+ */
+.ac-editor-term {
+
+  border: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+  -webkit-box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+  box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+  .sany-term {
+    padding: 0 20px;
+    .iconfont {
+      display: none;
+    }
+  }
+  .sany-term:hover {
+    //box-shadow: 0 2px 6px hsla(0, 0%, 78%, .4);
+    -webkit-box-shadow: 0px 5px 36px 0px rgba(0, 0, 0, 0.45);
+    -moz-box-shadow: 0px 5px 36px 0px rgba(0, 0, 0, 0.45);
+    box-shadow: 0px 5px 36px 0px rgba(0, 0, 0, 0.45);
+    border-bottom: 1px solid #e5e6e9;
+    border-top: 1px solid #e5e6e9;
+    .iconfont {
+      display: block;
+      float: right;
+      color: #1890ff;
+      font-size: 21px;
+      padding: 0px 5px;
+      margin-left: 2px;
+      cursor: pointer;
+    }
+    .iconfont:hover {
+      text-shadow: -1px 2px 20px #333333;
+    }
+  }
+}

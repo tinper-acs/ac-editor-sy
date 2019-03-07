@@ -18,8 +18,8 @@ class AcEditorShow extends Component {
   }
 
   componentDidMount() {
-    const { htmlString } = this.props;
-    document.getElementById('editor-sany-show').innerHTML = htmlString;
+    const { htmlString, editorId } = this.props;
+    document.getElementById(editorId).innerHTML = htmlString;
   }
 
 
@@ -33,30 +33,10 @@ class AcEditorShow extends Component {
     this.setState({ showDate: false });
   };
 
-
   //编辑点击事件
   onClickEditBody = (event) => {
     const _this = this;
     const target = event.target;
-    // 点击单选框
-    if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'radio') {
-      const name = target.getAttribute('name');
-      const radios = document.getElementsByName(name);
-      for (let i = 0; i < radios.length; i += 1) {
-        radios[i].removeAttribute('checked');
-      }
-      target.setAttribute('checked', true);
-    }
-
-    // 点击多选框
-    if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'checkbox') {
-      const checked = target.getAttribute('checked');
-      if (!checked) {
-        target.setAttribute('checked', true);
-      } else {
-        target.removeAttribute('checked');
-      }
-    }
     // 判断是否为日期 input
     if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'date') {
       const currentDateId = target.getAttribute('id');
@@ -76,15 +56,15 @@ class AcEditorShow extends Component {
     const {
       showDate, currentDateLeft, currentDateTop,
     } = this.state;
+    const { editorId } = this.props;
 
     return (
       <div className="editor-sany">
         <div
-          id="editor-sany-show"
-          name="edit"
+          id={editorId}
           onClick={this.onClickEditBody}
         />
-        <div id="ac-date-body">
+        <div className="ac-date-body">
           <DatePicker
             open={showDate}
             format={formatRule}
