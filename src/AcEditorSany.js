@@ -406,17 +406,18 @@ class AcEditorSany extends Component {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
-    const { editorId } = this.props;
+    const { editorId,height } = this.props;
 
     return (
       <div className="editor-sany">
 
         <div className="w-e-toolbar">
           {/*保存*/}
-          <div className="w-e-menu tooltip" onClick={this.onClickSave}>
-            <span className="iconfont icon-save" />
-            <span className="tooltip-text">保存</span>
-          </div>
+          {/*<div className="w-e-menu tooltip" onClick={this.onClickSave}>*/}
+            {/*<span className="iconfont icon-save"/>*/}
+            {/*<span className="tooltip-text">保存</span>*/}
+          {/*</div>*/}
+
 
           {/*对比*/}
           <div className="w-e-menu tooltip">
@@ -629,15 +630,18 @@ class AcEditorSany extends Component {
 
 
           {/*插入图片*/}
-          <div className="w-e-menu">
-            <span className="iconfont icon-image" />
-          </div>
+
+          {/*<div className="w-e-menu">*/}
+            {/*<span className="iconfont icon-image"/>*/}
+          {/*</div>*/}
+
         </div>
 
         <div
           id={editorId}
           className="editor-sany-content"
           contentEditable="true"
+          style={{height}}
           onKeyUp={this.onKeyUpEditBody}
           onClick={this.onClickEditBody}
           onChange={this.onChangeEditBody}
