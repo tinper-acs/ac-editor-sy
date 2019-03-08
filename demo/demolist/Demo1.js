@@ -28,8 +28,9 @@ class Demo1 extends Component {
     };
   }
 
-  saveFunc = (param) => {
-    console.log('textHtml', param);
+  saveFunc = () => {
+    const textHtml = this.child.getHtml2String();
+    console.log('textHtml', textHtml);
   };
 
   contrastFunc = () => {
@@ -114,6 +115,8 @@ class Demo1 extends Component {
     return (
       <div className="demoPadding">
 
+        <button onClick={this.saveFunc}>ssss</button>
+
         {/*<AcEditorPDF*/}
           {/*htmlString={htmlString}*/}
           {/*printPDF={this.printPDF}*/}
@@ -129,12 +132,14 @@ class Demo1 extends Component {
             {/*htmlString={htmlString}*/}
         {/*/>*/}
 
-        {/*<AcEditorSany*/}
-          {/*editorId="editorId"*/}
-          {/*saveFunc={this.saveFunc}*/}
-          {/*contrastFunc={this.contrastFunc}*/}
-          {/*htmlString={htmlString}*/}
-        {/*/>*/}
+        <AcEditorSany
+          editorId="editorId"
+          // saveFunc={this.saveFunc}
+          onRef={(ref) => {
+            this.child = ref;
+          }}
+          htmlString={htmlString}
+        />
 
 
         <AcEditorTerm

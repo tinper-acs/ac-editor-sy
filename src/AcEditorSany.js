@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
 import TableModal from './TableModal.js';
-import InputModal from './InputModal.js';
 import SelectModal from './SelectModal.js';
 import CheckboxModal from './CheckboxModal.js';
 import RadioModal from './RadioModal.js';
@@ -80,6 +79,8 @@ class AcEditorSany extends Component {
   componentDidMount() {
     const { htmlString = '', editorId } = this.props;
     document.getElementById(editorId).innerHTML = htmlString;
+    // 在父组件上绑定子组件方法
+    this.props.onRef(this);
   }
 
   // 实时更新checkbox 值
@@ -162,6 +163,7 @@ class AcEditorSany extends Component {
   onInsertInput = () => {
     const id = uuid();
     this.insertContent(initInput(id));
+    this.addTypeId(id, 'text');
   };
 
   // 插入select
@@ -171,19 +173,15 @@ class AcEditorSany extends Component {
       textArray: param,
       id,
     }));
+    this.addTypeId(id, 'select');
   };
 
   // 插入radio
   onInsertRadio = (param) => {
     const id = uuid();
     param.id = id;
-    const { idList } = this.state;
-    idList.push({
-      id,
-      type: 'radio',
-    });
-    this.setState({ idList });
     this.insertContent(initRadio(param));
+    this.addTypeId(id, 'radio');
   };
 
   // 插入多选框
@@ -191,6 +189,7 @@ class AcEditorSany extends Component {
     const id = uuid();
     param.id = id;
     this.insertContent(initCheckbox(param));
+    this.addTypeId(id, 'checkbox');
   };
 
 
@@ -221,6 +220,7 @@ class AcEditorSany extends Component {
         if (type === 'checkbox') {
           htmlString += `<span>${title}</span>${initFixedCheckbox(item)}`;
         }
+        this.addTypeId(id, type);
       }
     }
     this.insertContent(`<div>${htmlString}</div>`);
@@ -230,6 +230,7 @@ class AcEditorSany extends Component {
   onDate = () => {
     const id = uuid();
     this.insertContent(initDate(id));
+    this.addTypeId(id, 'date');
   };
 
   // 插入命令
@@ -371,6 +372,31 @@ class AcEditorSany extends Component {
     this.props.saveFunc(textHtml);
   };
 
+
+  //保存方法回调
+  getHtml2String = () => {
+    const doc = document.getElementById(this.props.editorId).innerHTML;
+    const { idList } = this.state;
+    // 查看id是否真的有效
+    const list = idList.filter(item => document.getElementById(item.id));
+    return {
+      doc,
+      idList: list,
+    };
+  };
+
+  // 添加类型和id
+  addTypeId = (id, type) => {
+    const { idList } = this.state;
+    idList.push({
+      id,
+      type,
+    });
+    this.setState({ idList });
+  };
+
+
+
   render() {
     const {
       showDate, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
@@ -388,19 +414,19 @@ class AcEditorSany extends Component {
         <div className="w-e-toolbar">
           {/*保存*/}
           <div className="w-e-menu tooltip" onClick={this.onClickSave}>
-            <span className="iconfont icon-save"/>
+            <span className="iconfont icon-save" />
             <span className="tooltip-text">保存</span>
           </div>
 
           {/*对比*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi"/>
+            <span className="iconfont icon-duibi" />
             <span className="tooltip-text">对比</span>
           </div>
 
           {/*预览*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
             <span className="tooltip-text">预览</span>
           </div>
 
@@ -419,13 +445,13 @@ class AcEditorSany extends Component {
 
           {/*文本 输入*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-021caozuo_shuru" onClick={this.onInsertInput}/>
+            <span className="iconfont icon-021caozuo_shuru" onClick={this.onInsertInput} />
             <span className="tooltip-text">输入框</span>
           </div>
 
           {/*日期*/}
           <div className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate}/>
+            <span className="iconfont icon-calendar" onClick={this.onDate} />
             <span className="tooltip-text">日期</span>
           </div>
 
@@ -460,7 +486,7 @@ class AcEditorSany extends Component {
               }
             }}
           >
-            <span className="iconfont icon-zitibiaoti"/>
+            <span className="iconfont icon-zitibiaoti" />
             {/*<div className="">*/}
             <div className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
@@ -485,7 +511,7 @@ class AcEditorSany extends Component {
                     this.insertCommand(cmd);
                   }}
                   >
-                    <span className={`iconfont ${icon}`}/>
+                    <span className={`iconfont ${icon}`} />
                   </button>
                   <span className="tooltip-text">{title}</span>
                 </div>
@@ -504,7 +530,7 @@ class AcEditorSany extends Component {
               }
             }}
           >
-            <span className="iconfont icon-align-left"/>
+            <span className="iconfont icon-align-left" />
             <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
@@ -517,7 +543,7 @@ class AcEditorSany extends Component {
                       onClick={event => this.onPopSelect(cmd, event)}
                     >
                       <button>
-                        <span value={cmd} className={`iconfont ${icon}`}/>
+                        <span value={cmd} className={`iconfont ${icon}`} />
                         <span style={{
                           fontSize: '14px',
                           marginLeft: '8px',
@@ -553,7 +579,7 @@ class AcEditorSany extends Component {
                     }
                   }}
                 >
-                  <span className={`iconfont ${icon}`}/>
+                  <span className={`iconfont ${icon}`} />
                   <div
                     className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
                     // className="w-e-droplist"
@@ -604,7 +630,7 @@ class AcEditorSany extends Component {
 
           {/*插入图片*/}
           <div className="w-e-menu">
-            <span className="iconfont icon-image"/>
+            <span className="iconfont icon-image" />
           </div>
         </div>
 
@@ -623,7 +649,7 @@ class AcEditorSany extends Component {
           htmlString={previewHtml}
           idList={idList}
         />
-        <div id="ac-date-body">
+        <div className="ac-date-body">
           <DatePicker
             open={showDate}
             format={formatRule}
