@@ -390,7 +390,7 @@ class AcEditorSany extends Component {
   };
 
   // 添加类型和id
-  addTypeId = (id, type,direction) => {
+  addTypeId = (id, type,direction='horizontal') => {
     const { idList } = this.state;
     idList.push({
       id,

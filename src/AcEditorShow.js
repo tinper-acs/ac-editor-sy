@@ -33,42 +33,65 @@ class AcEditorShow extends Component {
       currentDateLeft: '0px',
       currentDateTop: '0px',
     };
+    window.onChangeSelect = () => this.onChangeSelect();
+    window.onChangeSelect = () => this.onChangeSelect();
+    window.onKeyUpTextArea = id => this.onKeyUpTextArea(id);
+    window.onClickRadio = id => this.onClickRadio(id);
+    window.onClickCheckbox = id => this.onClickCheckbox(id);
   }
 
+
   componentDidMount() {
-    const { htmlString, editorId, isActive = true, defaultData, } = this.props;
+    const {
+      htmlString, editorId, isActive = true, defaultData,
+    } = this.props;
     document.getElementById(editorId).innerHTML = htmlString;
 
     // 修改默认值
-    if (defaultData && defaultData.isArray()) {
+    if (defaultData && Array.isArray(defaultData) && defaultData.length) {
       for (const item of defaultData) {
         // 插入组件的类型 (text,select,radio,checkbox,date)
-        console.log('item', item);
-        const { type, id, dataList, defaultValue, } = item;
+        const {
+          type, id, dataList, check, direction,
+        } = item;
 
-        // 如果类型是select，删除下拉框的option，重新生成option
+        console.log('--', item);
+        const doc = document.getElementById(id);
+
+        // 日期
+        if (type === 'date') {
+          doc.setAttribute('value', dataList[0]);
+          break;
+        }
+
+        // 文本类型
+        if (type === 'text') {
+          doc.innerHTML = dataList[0];
+          debugger
+          break;
+        }
+
+        const newDoc = document.createElement('span');
+        // 更改select
         if (type === 'select') {
-          // 动态删除select中的所有options
-          document.getElementById(id).options.length = 0;
-          for (const optionValue of dataList) {
-            const doc = document.getElementById(id)
-              .options
-              .add(new Option(optionValue, optionValue));
-            if (optionValue === defaultValue) {
-              doc.setAttribute('selected', true);
-            }
-          }
+          newDoc.innerHTML = initSelect({ textArray: dataList, id, check });
+        }
+        // 更改radio，
+        if (type === 'radio') {
+          newDoc.innerHTML = initRadio({
+            data: dataList, id, check, direction,
+          });
         }
 
-        // 如果类型是radio，删除单选框，重新生成单选框
-        if (type === 'radio') {
-          // 清空子元素
-          // let doc = document.getElementById(id);
-          // const param={ num, id, check, direction, title = 'YYYYYYYYYY',}
-          // let newDoc = initRadio(param)
-          // this.addTypeId(id, 'radio');
-          // doc.parentNode.replaceChild(newDoc, doc);
+        // 更改checkbox，
+        if (type === 'checkbox') {
+          newDoc.innerHTML = initCheckbox({
+            data: dataList, id, check, direction,
+          });
         }
+
+        debugger;
+        doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
       }
     }
 
@@ -91,6 +114,47 @@ class AcEditorShow extends Component {
       }
     }
   }
+
+
+
+  // 下拉框选择
+  onChangeSelect = () => {
+    const target = event.target;
+    const index = target.selectedIndex;
+    const options = document.getElementsByName(target.id);
+    for (let i = 0; i < options.length; i += 1) {
+      options[i].removeAttribute('selected');
+    }
+    target[index].setAttribute('selected', true);
+  };
+
+  // 实时更新checkbox 值
+  onClickCheckbox = () => {
+    const target = event.target;
+    const checked = target.getAttribute('checked');
+    if (!checked) {
+      target.setAttribute('checked', true);
+    } else {
+      target.removeAttribute('checked');
+    }
+  };
+
+  // 实时更新 radio值
+  onClickRadio = (id) => {
+    const target = event.target;
+    const radios = document.getElementsByName(id);
+    for (let i = 0; i < radios.length; i += 1) {
+      radios[i].removeAttribute('checked');
+    }
+    target.setAttribute('checked', true);
+  };
+
+  // 实时更新 TextArea值
+  onKeyUpTextArea = (id) => {
+    const doc = document.getElementById(id);
+    doc.innerHTML = doc.value;
+  };
+
 
 
   // 选择日期，将日期的值赋值给 选中的input

@@ -57,7 +57,7 @@ class AcEditorTerm extends Component {
         {/*<h1>产品买卖合同</h1>*/}
         {termData && termData.map((item, index) => {
           const {
-            content, termName, id, status,
+            content, termName, id, status,defaultData,isActive=false,
           } = item;
           const showId = 'showId' + index;
           const editId = 'editId' + index;
@@ -97,7 +97,8 @@ class AcEditorTerm extends Component {
                 <AcEditorShow
                   editorId={showId}
                   htmlString={content}
-                  isActive={false}
+                  isActive={isActive}
+                  defaultData={defaultData}
                 />
               )}
               {status
