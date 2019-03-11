@@ -92,6 +92,7 @@ class Demo1 extends Component {
         'content': '<div>价格联动：</div><div><span style="font-size: 1.4rem;">本合同产品价格与产品所对应的材料的价格进行联动，具体联动条件如下：</span></div><div><span style="font-size: 1.4rem;">（1）参照材料基价、来源<textarea rows="1" cols="30" id="d3d81678-1800-4c31-b2e2-4f3cab99e646" onkeyup="onKeyUpTextArea(\'d3d81678-1800-4c31-b2e2-4f3cab99e646\')" style="resize: horizontal; vertical-align: middle; width: 158px; margin-left: 0px; margin-right: 0px;"></textarea>；</span></div><div>（2）达到联动的条件<textarea rows="1" cols="30" id="15ab26c9-6648-44d1-aaf8-0e8f0edf15c3" onkeyup="onKeyUpTextArea(\'15ab26c9-6648-44d1-aaf8-0e8f0edf15c3\')" style="resize: horizontal; vertical-align: middle; width: 159px; margin-left: 0px; margin-right: 0px;"></textarea>；</div><div>（3）价格联动公式<textarea rows="1" cols="30" id="1b0f6149-7de2-458c-9438-ba524682a1cd" onkeyup="onKeyUpTextArea(\'1b0f6149-7de2-458c-9438-ba524682a1cd\')" style="resize: horizontal; vertical-align: middle; width: 142px; margin-left: 0px; margin-right: 0px;"></textarea>；</div>',
         'termName': '联动条款',
         'status':false,
+        'defaultData':[{id:'',value:'',type:''},{id:'',value:'',type:''},{id:'',value:'',type:''},{id:'',value:'',type:''},]
       },
       {
         'content': '<div>模具费用：</div><div><span style="font-size: 1.4rem;">（1）卖方全部承担模具费用；</span></div><div>（2）模具费用100%分摊至产品，按<textarea rows="1" cols="30" id="6dbb0686-ea2f-4d5d-bb60-b4749b8032a9" onkeyup="onKeyUpTextArea(\'6dbb0686-ea2f-4d5d-bb60-b4749b8032a9\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea>件分摊完，按分摊数量完成交货后，产品单价需减去模具分摊费用，模具所有权归买方所有；</div><div>（3）模具费用由买方承担<textarea rows="1" cols="30" id="77245e06-f61e-41cf-a00b-5ee5116e92cd" onkeyup="onKeyUpTextArea(\'77245e06-f61e-41cf-a00b-5ee5116e92cd\')" style="resize: horizontal;vertical-align: middle;width: 80px;"></textarea>%+<textarea rows="1" cols="30" id="4904b154-4164-4722-8233-7533b6b4bf04" onkeyup="onKeyUpTextArea(\'4904b154-4164-4722-8233-7533b6b4bf04\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea>%产品分摊，按<textarea rows="1" cols="30" id="1e17516d-2ac3-4957-8de1-4dd628c7e90a" onkeyup="onKeyUpTextArea(\'1e17516d-2ac3-4957-8de1-4dd628c7e90a\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea>件分摊完，按分摊数量完成交货后，产品单价需减去模具分摊费用，模具所有权归买方所有；</div><div>（4）买方全部承担模具费用，模具所有权归买方所有。</div>',
@@ -137,14 +138,13 @@ class Demo1 extends Component {
             {/*htmlString={htmlString}*/}
         {/*/>*/}
 
-        <AcEditorSany
-          editorId="editorId"
-          // saveFunc={this.saveFunc}
-          onRef={(ref) => {
-            this.child = ref;
-          }}
-          htmlString={htmlString}
-        />
+        {/*<AcEditorSany*/}
+          {/*editorId="editorId"*/}
+          {/*onRef={(ref) => {*/}
+            {/*this.child = ref;*/}
+          {/*}}*/}
+          {/*htmlString={htmlString}*/}
+        {/*/>*/}
 
 
         <AcEditorTerm

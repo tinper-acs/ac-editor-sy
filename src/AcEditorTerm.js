@@ -33,11 +33,11 @@ class AcEditorTerm extends Component {
   };
 
   onMouseLeave = (index,id) => {
-    const textHtml = document.getElementById(id).innerHTML;
-    const { termData } = this.state;
-    termData[index].status = false;
-    termData[index].content = textHtml;
-    this.setState({ termData });
+    // const textHtml = document.getElementById(id).innerHTML;
+    // const { termData } = this.state;
+    // termData[index].status = false;
+    // termData[index].content = textHtml;
+    // this.setState({ termData });
   };
 
 
@@ -97,6 +97,7 @@ class AcEditorTerm extends Component {
                 <AcEditorShow
                   editorId={showId}
                   htmlString={content}
+                  isActive={false}
                 />
               )}
               {status

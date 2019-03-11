@@ -59,8 +59,11 @@ export function initInput(id) {
  * 插入下拉框
  */
 export function initSelect(param) {
-  const { textArray, id } = param;
-  const option = textArray.map((item, index) => `<option name="${id}" value="${index}">${item}</option>`);
+  const { textArray, id,check=1 } = param;
+  const option = textArray.map((item, index) =>{
+    const selected = (index + 1) === check ? 'selected' : '';
+    return `<option name="${id}" value="${index}" ${selected} >${item}</option>`;
+  });
   return `<select id="${id}" class="select ac-select" onchange="onChangeSelect()">${option}</select>`;
 }
 
@@ -71,19 +74,19 @@ export function initSelect(param) {
  */
 export function initRadio(param) {
   const {
-    num, id, check, direction,
+    data, id, check, direction,
   } = param;
   let radioString = '';
-  for (let i = 0; i < num; i += 1) {
+  for (let i = 0; i < data.length; i += 1) {
     // 默认选中
     const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
-      radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} style="vertical-align: middle;" value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+      radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} style="vertical-align: middle;" value=${i} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
-      radioString += `<div><span><input name="${id}"  onclick="onClickRadio('${id}')" style="vertical-align: middle;" type="radio" ${checked} value=${num} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;xxxxxxxxxxxx</span></div>`;
+      radioString += `<div><span><input name="${id}"  onclick="onClickRadio('${id}')" style="vertical-align: middle;" type="radio" ${checked} value=${i} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}</span></div>`;
     }
   }
-  return `<div>${radioString}</div>`;
+  return `<span id="${id}">${radioString}</span>`;
 }
 
 /**
@@ -93,18 +96,18 @@ export function initRadio(param) {
  */
 export function initCheckbox(param) {
   const {
-    num, id, check, direction,
+     data,id, check, direction,
   } = param;
   let checkboxString = '';
-  for (let i = 0; i < num; i += 1) {
+  for (let i = 0; i < data.length; i += 1) {
     const checked = (i + 1) === check ? 'checked' : '';
     if (direction === 'horizontal') {
-      checkboxString += `<span><input name="${id}" onclick="onClickCheckbox()" type="checkbox"  ${checked} value=${num}  />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+      checkboxString += `<span><input name="${id}" onclick="onClickCheckbox()" type="checkbox"  ${checked} value=${i}  />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
     } else {
-      checkboxString += `<div><input name="${id}" onclick="onClickCheckbox()"  type="checkbox" ${checked} value=${num} />&nbsp;&nbsp;&nbsp;&nbsp;YYYYYYYYYY</div>`;
+      checkboxString += `<div><input name="${id}" onclick="onClickCheckbox()"  type="checkbox" ${checked} value=${i} />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}</div>`;
     }
   }
-  return `<div>${checkboxString}</div>`;
+  return `<span id="${id}">${checkboxString}</span>`;
 }
 
 export function initDate(id) {

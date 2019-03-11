@@ -61,7 +61,7 @@ class AcEditorSany extends Component {
 
       },
       previewHtml: '',
-      idList: [],
+      idList: [],  // 插入组件的类型 (text,select,radio,checkbox,date)
 
     };
     window.onChangeSelect = () => this.onChangeSelect();
@@ -158,6 +158,8 @@ class AcEditorSany extends Component {
   onInsertTable = (rowNum, colNum) => {
     this.insertContent(initTable(rowNum, colNum));
   };
+
+
 
   // 插入Input
   onInsertInput = () => {
