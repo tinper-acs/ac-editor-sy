@@ -183,7 +183,8 @@ class AcEditorSany extends Component {
     const id = uuid();
     param.id = id;
     this.insertContent(initRadio(param));
-    this.addTypeId(id, 'radio');
+    const { direction } = param;
+    this.addTypeId(id, 'radio', direction);
   };
 
   // 插入多选框
@@ -191,7 +192,8 @@ class AcEditorSany extends Component {
     const id = uuid();
     param.id = id;
     this.insertContent(initCheckbox(param));
-    this.addTypeId(id, 'checkbox');
+    const { direction } = param;
+    this.addTypeId(id, 'checkbox', direction);
   };
 
 
@@ -222,7 +224,7 @@ class AcEditorSany extends Component {
         if (type === 'checkbox') {
           htmlString += `<span>${title}</span>${initFixedCheckbox(item)}`;
         }
-        this.addTypeId(id, type);
+        this.addTypeId(id, type, 'horizontal');
       }
     }
     this.insertContent(`<div>${htmlString}</div>`);
@@ -388,15 +390,15 @@ class AcEditorSany extends Component {
   };
 
   // 添加类型和id
-  addTypeId = (id, type) => {
+  addTypeId = (id, type,direction) => {
     const { idList } = this.state;
     idList.push({
       id,
       type,
+      direction,
     });
     this.setState({ idList });
   };
-
 
 
   render() {
@@ -408,7 +410,7 @@ class AcEditorSany extends Component {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
-    const { editorId,height } = this.props;
+    const { editorId, height } = this.props;
 
     return (
       <div className="editor-sany">
@@ -416,8 +418,8 @@ class AcEditorSany extends Component {
         <div className="w-e-toolbar">
           {/*保存*/}
           {/*<div className="w-e-menu tooltip" onClick={this.onClickSave}>*/}
-            {/*<span className="iconfont icon-save"/>*/}
-            {/*<span className="tooltip-text">保存</span>*/}
+          {/*<span className="iconfont icon-save"/>*/}
+          {/*<span className="tooltip-text">保存</span>*/}
           {/*</div>*/}
 
 
@@ -634,7 +636,7 @@ class AcEditorSany extends Component {
           {/*插入图片*/}
 
           {/*<div className="w-e-menu">*/}
-            {/*<span className="iconfont icon-image"/>*/}
+          {/*<span className="iconfont icon-image"/>*/}
           {/*</div>*/}
 
         </div>
@@ -643,7 +645,7 @@ class AcEditorSany extends Component {
           id={editorId}
           className="editor-sany-content"
           contentEditable="true"
-          style={{height}}
+          style={{ height }}
           onKeyUp={this.onKeyUpEditBody}
           onClick={this.onClickEditBody}
           onChange={this.onChangeEditBody}

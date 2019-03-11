@@ -138,18 +138,18 @@ class Demo1 extends Component {
             {/*htmlString={htmlString}*/}
         {/*/>*/}
 
-        {/*<AcEditorSany*/}
-          {/*editorId="editorId"*/}
-          {/*onRef={(ref) => {*/}
-            {/*this.child = ref;*/}
-          {/*}}*/}
-          {/*htmlString={htmlString}*/}
-        {/*/>*/}
-
-
-        <AcEditorTerm
-          termData={termData}
+        <AcEditorSany
+          editorId="editorId"
+          onRef={(ref) => {
+            this.child = ref;
+          }}
+          htmlString={htmlString}
         />
+
+
+        {/*<AcEditorTerm*/}
+          {/*termData={termData}*/}
+        {/*/>*/}
 
       </div>
     );

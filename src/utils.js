@@ -95,9 +95,7 @@ export function initRadio(param) {
  * @returns {string}
  */
 export function initCheckbox(param) {
-  const {
-     data,id, check, direction,
-  } = param;
+  const { data,id, check, direction, } = param;
   let checkboxString = '';
   for (let i = 0; i < data.length; i += 1) {
     const checked = (i + 1) === check ? 'checked' : '';
@@ -125,7 +123,7 @@ export function initFixedRadio(param) {
     const checked = item === defaultVal ? 'checked' : '';
     radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} value=${item} />&nbsp;&nbsp;&nbsp;&nbsp;${item}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
   }
-  return radioString;
+  return `<span id="${id}">${radioString}</span>`;
 }
 
 
@@ -137,7 +135,7 @@ export function initFixedCheckbox(param) {
     const checked = item === defaultVal ? 'checked' : '';
     checkboxString += `<span><input name="${id}" onclick="onClickCheckbox()" type="checkbox"  ${checked} value=${item}  />&nbsp;&nbsp;&nbsp;&nbsp;${item}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
   }
-  return checkboxString;
+  return `<span id="${id}">${checkboxString}</span>`;
 }
 
 

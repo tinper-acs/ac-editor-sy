@@ -20,8 +20,9 @@ class RadioModal extends Component {
     const num = parseInt(document.getElementById('radio_num').value);
     const check = parseInt(document.getElementById('radio_check').value);
     const direction = document.getElementById('radio_direction').value;
+    const data = new Array(num).fill('xxxxxxx');
     this.props.onInsertRadio({
-      num,
+      data,
       direction,
       check,
     });
@@ -36,12 +37,13 @@ class RadioModal extends Component {
   render() {
     const { dropStatus } = this.state;
     return (
-      <div className="w-e-menu"
-           onMouseOver={() => {
-             if (!dropStatus) {
-               this.onShow();
-             }
-           }}
+      <div
+        className="w-e-menu"
+        onMouseOver={() => {
+          if (!dropStatus) {
+            this.onShow();
+          }
+        }}
       >
         <span className="iconfont icon-radio-checked" />
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
@@ -56,11 +58,11 @@ class RadioModal extends Component {
             </div>
             <div className="ac-input-item">
               <label className="ac-item-label">个数</label>
-              <input type="number" className="ac-input-number" id="radio_num" min="1" defaultValue="1"/>
+              <input type="number" className="ac-input-number" id="radio_num" min="1" defaultValue="1" />
             </div>
             <div className="ac-input-item">
               <label className="ac-item-label">默认</label>
-              <input type="number" className="ac-input-number" id="radio_check" min="1" defaultValue="1"/>
+              <input type="number" className="ac-input-number" id="radio_check" min="1" defaultValue="1" />
             </div>
           </div>
           <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>

@@ -20,8 +20,9 @@ class CheckboxModal extends Component {
     const num = parseInt(document.getElementById('checkBox_num').value);
     const check = parseInt(document.getElementById('checkBox_check').value);
     const direction = document.getElementById('checkBox_direction').value;
+    const data = new Array(num).fill('YYYYYY');
     this.props.onInsertCheckbox({
-      num,
+      data,
       direction,
       check,
     });
