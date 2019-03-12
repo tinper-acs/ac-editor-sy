@@ -6,12 +6,14 @@ import zhCN from 'rc-calendar/lib/locale/zh_CN';
 import moment from 'moment';
 
 import AcEditorShow from './AcEditorShow.js';
+import AcEditorSave from './AcEditorSave.js';
 
 import {
   uuid,
   sectionToChinese,
 } from './utils';
 import AcEditorSany from './AcEditorSany';
+import AcEditorPDF from './AcEditorPDF';
 
 class AcEditorTerm extends Component {
   constructor(props) {
@@ -32,7 +34,7 @@ class AcEditorTerm extends Component {
     this.setState({ termData });
   };
 
-  onMouseLeave = (index,id) => {
+  onMouseLeave = (index, id) => {
     // const textHtml = document.getElementById(id).innerHTML;
     // const { termData } = this.state;
     // termData[index].status = false;
@@ -50,69 +52,89 @@ class AcEditorTerm extends Component {
   };
 
 
+  saveAcHtml = () => {
+    const textHtml = this.child.getHtml2String();
+    console.log("----",textHtml)
+  };
+
+
   render() {
     const { termData } = this.state;
     return (
       <div className="ac-editor-term">
-        {/*<h1>产品买卖合同</h1>*/}
-        {termData && termData.map((item, index) => {
-          const {
-            content, termName, id, status,defaultData,isActive=false,
-          } = item;
-          const showId = 'showId' + index;
-          const editId = 'editId' + index;
-          return (
-            <div className="sany-term"
-                 key={showId}
-                 onMouseLeave={() => {
-                   this.onMouseLeave(index,editId);
-                 }}
-            >
-              <h3>
-                <span>{`${sectionToChinese(index + 1)}、${termName}`}</span>
-                <span className="sany-term-icon">
+        <AcEditorSave
+          onRef={(ref) => {
+            this.child = ref;
+          }}
+          saveId="pdfId"
+          title={<button type="button" onClick={this.saveAcHtml}>保存</button>}
+        />
+
+        <AcEditorPDF
+          pdfId="pdfId"
+          title={<button type="button">导出PDF</button>}
+        />
+
+        <div id='pdfId'>
+          {termData && termData.map((item, index) => {
+            const {
+              content, termName, id, status, defaultData, isActive = false,
+            } = item;
+            const showId = 'showId' + index;
+            const editId = 'editId' + index;
+            return (
+              <div className="sany-term"
+                   key={showId}
+                   onMouseLeave={() => {
+                     this.onMouseLeave(index, editId);
+                   }}
+              >
+                <h3>
+                  <span>{`${sectionToChinese(index + 1)}、${termName}`}</span>
+                  <span className="sany-term-icon">
                   {/*修改状态*/}
-                  {!status &&
-                  <span
-                    className="iconfont icon-brush"
-                    onClick={() => {
-                      this.onClickEdit(index, item);
-                    }}
-                  />
-                  }
-                  {/*保存*/}
-                  {status &&
-                  <span
-                    className="iconfont icon-save"
-                    onClick={() => {
-                      this.onClickSave(index, editId);
-                    }}
-                  />
-                  }
-                  <span className="iconfont icon-shanchu"/>
+                    {!status &&
+                    <span
+                      className="iconfont icon-brush"
+                      onClick={() => {
+                        this.onClickEdit(index, item);
+                      }}
+                    />
+                    }
+                    {/*保存*/}
+                    {status &&
+                    <span
+                      className="iconfont icon-save"
+                      onClick={() => {
+                        this.onClickSave(index, editId);
+                      }}
+                    />
+                    }
+                    <span className="iconfont icon-shanchu"/>
                 </span>
-              </h3>
-              {!status
-              && (
-                <AcEditorShow
-                  editorId={showId}
-                  htmlString={content}
-                  isActive={isActive}
-                  defaultData={defaultData}
-                />
-              )}
-              {status
-              && (
-                <AcEditorSany
-                  editorId={editId}
-                  saveFunc={this.saveFunc}
-                  contrastFunc={this.contrastFunc}
-                  htmlString={content}
-                />
-              )}
-            </div>
-          );
-        })}
+                </h3>
+                {!status
+                && (
+                  <AcEditorShow
+                    editorId={showId}
+                    htmlString={content}
+                    isActive={isActive}
+                    defaultData={defaultData}
+                  />
+                )}
+                {status
+                && (
+                  <AcEditorSany
+                    editorId={editId}
+                    saveFunc={this.saveFunc}
+                    contrastFunc={this.contrastFunc}
+                    htmlString={content}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
 
       </div>
     );

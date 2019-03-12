@@ -6,21 +6,10 @@ import zhCN from 'rc-calendar/lib/locale/zh_CN';
 import moment from 'moment';
 
 
-
 import {
-  uuid,
-  initTable,
-  initInput,
   initSelect,
   initRadio,
   initCheckbox,
-  initDate,
-  initFixedRadio,
-  initFixedCheckbox,
-  fixedDate,
-  popList,
-  textAlignList,
-  iconCmdList,
 } from './utils';
 
 const formatRule = 'YYYY-MM-DD';
@@ -34,14 +23,13 @@ class AcEditorShow extends Component {
       currentDateTop: '0px',
     };
     window.onChangeSelect = () => this.onChangeSelect();
-    window.onChangeSelect = () => this.onChangeSelect();
-    window.onKeyUpTextArea = id => this.onKeyUpTextArea(id);
     window.onClickRadio = id => this.onClickRadio(id);
     window.onClickCheckbox = id => this.onClickCheckbox(id);
   }
 
 
   componentDidMount() {
+
     const {
       htmlString, editorId, isActive = true, defaultData,
     } = this.props;
@@ -55,9 +43,7 @@ class AcEditorShow extends Component {
           type, id, dataList, check, direction,
         } = item;
 
-        console.log('--', item);
         const doc = document.getElementById(id);
-
         // 日期
         if (type === 'date') {
           doc.setAttribute('value', dataList[0]);
@@ -67,30 +53,37 @@ class AcEditorShow extends Component {
         // 文本类型
         if (type === 'text') {
           doc.innerHTML = dataList[0];
-          debugger
           break;
         }
 
         const newDoc = document.createElement('span');
         // 更改select
         if (type === 'select') {
-          newDoc.innerHTML = initSelect({ textArray: dataList, id, check });
+          newDoc.innerHTML = initSelect({
+            textArray: dataList,
+            id,
+            check,
+          });
         }
         // 更改radio，
         if (type === 'radio') {
           newDoc.innerHTML = initRadio({
-            data: dataList, id, check, direction,
+            data: dataList,
+            id,
+            check,
+            direction,
           });
         }
 
         // 更改checkbox，
         if (type === 'checkbox') {
           newDoc.innerHTML = initCheckbox({
-            data: dataList, id, check, direction,
+            data: dataList,
+            id,
+            check,
+            direction,
           });
         }
-
-        debugger;
         doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
       }
     }
@@ -148,14 +141,6 @@ class AcEditorShow extends Component {
     }
     target.setAttribute('checked', true);
   };
-
-  // 实时更新 TextArea值
-  onKeyUpTextArea = (id) => {
-    const doc = document.getElementById(id);
-    doc.innerHTML = doc.value;
-  };
-
-
 
   // 选择日期，将日期的值赋值给 选中的input
   onChangeDate = (param) => {

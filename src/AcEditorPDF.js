@@ -10,40 +10,58 @@ class AcEditorPDF extends Component {
   }
 
   componentDidMount() {
-    const { htmlString } = this.props;
+    // const { htmlString } = this.props;
+    // const backColor = `<div class="sany-pdf-bgColor" style="position: absolute;
+    //   width: 100%;
+    //   height: 100%;
+    //   background-color: rgba(0, 0, 0, 0.65);"></div>`;
+    // document.getElementById('html2Pdf').innerHTML = ;
+  }
+
+  onClickPrint = () => {
+    const { pdfId } = this.props;
+    const htmlString = document.getElementById(pdfId).innerHTML;
+    const newDoc = document.createElement('span');
+    newDoc.innerHTML = htmlString;
+    const textAreaList = newDoc.getElementsByTagName('textarea');
+    // 在textarea后面插入兄弟节点 最后通过隐藏textarea
+    for (const textArea of textAreaList) {
+      const newTextAreaParent = document.createElement('span');
+      const date = textArea.innerHTML;
+      const stringInput = `<input type="text" value="${date}" style="width: ${textArea.style.width}"/>`;
+      newTextAreaParent.innerHTML = stringInput;
+      textArea.parentNode.insertBefore(newTextAreaParent.firstElementChild, textArea.nextSibling);
+    }
+    // 添加遮罩
     const backColor = `<div class="sany-pdf-bgColor" style="position: absolute;
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.65);"></div>`;
-    document.getElementById('html2Pdf').innerHTML = `${backColor}${htmlString}`;
-  }
 
-  onClickPrint = () => {
-    const html = document.getElementById('html2Pdf').innerHTML;
     const WinPrint = window.open('', '', 'left=0,top=0, toolbar=0,scrollbars=0,status=0');
-    WinPrint.document.write(html);
+    WinPrint.document.write(`${backColor}${newDoc.innerHTML}`);
     WinPrint.document.write(`<style>
            @media print
             {
-                 body {
-                   -webkit-print-color-adjust: exact;
-                }
+                 /*body {*/
+                   /*-webkit-print-color-adjust: exact;*/
+                /*}*/
                  input{
                      border: none;
                      border-bottom: 1px solid #000;
-                     padding-bottom: 3px;
-                     font-size: 14px;
+                     font-size: 16px;
                      height: 20px;
                      color: #000;
                  }
+                 input[type="radio"] {
+                  vertical-align: middle;
+                 }
+                 input[type="checkbox"] {
+                  vertical-align: middle;
+                 }
+                 
                  textarea{
-                       border: none;
-                        border-bottom: 1px solid #000;
-                        font-size: 14px;
-                        height: 20px;
-                        color: #000;
-                        padding-bottom: 5px;
-                        vertical-align: sub;
+                        display: none;
                  }
                  select{
                   border: none;
@@ -52,11 +70,22 @@ class AcEditorPDF extends Component {
                   -webkit-appearance: none;
                   border-radius: 0px;
                   border-bottom: 1px solid #000;
-                  background-color: #fff;
-                  padding: 0px 6px;
+                  font-size: 16px;
                  }
                  .sany-pdf-bgColor{
                   display: none;
+                 }
+                 .ac-date-body{
+                   display: none ;
+                 }
+                 div{
+                 font-size: 16px !important;
+                 }
+                 p{
+                 font-size: 16px !important;
+                 }
+                 span{
+                 font-size: 16px !important;
                  }
             }
                        
@@ -72,7 +101,6 @@ class AcEditorPDF extends Component {
     return (
       <span className="editor-sany-pdf">
         <span onClick={this.onClickPrint}>{title}</span>
-        <div id="html2Pdf" className="html2Pdf"/>
       </span>
     );
   }

@@ -422,7 +422,6 @@ class AcEditorSany extends Component {
           {/*<span className="tooltip-text">保存</span>*/}
           {/*</div>*/}
 
-
           {/*对比*/}
           <div className="w-e-menu tooltip">
             <span className="iconfont icon-duibi" />
