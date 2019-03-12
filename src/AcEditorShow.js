@@ -31,9 +31,16 @@ class AcEditorShow extends Component {
   componentDidMount() {
 
     const {
-      htmlString, editorId, isActive = true, defaultData,
+      htmlString, editorId, isActive = true, defaultData, isWaterMarker, waterMarkerText,
     } = this.props;
+
+
     document.getElementById(editorId).innerHTML = htmlString;
+
+    // 添加水印
+    if (isWaterMarker) {
+      this.addWaterMarker(waterMarkerText, editorId);
+    }
 
     // 修改默认值
     if (defaultData && Array.isArray(defaultData) && defaultData.length) {
@@ -109,7 +116,6 @@ class AcEditorShow extends Component {
   }
 
 
-
   // 下拉框选择
   onChangeSelect = () => {
     const target = event.target;
@@ -156,7 +162,6 @@ class AcEditorShow extends Component {
   onClickEditBody = (event) => {
     const _this = this;
     const { isActive = true } = this.props;
-
     // 判断input 是否可以点击
     if (isActive) {
       // 判断是否为日期 input
@@ -173,6 +178,24 @@ class AcEditorShow extends Component {
         });
       }
     }
+  };
+
+
+  addWaterMarker = (str, editorId) => {
+    const can = document.createElement('canvas');
+    const body = document.getElementById(editorId);
+    body.appendChild(can);
+    can.width = 200; //画布的宽
+    can.height = 100;//画布的高度
+    can.style.display = 'none';
+    const cans = can.getContext('2d');
+    cans.rotate(-20 * Math.PI / 180); //画布里面文字的旋转角度
+    cans.font = '16px Microsoft JhengHei'; //画布里面文字的字体
+    cans.fillStyle = 'rgba(17, 17, 17, 0.50)';//画布里面文字的颜色
+    cans.textAlign = 'left'; //画布里面文字的水平位置
+    cans.textBaseline = 'Middle'; //画布里面文字的垂直位置
+    cans.fillText(str, can.width / 3, can.height / 2); //画布里面文字的间距比例
+    body.style.backgroundImage = `url(${can.toDataURL('image/png')})`; //把画布插入到body中
   };
 
 

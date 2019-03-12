@@ -9,14 +9,6 @@ class AcEditorPDF extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    // const { htmlString } = this.props;
-    // const backColor = `<div class="sany-pdf-bgColor" style="position: absolute;
-    //   width: 100%;
-    //   height: 100%;
-    //   background-color: rgba(0, 0, 0, 0.65);"></div>`;
-    // document.getElementById('html2Pdf').innerHTML = ;
-  }
 
   onClickPrint = () => {
     const { pdfId } = this.props;
@@ -39,13 +31,14 @@ class AcEditorPDF extends Component {
       background-color: rgba(0, 0, 0, 0.65);"></div>`;
 
     const WinPrint = window.open('', '', 'left=0,top=0, toolbar=0,scrollbars=0,status=0');
+
     WinPrint.document.write(`${backColor}${newDoc.innerHTML}`);
     WinPrint.document.write(`<style>
            @media print
             {
-                 /*body {*/
-                   /*-webkit-print-color-adjust: exact;*/
-                /*}*/
+                 body {
+                   -webkit-print-color-adjust: exact;
+                }
                  input{
                      border: none;
                      border-bottom: 1px solid #000;
@@ -71,6 +64,7 @@ class AcEditorPDF extends Component {
                   border-radius: 0px;
                   border-bottom: 1px solid #000;
                   font-size: 16px;
+                  color: #000;
                  }
                  .sany-pdf-bgColor{
                   display: none;
@@ -96,14 +90,15 @@ class AcEditorPDF extends Component {
     WinPrint.close();
   };
 
-  render() {
-    const { title = '导出PDF' } = this.props;
-    return (
-      <span className="editor-sany-pdf">
-        <span onClick={this.onClickPrint}>{title}</span>
-      </span>
-    );
-  }
+
+   render() {
+     const { title = '导出PDF' } = this.props;
+     return (
+       <span className="editor-sany-pdf">
+         <span onClick={this.onClickPrint}>{title}</span>
+       </span>
+     );
+   }
 }
 
 export default AcEditorPDF;
