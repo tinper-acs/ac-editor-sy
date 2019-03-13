@@ -1,4 +1,4 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,no-restricted-syntax */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,no-restricted-syntax,react/prop-types */
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
 import './index.less';
@@ -36,11 +36,15 @@ class AcEditorShow extends Component {
 
   componentDidMount() {
     this.initContent(this.props);
+    // 在父组件上绑定子组件方法
+    if (this.props.onRef) {
+      this.props.onRef(this);
+    }
+
   }
 
 
   // 初始化, 将html值插入dom元素中
-
   initContent = (param) => {
     const {
       htmlString, editorId, isActive = true, defaultData, waterMarkerText,
@@ -128,6 +132,12 @@ class AcEditorShow extends Component {
         item.setAttribute('disabled', true);
       }
     }
+  };
+
+
+  //保存方法回调
+  getHtml2String = () => {
+    return document.getElementById(this.props.editorId).innerHTML;
   };
 
 
@@ -222,10 +232,12 @@ class AcEditorShow extends Component {
 
     return (
       <div className="editor-sany">
-        <div
-          id={editorId}
-          onClick={this.onClickEditBody}
-        />
+        <div>
+          <div
+            id={editorId}
+            onClick={this.onClickEditBody}
+          />
+        </div>
         <div className="ac-date-body">
           <DatePicker
             open={showDate}

@@ -9,12 +9,13 @@ class AcEditorPDF extends Component {
     this.state = {};
   }
 
-
   onClickPrint = () => {
     const { pdfId } = this.props;
-    const htmlString = document.getElementById(pdfId).innerHTML;
+    const oldDoc = document.getElementById(pdfId).parentElement;
+    const htmlString = oldDoc.innerHTML;
     const newDoc = document.createElement('span');
     newDoc.innerHTML = htmlString;
+
     const textAreaList = newDoc.getElementsByTagName('textarea');
     // 在textarea后面插入兄弟节点 最后通过隐藏textarea
     for (const textArea of textAreaList) {
@@ -31,8 +32,9 @@ class AcEditorPDF extends Component {
       background-color: rgba(0, 0, 0, 0.65);"></div>`;
 
     const WinPrint = window.open('', '', 'left=0,top=0, toolbar=0,scrollbars=0,status=0');
-
+    // 拼接打印内容
     WinPrint.document.write(`${backColor}${newDoc.innerHTML}`);
+
     WinPrint.document.write(`<style>
            @media print
             {
@@ -91,14 +93,14 @@ class AcEditorPDF extends Component {
   };
 
 
-   render() {
-     const { title = '导出PDF' } = this.props;
-     return (
-       <span className="editor-sany-pdf">
+  render() {
+    const { title } = this.props;
+    return (
+      <span className="editor-sany-pdf">
          <span onClick={this.onClickPrint}>{title}</span>
        </span>
-     );
-   }
+    );
+  }
 }
 
 export default AcEditorPDF;
