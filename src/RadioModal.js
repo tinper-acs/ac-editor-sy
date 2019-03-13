@@ -45,7 +45,7 @@ class RadioModal extends Component {
           }
         }}
       >
-        <span className="iconfont icon-radio-checked" />
+        <span className="iconfont icon-RectangleCopy" />
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
           <p className="w-e-dp-title">插入单选框</p>
           <div className="ac-input-body">

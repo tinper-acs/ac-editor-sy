@@ -1,9 +1,6 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import './index.less';
-
-const propTypes = {};
 
 class EditorModal extends Component {
   constructor(props) {
@@ -14,6 +11,7 @@ class EditorModal extends Component {
   onClickOk = () => {
     this.props.onInsert();
   };
+
   // 关闭
   onClickClose = () => {
     this.props.cancel();
@@ -24,7 +22,7 @@ class EditorModal extends Component {
     return (
 
       <div className={visible ? 'pop-show' : 'pop-hidden'}>
-        <div className="pop-body" style={{ width: width }}>
+        <div className="pop-body" style={{ width }}>
           <div className="pop-title">
             <span className="pop-title-content">{title}</span>
           </div>

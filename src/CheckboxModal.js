@@ -44,7 +44,7 @@ class CheckboxModal extends Component {
              }
            }}
       >
-        <span className="iconfont icon-duoxuankuang"/>
+        <span className="iconfont icon-checkbox-checked"/>
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
           <p className="w-e-dp-title">插入多选框</p>
           <div className="ac-input-body">

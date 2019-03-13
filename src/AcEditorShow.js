@@ -27,18 +27,29 @@ class AcEditorShow extends Component {
     window.onClickCheckbox = id => this.onClickCheckbox(id);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { htmlString } = this.props;
+    if (nextProps.isShow && (htmlString !== nextProps.htmlString)) {
+      this.initContent(nextProps);
+    }
+  }
 
   componentDidMount() {
+    this.initContent(this.props);
+  }
 
+
+  // 初始化, 将html值插入dom元素中
+
+  initContent = (param) => {
     const {
-      htmlString, editorId, isActive = true, defaultData, isWaterMarker, waterMarkerText,
-    } = this.props;
-
+      htmlString, editorId, isActive = true, defaultData, waterMarkerText,
+    } = param;
 
     document.getElementById(editorId).innerHTML = htmlString;
 
     // 添加水印
-    if (isWaterMarker) {
+    if (waterMarkerText) {
       this.addWaterMarker(waterMarkerText, editorId);
     }
 
@@ -51,7 +62,11 @@ class AcEditorShow extends Component {
         } = item;
 
         const doc = document.getElementById(id);
-        // 日期
+        // id是否存在
+        if (!doc) {
+          break;
+        }
+        // 日期直接修改值
         if (type === 'date') {
           doc.setAttribute('value', dataList[0]);
           break;
@@ -113,7 +128,7 @@ class AcEditorShow extends Component {
         item.setAttribute('disabled', true);
       }
     }
-  }
+  };
 
 
   // 下拉框选择
@@ -185,8 +200,8 @@ class AcEditorShow extends Component {
     const can = document.createElement('canvas');
     const body = document.getElementById(editorId);
     body.appendChild(can);
-    can.width = 200; //画布的宽
-    can.height = 100;//画布的高度
+    can.width = 300; //画布的宽
+    can.height = 200;//画布的高度
     can.style.display = 'none';
     const cans = can.getContext('2d');
     cans.rotate(-20 * Math.PI / 180); //画布里面文字的旋转角度

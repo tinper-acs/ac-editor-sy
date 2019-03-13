@@ -1,7 +1,6 @@
 import React from 'react';
 import moment from 'moment';
 
-
 /**
  * 生成唯一字符串
  */
@@ -500,7 +499,7 @@ export var popList = [
   }, {
     cmd: 'letterSpacing',
     pTitle: '字间距',
-    icon: 'icon-fuwei',
+    icon: 'icon-zuijialiekuan',
     ulCss: 'w-e-list',
     liCss: 'w-e-item',
     selectList: [

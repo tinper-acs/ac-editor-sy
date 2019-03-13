@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import EditorModal from '../EditorModal';
 import './index.less';
+import AcEditorShow from '../AcEditorShow';
 
 class PreviewModal extends Component {
   constructor(props) {
@@ -10,15 +11,9 @@ class PreviewModal extends Component {
 
   // 获取插入的表格的行数和列数
   getShowInfo = () => {
-    const { idList = [] } = this.props;
-    console.log('idList', idList);
-    for (const item of idList) {
-      const { id, type } = item;
-       document.getElementById(id);
-       console.log(document.getElementById(id).value);
-    }
     this.onCancel();
   };
+
   // 关闭弹框
   onCancel = () => {
     this.props.colsePop('previewPopStatus');
@@ -34,9 +29,14 @@ class PreviewModal extends Component {
         title="预览"
         width="1000px"
       >
-        <div className="pop-content-preview">
-          <div dangerouslySetInnerHTML={{ __html: htmlString }}/>
-        </div>
+        <AcEditorShow
+          isShow={visible}
+          htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
+          editorId="pop-content-preview" // 组件 id
+          isActive // 组件是否可以操作
+          defaultData={[]} // 替换组件默认值
+          waterMarkerText="用友网络" // 添加水印
+        />
       </EditorModal>
     );
   }
