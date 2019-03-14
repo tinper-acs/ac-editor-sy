@@ -1,7 +1,7 @@
 /**
  *
- * @title 应用组件名称
- * @description 应用组件描述
+ * @title AcEditorSany
+ * @description 复杂文本编辑器，可以插入下拉、日期、输入框、单选框和多选框等dom元素
  *
  */
 
@@ -10,25 +10,17 @@ import { AcEditorSany } from '../../src/index';
 import '../../src/index.less';
 
 class Demo1 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  //
   saveFunc = () => {
     // doc 为文本编辑器里的html字符串
     // idList 为组件的id,type,direction
     const { doc, idList } = this.child.getHtml2String();
     console.log('文本编辑器内容为', doc, idList);
   };
-
-
   render() {
     const htmlString = '<h3>xxxx公司供应商合同</h3>';
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc}>保存</button>
+        <button onClick={this.saveFunc} style={{marginLeft:'20px',marginBottom:"10px"}}>保存</button>
         <AcEditorSany
           // 组件id
           editorId="acEditorSanyId"
@@ -39,7 +31,7 @@ class Demo1 extends Component {
           // 文本框默认值
           htmlString={htmlString}
           // 文本框默认最小高
-          height="500px"
+          height="300px"
         />
       </div>
     );

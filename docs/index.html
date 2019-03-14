@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>目录结构</title>
+    <title>ac-editor-sany</title>
     <link type="text/css" rel="stylesheet" href="assets/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="assets/css/bootstrap-responsive.css"/>
     <link type="text/css" rel="stylesheet" href="assets/css/pilcrow.css"/>
@@ -14,12 +14,177 @@
   <div class="container-fluid">
     <div class="row-fluid">
       <div class="span3"><ul class="nav nav-list">
+    <li class="sidebar-header-2"><a href="#ac-editor-sany">ac-editor-sany</a></li>
+    <li class="sidebar-header-2"><a href="#代码演示">代码演示</a></li>
+    <li class="sidebar-header-3"><a href="#1.-简介">1. 简介</a></li>
+    <li class="sidebar-header-3"><a href="#2.-安装">2. 安装</a></li>
+    <li class="sidebar-header-3"><a href="#3.-使用">3. 使用</a></li>
+    <li class="sidebar-header-3"><a href="#4.-aceditorsany-api">4. AcEditorSany API</a></li>
+    <li class="sidebar-header-3"><a href="#5.-aceditorshow-api">5. AcEditorShow API</a></li>
+    <li class="sidebar-header-3"><a href="#6.-aceditorshow-api">6. AcEditorShow API</a></li>
     <li class="sidebar-header-3"><a href="#目录结构">目录结构</a></li>
     <li class="sidebar-header-3"><a href="#常用命令">常用命令</a></li>
 </ul>
       </div>
-      <div class="span9 main"><p>ac-tools init 时模版文件，用于react组件开发的模版</p>
-<p><b>开始之前确保安装了 ac-tools的全局包</b></p>
+      <div class="span9 main"><h2 id="ac-editor-sany">ac-editor-sany</h2>
+<p>复杂文本编辑器</p>
+<p><a href="https://www.npmjs.com/package/ac-editor-sany"><img src="https://img.shields.io/npm/v/ac-editor-sany.svg" alt="npm version"></a>
+<a href="https://npmjs.org/package/ac-editor-sany"><img src="http://img.shields.io/npm/dt/ac-editor-sany.svg?style=flat" alt="NPM downloads"></a></p>
+<p>在线演示：<a href="https://tinper-acs.github.io/ac-editor-sany/">https://tinper-acs.github.io/ac-editor-sany/</a></p>
+<h2 id="代码演示">代码演示</h2>
+<h3 id="1.-简介">1. 简介</h3>
+<p>React复杂文本编辑器组件，可插入日期、下拉框、单选框、多选框、文本输入框等dom元素的复杂文本编辑器，同时提供文本编辑生成的页面支持动态交互、生成水印和内容动态替换功能，生成的页面支持前端打印功能。</p>
+<h3 id="2.-安装">2. 安装</h3>
+<ol class="list">
+<li>通过<code>npm</code>安装<pre class="hljs"><code> npm install ac-editor-sany --save</code></pre></li>
+<li>国内镜像通过<code>cnpm</code>安装<pre class="hljs"><code> cnpm install ac-editor-sany --save</code></pre></li>
+<li>用友内网通过<code>ynpm</code>安装<pre class="hljs"><code> ynpm install ac-editor-sany --save</code></pre></li>
+</ol>
+<h3 id="3.-使用">3. 使用</h3>
+<pre class="hljs"><code><span class="hljs-keyword">import</span> { AcEditorSany } <span class="hljs-keyword">from</span> <span class="hljs-string">'ac-editor-sany'</span>;
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+  saveFunc = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-comment">// doc 为文本编辑器里的html字符串</span>
+    <span class="hljs-comment">// idList 为组件的id,type,direction</span>
+    <span class="hljs-keyword">const</span> { doc, idList } = <span class="hljs-keyword">this</span>.child.getHtml2String();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'文本编辑器内容为'</span>, doc, idList);
+  };
+  render() {
+    <span class="hljs-keyword">const</span> htmlString = <span class="hljs-string">'&lt;h3&gt;xxxx公司供应商合同&lt;/h3&gt;'</span>;
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"demoPadding"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{this.saveFunc}</span>&gt;</span>保存<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">AcEditorSany</span>
+          // 组件<span class="hljs-attr">id</span>
+          <span class="hljs-attr">editorId</span>=<span class="hljs-string">"acEditorSanyId"</span>
+          // 设置<span class="hljs-attr">ref</span>属性
+          <span class="hljs-attr">onRef</span>=<span class="hljs-string">{(ref)</span> =&gt;</span> {
+            this.child = ref;
+          }}
+          // 文本框默认值
+          htmlString={htmlString}
+          // 文本框默认最小高
+          height="300px"
+        /&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    );
+  }
+}
+
+export default Demo1;
+</span></code></pre><h3 id="4.-aceditorsany-api">4. AcEditorSany API</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>editorId</td>
+<td>string</td>
+<td>必填项</td>
+<td>文本编辑器唯一id</td>
+</tr>
+<tr>
+<td>onRef</td>
+<td>function</td>
+<td>非必须</td>
+<td>设置ref属性</td>
+</tr>
+<tr>
+<td>htmlString</td>
+<td>string</td>
+<td>&quot;&quot;</td>
+<td>文本编辑器默认字符串</td>
+</tr>
+<tr>
+<td>height</td>
+<td>string</td>
+<td>&quot;0px&quot;</td>
+<td>文本编辑器默认最小高</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5.-aceditorshow-api">5. AcEditorShow API</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>editorId</td>
+<td>string</td>
+<td>必填项</td>
+<td>展示文本内容组件唯一id</td>
+</tr>
+<tr>
+<td>onRef</td>
+<td>function</td>
+<td>非必须</td>
+<td>设置ref属性</td>
+</tr>
+<tr>
+<td>htmlString</td>
+<td>string</td>
+<td>&quot;&quot;</td>
+<td>展示文本内容</td>
+</tr>
+<tr>
+<td>isActive</td>
+<td>boolean</td>
+<td>true</td>
+<td>文本内容可交互</td>
+</tr>
+<tr>
+<td>defaultData</td>
+<td>array</td>
+<td>[]</td>
+<td>文本内容被替换信息</td>
+</tr>
+<tr>
+<td>waterMarkerText</td>
+<td>string</td>
+<td>“”</td>
+<td>生成水印</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6.-aceditorshow-api">6. AcEditorShow API</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pdfId</td>
+<td>string</td>
+<td>必填项</td>
+<td>被打印部分id</td>
+</tr>
+<tr>
+<td>title</td>
+<td>string</td>
+<td>element</td>
+<td>&quot;打印&quot;</td>
+<td>打印按钮</td>
+</tr>
+</tbody>
+</table>
 <h3 id="目录结构">目录结构</h3>
 <pre class="hljs"><code>.
 ├── config
@@ -29,7 +194,9 @@
 │   ├── webpack.config.prod.js      <span class="hljs-comment"># 发布组件环境配置</span>
 ├── demo
 │   ├── demolist
-│   │   └── Demo1.js                <span class="hljs-comment"># 实例1，调用src中的组件，进行展示</span>
+│   │   └── Demo1.js                <span class="hljs-comment"># 实例1，调用src中的 AcEditorSany 组件，进行展示</span>
+│   │   └── Demo2.js                <span class="hljs-comment"># 实例1，调用src中的 AcEditorShow 组件，进行展示</span>
+│   │   └── Demo3.js                <span class="hljs-comment"># 实例1，调用src中的 AcEditorPDF 组件，进行展示</span>
 │   ├── demo.scss                   <span class="hljs-comment"># demo中需要的基础样式</span>
 │   ├── index-demo-base.js          <span class="hljs-comment"># demo模版文件</span>
 │   └── index.js                    <span class="hljs-comment"># ac-tools sample生成的文件</span>
@@ -37,25 +204,36 @@
 ├── docs
 │   ├── demolist
 │   │   └── Demo1.js                <span class="hljs-comment"># 实例1，调用src中的组件，进行展示</span>
+│   │   └── Demo2.js                <span class="hljs-comment"># 实例2，调用src中的组件，进行展示</span>
+│   │   └── Demo3.js                <span class="hljs-comment"># 实例3，调用src中的组件，进行展示</span>
 │   ├── demo.scss                   <span class="hljs-comment"># demo中需要的基础样式</span>
 │   ├── index-demo-base.js          <span class="hljs-comment"># demo模版文件</span>
 │   └── index.js                    <span class="hljs-comment"># ac-tools sample生成的文件</span>
 ├── ghpages                         <span class="hljs-comment"># 实例打包文件</span>
-├── mock                            <span class="hljs-comment"># mock数据 </span>
+├── mock                            <span class="hljs-comment"># mock数据</span>
 ├── src
 │   ├── assets                      <span class="hljs-comment"># ac-tools md需要的静态文件</span>
-│   ├── temp                        
-│   │   └── index.js                <span class="hljs-comment"># 组件js逻辑 </span>
-│   │   └── style.scss                 <span class="hljs-comment"># 组件样式</span>
+│   ├── EditorModal
+│   │   └── index.js                <span class="hljs-comment"># 弹框组件</span>
+│   │   └── index.less                    <span class="hljs-comment"># 弹框组件样式</span>
+│   ├── PreviewModal
+│   │   └── index.js                <span class="hljs-comment"># 文本编辑内容预览</span>
+│   │   └── index.less                    <span class="hljs-comment"># 文本编辑器预览样式</span>
+│   └── AcEditorPDF.js              <span class="hljs-comment"># 打印PDF组件</span>
+│   └── AcEditorSany.js             <span class="hljs-comment"># 复杂文本编辑器组件</span>
+│   └── AcEditorSave.js             <span class="hljs-comment"># 获取编辑器里的内容组件</span>
+│   └── AcEditorSeal.js             <span class="hljs-comment"># 页面盖章组件</span>
+│   └── AcEditorShow.js             <span class="hljs-comment"># 展示文本内容组件</span>
 │   └── index.js                    <span class="hljs-comment"># 组件出口</span>
+│   └── index.less                  <span class="hljs-comment"># 组件样式</span>
 ├── static                          <span class="hljs-comment"># 模版静态文件</span>
-├── .babelrc    
-├── .editorconfig                   <span class="hljs-comment"># 给编辑器的规范  </span>
-├── .eslitrc                        <span class="hljs-comment"># 代码规范(采用airbnb规范，默认不打开的，在webpack.config.dev.js 中注释部分放开就启用)                      </span>
-├── .package.json                  
+├── .babelrc
+├── .editorconfig                   <span class="hljs-comment"># 给编辑器的规范</span>
+├── .eslitrc                        <span class="hljs-comment"># 代码规范(采用airbnb规范，默认不打开的，在webpack.config.dev.js 中注释部分放开就启用)</span>
+├── .package.json
 └── .postcss.config.js</code></pre><h3 id="常用命令">常用命令</h3>
 <p>将 demo合并到demolist的实例中</p>
-<pre class="hljs"><code><span class="hljs-keyword">ac</span>-tools <span class="hljs-keyword">sample</span> </code></pre><p>启动开发环境</p>
+<pre class="hljs"><code><span class="hljs-keyword">ac</span>-tools <span class="hljs-keyword">sample</span></code></pre><p>启动开发环境</p>
 <pre class="hljs"><code>npm <span class="hljs-keyword">run</span><span class="bash"> dev</span></code></pre><p>实例代码打包</p>
 <pre class="hljs"><code>npm <span class="hljs-keyword">run</span><span class="bash"> deploy</span></code></pre><p>将markdown 文件转为静态文件，并上传github.io网站</p>
 <pre class="hljs"><code>ac-tools <span class="hljs-built_in">md</span></code></pre><p>生成组件</p>
