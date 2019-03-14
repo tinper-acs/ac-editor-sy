@@ -11,10 +11,6 @@ import '../../src/index.less';
 
 
 class Demo3 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
 
   render() {
     const defaultData = [

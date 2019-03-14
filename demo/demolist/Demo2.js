@@ -10,11 +10,6 @@ import { AcEditorShow } from '../../src/index';
 import '../../src/index.less';
 
 class Demo2 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
 
   saveFunc = () => {
     // 为文本编辑器里的html字符串
@@ -52,5 +47,4 @@ class Demo2 extends Component {
     );
   }
 }
-
 export default Demo2;
