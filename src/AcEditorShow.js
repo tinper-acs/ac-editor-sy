@@ -1,18 +1,31 @@
 /* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,no-restricted-syntax,react/prop-types */
 import React, { Component } from 'react';
-import DatePicker from 'tinper-bee/lib/Datepicker';
-import './index.less';
-import zhCN from 'rc-calendar/lib/locale/zh_CN';
 import moment from 'moment';
+import PropTypes from 'prop-types';
+import DatePicker from 'tinper-bee/lib/Datepicker';
+import zhCN from 'rc-calendar/lib/locale/zh_CN';
 
+import { initSelect, initRadio, initCheckbox } from './utils';
 
-import {
-  initSelect,
-  initRadio,
-  initCheckbox,
-} from './utils';
+import './index.less';
 
 const formatRule = 'YYYY-MM-DD';
+
+
+const propTypes = {
+  editorId: PropTypes.string,  // 布局方向 horizontal(水平) vertical(垂直)
+  htmlString: PropTypes.string,  // 布局方向 horizontal(水平) vertical(垂直)
+  isActive: PropTypes.bool,    // 整组失效
+  defaultData: PropTypes.array,	// 默认选中的选项
+};
+
+const defaultProps = {
+  editorId: '',
+  htmlString: '',
+  isActive: true,
+  defaultData: [],
+};
+
 
 class AcEditorShow extends Component {
   constructor(props) {
@@ -27,6 +40,7 @@ class AcEditorShow extends Component {
     window.onClickCheckbox = id => this.onClickCheckbox(id);
   }
 
+
   componentWillReceiveProps(nextProps) {
     const { htmlString } = this.props;
     if (nextProps.isShow && (htmlString !== nextProps.htmlString)) {
@@ -40,9 +54,7 @@ class AcEditorShow extends Component {
     if (this.props.onRef) {
       this.props.onRef(this);
     }
-
   }
-
 
   // 初始化, 将html值插入dom元素中
   initContent = (param) => {
@@ -136,9 +148,7 @@ class AcEditorShow extends Component {
 
 
   //保存方法回调
-  getHtml2String = () => {
-    return document.getElementById(this.props.editorId).innerHTML;
-  };
+  getHtml2String = () => document.getElementById(this.props.editorId).innerHTML;
 
 
   // 下拉框选择
@@ -257,4 +267,6 @@ class AcEditorShow extends Component {
   }
 }
 
+AcEditorShow.propTypes = propTypes;
+AcEditorShow.defaultProps = defaultProps;
 export default AcEditorShow;

@@ -1,6 +1,6 @@
 {
   "name": "ac-editor-sany",
-  "version": "0.0.21",
+  "version": "0.0.23",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
