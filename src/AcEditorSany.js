@@ -353,11 +353,11 @@ class AcEditorSany extends Component {
   // 选择日期，将日期的值赋值给 选中的input
   onChangeDate = (param) => {
     const { currentDateId } = this.state;
+    this.setState({ showDate: false });
     const date = param.format(formatRule);
     document.getElementById(currentDateId).value = date;
     document.getElementById(currentDateId)
       .setAttribute('value', date);
-    this.setState({ showDate: false });
   };
 
   getChangeText = () => {

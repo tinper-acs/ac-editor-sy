@@ -13,10 +13,10 @@ const formatRule = 'YYYY-MM-DD';
 
 
 const propTypes = {
-  editorId: PropTypes.string,  // 布局方向 horizontal(水平) vertical(垂直)
-  htmlString: PropTypes.string,  // 布局方向 horizontal(水平) vertical(垂直)
-  isActive: PropTypes.bool,    // 整组失效
-  defaultData: PropTypes.array,	// 默认选中的选项
+  editorId: PropTypes.string,
+  htmlString: PropTypes.string,
+  isActive: PropTypes.bool,
+  defaultData: PropTypes.array,
 };
 
 const defaultProps = {
@@ -38,11 +38,13 @@ class AcEditorShow extends Component {
     window.onChangeSelect = () => this.onChangeSelect();
     window.onClickRadio = id => this.onClickRadio(id);
     window.onClickCheckbox = id => this.onClickCheckbox(id);
+    window.onKeyUpTextArea = id => this.onKeyUpTextArea(id);
   }
 
 
   componentWillReceiveProps(nextProps) {
     const { htmlString } = this.props;
+    // 阅览弹框
     if (nextProps.isShow && (htmlString !== nextProps.htmlString)) {
       this.initContent(nextProps);
     }
@@ -128,18 +130,19 @@ class AcEditorShow extends Component {
 
     // 是否让组件 disabled
     if (!isActive) {
+      const activeDoc=document.getElementById(editorId);
       // 修改 textarea
-      const textAreaList = document.getElementsByTagName('textarea');
+      const textAreaList = activeDoc.getElementsByTagName('textarea');
       for (const item of textAreaList) {
         item.setAttribute('disabled', true);
       }
       // 修改 input
-      const inputList = document.getElementsByTagName('input');
+      const inputList = activeDoc.getElementsByTagName('input');
       for (const item of inputList) {
         item.setAttribute('disabled', true);
       }
       // 修改 select
-      const selectList = document.getElementsByTagName('select');
+      const selectList = activeDoc.getElementsByTagName('select');
       for (const item of selectList) {
         item.setAttribute('disabled', true);
       }
@@ -183,14 +186,20 @@ class AcEditorShow extends Component {
     target.setAttribute('checked', true);
   };
 
+  // 实时更新 TextArea值
+  onKeyUpTextArea = (id) => {
+    const doc = document.getElementById(id);
+    doc.innerHTML = doc.value;
+  };
+
   // 选择日期，将日期的值赋值给 选中的input
   onChangeDate = (param) => {
     const { currentDateId } = this.state;
+    this.setState({ showDate: false });
     const date = param.format(formatRule);
     document.getElementById(currentDateId).value = date;
     document.getElementById(currentDateId)
       .setAttribute('value', date);
-    this.setState({ showDate: false });
   };
 
   //编辑点击事件
