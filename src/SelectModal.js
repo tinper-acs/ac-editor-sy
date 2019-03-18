@@ -23,10 +23,7 @@ class SelectModal extends Component {
     this.setState({ dropStatus: false });
   };
 
-  // 打开弹框
-  onShow = () => {
-    this.props.showCloseBar('selectStatus');
-  };
+
 
   render() {
     const { dropStatus } = this.state;
@@ -34,8 +31,11 @@ class SelectModal extends Component {
       <div className="w-e-menu"
            onMouseOver={() => {
              if (!dropStatus) {
-               this.onShow();
+               this.props.showCloseBar('selectStatus');
              }
+           }}
+           onMouseLeave={() => {
+             this.props.showCloseBar();
            }}
       >
         <span className="iconfont icon-xialakuang"/>

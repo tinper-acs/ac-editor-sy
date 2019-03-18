@@ -29,19 +29,17 @@ class CheckboxModal extends Component {
     this.setState({ dropStatus: false });
   };
 
-  // 打开弹框
-  onShow = () => {
-    this.props.showCloseBar('checkboxStatus');
-  };
-
   render() {
     const { dropStatus } = this.state;
     return (
       <div className="w-e-menu"
            onMouseOver={() => {
              if (!dropStatus) {
-               this.onShow();
+               this.props.showCloseBar('checkboxStatus');
              }
+           }}
+           onMouseLeave={() => {
+             this.props.showCloseBar();
            }}
       >
         <span className="iconfont icon-checkbox-checked"/>

@@ -24,7 +24,7 @@ class FixedModal extends Component {
   getInputSetting = () => {
     const { fixedDate } = this.state;
     this.props.onInsertFixed(fixedDate);
-    this.setState({ fixedDate: this.props.fixedDate,dropStatus: false });
+    this.setState({ fixedDate: this.props.fixedDate, dropStatus: false });
   };
 
   // 打开弹框
@@ -45,16 +45,14 @@ class FixedModal extends Component {
       dataIndex: 'status',
       key: 'status',
       width: '50px',
-      render: (text, record, index) => {
-        return (
-          <Checkbox
-            checked={text}
-            onClick={() => {
-              this.onClickCheck(index, 'status');
-            }}
-          />
-        );
-      }
+      render: (text, record, index) => (
+        <Checkbox
+          checked={text}
+          onClick={() => {
+            this.onClickCheck(index, 'status');
+          }}
+        />
+      ),
     },
     {
       title: '显示名称',
@@ -88,17 +86,21 @@ class FixedModal extends Component {
 
 
   render() {
-    const { dropStatus,fixedDate } = this.state;
+    const { dropStatus, fixedDate } = this.state;
 
     return (
-      <div className="w-e-menu"
-           onMouseOver={() => {
-             if (!dropStatus) {
-               this.onShow();
-             }
-           }}
+      <div
+        className="w-e-menu"
+        onMouseOver={() => {
+          if (!dropStatus) {
+            this.props.showCloseBar('fixedStatus');
+          }
+        }}
+        onMouseLeave={() => {
+          this.props.showCloseBar();
+        }}
       >
-        <span className="iconfont icon-menu"/>
+        <span className="iconfont icon-menu" />
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '250px' }}>
           <p className="w-e-dp-title">插入固定字段</p>
           <Table

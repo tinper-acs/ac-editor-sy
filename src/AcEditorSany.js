@@ -73,6 +73,7 @@ class AcEditorSany extends Component {
   // 定义最后光标对象
   lastEditRange = null;
   hrefTitle = '';
+  timeCount = 0;  // 缓存定时器
 
 
   componentDidMount() {
@@ -331,6 +332,19 @@ class AcEditorSany extends Component {
 
   // 关闭或者打开弹框
   showCloseBar = (param) => {
+    if (param) {
+      this.changeBarStatus(param);
+      clearInterval(this.timeCount);
+    } else {
+      // 设置定时器
+      this.timeCount = setTimeout(() => {
+        this.changeBarStatus();
+      }, 300);
+    }
+  };
+
+  // 修改bar 状态
+  changeBarStatus = (param) => {
     const { barObj } = this.state;
     for (const item in barObj) {
       barObj[item] = false;
@@ -474,6 +488,13 @@ class AcEditorSany extends Component {
             onInsertTable={this.onInsertTable}
           />
 
+          {/*链接*/}
+          <HrefModal
+            dropStatus={hrefStatus}
+            showCloseBar={this.showCloseBar}
+            onInsertURl={this.onInsertURl}
+          />
+
           {/*标题*/}
           <div
             className="w-e-menu"
@@ -481,6 +502,10 @@ class AcEditorSany extends Component {
               if (!hTitle) {
                 this.showCloseBar('hTitle');
               }
+            }}
+
+            onMouseLeave={() => {
+              this.showCloseBar();
             }}
           >
             <span className="iconfont icon-zitibiaoti"/>
@@ -524,12 +549,15 @@ class AcEditorSany extends Component {
                 this.showCloseBar('textAlign');
               }
             }}
+
+            onMouseLeave={() => {
+              this.showCloseBar();
+            }}
           >
             <span className="iconfont icon-align-left"/>
             <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
-
                 {/*对齐方式*/}
                 {textAlignList.map((item) => {
                   const { cmd, title, icon } = item;
@@ -567,7 +595,13 @@ class AcEditorSany extends Component {
                   onMouseOver={() => {
                     if (!barObj[cmd]) {
                       this.showCloseBar(cmd);
+                      // 清空定时器
+                      clearInterval(this.timeCount);
                     }
+                  }}
+
+                  onMouseLeave={() => {
+                    this.showCloseBar();
                   }}
                 >
                   <span className={`iconfont ${icon}`}/>
@@ -609,16 +643,7 @@ class AcEditorSany extends Component {
           }
 
 
-          {/*链接*/}
-          <HrefModal
-            dropStatus={hrefStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertURl={this.onInsertURl}
-          />
-
-
           {/*插入图片*/}
-
           {/*<div className="w-e-menu">*/}
           {/*<span className="iconfont icon-image"/>*/}
           {/*</div>*/}

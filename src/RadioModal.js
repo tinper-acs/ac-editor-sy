@@ -29,10 +29,6 @@ class RadioModal extends Component {
     this.setState({ dropStatus: false });
   };
 
-  // 打开弹框
-  onShow = () => {
-    this.props.showCloseBar('radioStatus');
-  };
 
   render() {
     const { dropStatus } = this.state;
@@ -41,8 +37,11 @@ class RadioModal extends Component {
         className="w-e-menu"
         onMouseOver={() => {
           if (!dropStatus) {
-            this.onShow();
+            this.props.showCloseBar('radioStatus');
           }
+        }}
+        onMouseLeave={() => {
+          this.props.showCloseBar();
         }}
       >
         <span className="iconfont icon-RectangleCopy" />

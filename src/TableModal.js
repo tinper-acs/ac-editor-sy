@@ -25,11 +25,6 @@ class TableModal extends Component {
     this.setState({ dropStatus: false });
   };
 
-  // 打开弹框
-  onShow = () => {
-    this.props.showCloseBar('tableStatus');
-  };
-
   render() {
     const { dropStatus } = this.state;
     return (
@@ -37,8 +32,11 @@ class TableModal extends Component {
         className="w-e-menu"
         onMouseOver={() => {
           if (!dropStatus) {
-            this.onShow();
+            this.props.showCloseBar('tableStatus');
           }
+        }}
+        onMouseLeave={() => {
+          this.props.showCloseBar();
         }}
       >
         <span className="iconfont icon-table"/>
