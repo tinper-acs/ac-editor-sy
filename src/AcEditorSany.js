@@ -19,7 +19,6 @@ import {
   initDate,
   initFixedRadio,
   initFixedCheckbox,
-  fixedDate,
   popList,
   textAlignList,
   iconCmdList,
@@ -422,7 +421,7 @@ class AcEditorSany extends Component {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
-    const { editorId, height } = this.props;
+    const { editorId, height,fixedDate } = this.props;
 
     return (
       <div className="editor-sany">
