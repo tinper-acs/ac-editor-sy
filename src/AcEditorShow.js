@@ -130,7 +130,7 @@ class AcEditorShow extends Component {
 
     // 是否让组件 disabled
     if (!isActive) {
-      const activeDoc=document.getElementById(editorId);
+      const activeDoc = document.getElementById(editorId);
       // 修改 textarea
       const textAreaList = activeDoc.getElementsByTagName('textarea');
       for (const item of textAreaList) {
@@ -207,7 +207,9 @@ class AcEditorShow extends Component {
     const _this = this;
     const { isActive = true } = this.props;
     // 判断input 是否可以点击
-    if (isActive) {
+    const { showDate } = _this.state;
+    debugger
+    if (isActive && !showDate) {
       // 判断是否为日期 input
       const target = event.target;
       if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'date') {
@@ -221,6 +223,10 @@ class AcEditorShow extends Component {
           showDate: true,
         });
       }
+    } else {
+      _this.setState({
+        showDate: false,
+      });
     }
   };
 
@@ -235,7 +241,7 @@ class AcEditorShow extends Component {
     const cans = can.getContext('2d');
     cans.rotate(-20 * Math.PI / 180); //画布里面文字的旋转角度
     cans.font = '16px Microsoft JhengHei'; //画布里面文字的字体
-    cans.fillStyle = 'rgba(17, 17, 17, 0.50)';//画布里面文字的颜色
+    cans.fillStyle = 'rgba(17, 17, 17, 0.20)';//画布里面文字的颜色
     cans.textAlign = 'left'; //画布里面文字的水平位置
     cans.textBaseline = 'Middle'; //画布里面文字的垂直位置
     cans.fillText(str, can.width / 3, can.height / 2); //画布里面文字的间距比例
