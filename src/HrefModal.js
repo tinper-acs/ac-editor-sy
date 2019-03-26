@@ -27,7 +27,7 @@ class InputModal extends Component {
   render() {
     const { dropStatus } = this.state;
     return (
-      <div
+      <span
         className="w-e-menu"
         onMouseOver={() => {
           if (!dropStatus) {
@@ -57,7 +57,7 @@ class InputModal extends Component {
             插入
           </div>
         </div>
-      </div>
+      </span>
     );
   }
 }

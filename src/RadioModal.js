@@ -33,7 +33,7 @@ class RadioModal extends Component {
   render() {
     const { dropStatus } = this.state;
     return (
-      <div
+      <span
         className="w-e-menu"
         onMouseOver={() => {
           if (!dropStatus) {
@@ -66,7 +66,7 @@ class RadioModal extends Component {
           </div>
           <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
         </div>
-      </div>
+      </span>
     );
   }
 }

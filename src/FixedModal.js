@@ -89,7 +89,7 @@ class FixedModal extends Component {
     const { dropStatus, fixedDate } = this.state;
 
     return (
-      <div
+      <span
         className="w-e-menu"
         onMouseOver={() => {
           if (!dropStatus) {
@@ -110,7 +110,7 @@ class FixedModal extends Component {
           />
           <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
         </div>
-      </div>
+      </span>
     );
   }
 }

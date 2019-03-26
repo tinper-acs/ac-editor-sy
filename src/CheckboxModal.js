@@ -32,7 +32,7 @@ class CheckboxModal extends Component {
   render() {
     const { dropStatus } = this.state;
     return (
-      <div className="w-e-menu"
+      <span className="w-e-menu"
            onMouseOver={() => {
              if (!dropStatus) {
                this.props.showCloseBar('checkboxStatus');
@@ -64,7 +64,7 @@ class CheckboxModal extends Component {
           </div>
           <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
         </div>
-      </div>
+      </span>
     );
   }
 }

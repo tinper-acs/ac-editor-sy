@@ -28,7 +28,7 @@ class TableModal extends Component {
   render() {
     const { dropStatus } = this.state;
     return (
-      <div
+      <span
         className="w-e-menu"
         onMouseOver={() => {
           if (!dropStatus) {
@@ -56,7 +56,7 @@ class TableModal extends Component {
           </div>
           <div className="ac-pop-action" onClick={this.getTableRowCol}>插入</div>
         </div>
-      </div>
+      </span>
     );
   }
 }

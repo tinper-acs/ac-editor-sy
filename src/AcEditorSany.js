@@ -71,7 +71,9 @@ class AcEditorSany extends Component {
 
   // 定义最后光标对象
   lastEditRange = null;
+
   hrefTitle = '';
+
   timeCount = 0;  // 缓存定时器
 
 
@@ -332,12 +334,14 @@ class AcEditorSany extends Component {
   // 关闭或者打开弹框
   showCloseBar = (param) => {
     if (param) {
+      const count = this.timeCount;
       this.changeBarStatus(param);
-      clearInterval(this.timeCount);
+      window.clearInterval(count);
     } else {
       // 设置定时器
-      this.timeCount = setTimeout(() => {
-        this.changeBarStatus();
+      const _this=this;
+      this.timeCount = setTimeout(function(){
+        _this.changeBarStatus();
       }, 300);
     }
   };
@@ -421,7 +425,7 @@ class AcEditorSany extends Component {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
-    const { editorId, height,fixedDate } = this.props;
+    const { editorId, height, fixedDate } = this.props;
 
     return (
       <div className="editor-sany">
@@ -429,16 +433,16 @@ class AcEditorSany extends Component {
         <div className="w-e-toolbar">
 
           {/*对比*/}
-          <div className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi"/>
+          <span className="w-e-menu tooltip">
+            <span className="iconfont icon-duibi" />
             <span className="tooltip-text">对比</span>
-          </div>
+          </span>
 
           {/*预览*/}
-          <div className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
+          <span className="w-e-menu tooltip">
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
             <span className="tooltip-text">预览</span>
-          </div>
+          </span>
 
           {/*单选*/}
           <RadioModal
@@ -454,16 +458,16 @@ class AcEditorSany extends Component {
           />
 
           {/*文本 输入*/}
-          <div className="w-e-menu tooltip">
-            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput}/>
+          <span className="w-e-menu tooltip">
+            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput} />
             <span className="tooltip-text">输入框</span>
-          </div>
+          </span>
 
           {/*日期*/}
-          <div className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate}/>
+          <span className="w-e-menu tooltip">
+            <span className="iconfont icon-calendar" onClick={this.onDate} />
             <span className="tooltip-text">日期</span>
-          </div>
+          </span>
 
           {/*下拉框*/}
           <SelectModal
@@ -495,7 +499,7 @@ class AcEditorSany extends Component {
           />
 
           {/*标题*/}
-          <div
+          <span
             className="w-e-menu"
             onMouseOver={() => {
               if (!hTitle) {
@@ -507,7 +511,7 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-zitibiaoti"/>
+            <span className="iconfont icon-zitibiaoti" />
             <div className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
               <ul className="w-e-list" onClick={this.onInsertTitle}>
@@ -519,28 +523,29 @@ class AcEditorSany extends Component {
                 <li className="w-e-item"><p className="clearWidth">正文</p></li>
               </ul>
             </div>
-          </div>
+          </span>
 
           {/*加粗*/}
           {
             iconCmdList.map((item) => {
               const { cmd, icon, title } = item;
               return (
-                <div className="w-e-menu tooltip" key={uuid()}>
+                <span className="w-e-menu tooltip" key={uuid()}>
                   <button onClick={() => {
                     this.insertCommand(cmd);
-                  }}>
-                    <span className={`iconfont ${icon}`}/>
+                  }}
+                  >
+                    <span className={`iconfont ${icon}`} />
                   </button>
                   <span className="tooltip-text">{title}</span>
-                </div>
+                </span>
               );
             })
           }
 
 
           {/*文字对齐*/}
-          <div
+          <span
             className="w-e-menu"
             // 清空所有的弹框
             onMouseOver={() => {
@@ -553,7 +558,7 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-align-left"/>
+            <span className="iconfont icon-align-left" />
             <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
@@ -567,7 +572,7 @@ class AcEditorSany extends Component {
                       onClick={event => this.onPopSelect(cmd, event)}
                     >
                       <button>
-                        <span value={cmd} className={`iconfont ${icon}`}/>
+                        <span value={cmd} className={`iconfont ${icon}`} />
                         <span className="text-align-icon">{title}</span>
                       </button>
                     </li>
@@ -575,7 +580,7 @@ class AcEditorSany extends Component {
                 })}
               </ul>
             </div>
-          </div>
+          </span>
 
 
           {/*字体大小*/}
@@ -587,7 +592,7 @@ class AcEditorSany extends Component {
                 icon, pTitle, width, cmd, selectList, ulCss, liCss,
               } = pop;
               return (
-                <div
+                <span
                   key={uuid()}
                   className="w-e-menu"
                   // 关闭所有的弹框
@@ -603,7 +608,7 @@ class AcEditorSany extends Component {
                     this.showCloseBar();
                   }}
                 >
-                  <span className={`iconfont ${icon}`}/>
+                  <span className={`iconfont ${icon}`} />
                   <div
                     className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
                     style={{ width }}
@@ -636,7 +641,7 @@ class AcEditorSany extends Component {
                       }
                     </ul>
                   </div>
-                </div>
+                </span>
               );
             })
           }
