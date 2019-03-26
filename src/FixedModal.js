@@ -101,7 +101,7 @@ class FixedModal extends Component {
         }}
       >
         <span className="iconfont icon-menu" />
-        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '250px' }}>
+        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '250px',marginTop:'30px' }}>
           <p className="w-e-dp-title">插入固定字段</p>
           <Table
             rowKey={(r, i) => i} //生成行的key

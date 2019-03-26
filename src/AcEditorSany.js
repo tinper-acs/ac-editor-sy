@@ -71,9 +71,7 @@ class AcEditorSany extends Component {
 
   // 定义最后光标对象
   lastEditRange = null;
-
   hrefTitle = '';
-
   timeCount = 0;  // 缓存定时器
 
 
@@ -334,15 +332,15 @@ class AcEditorSany extends Component {
   // 关闭或者打开弹框
   showCloseBar = (param) => {
     if (param) {
-      const count = this.timeCount;
       this.changeBarStatus(param);
+      let count=this.timeCount;
       window.clearInterval(count);
     } else {
       // 设置定时器
-      const _this=this;
-      this.timeCount = setTimeout(function(){
-        _this.changeBarStatus();
-      }, 300);
+      let _this=this;
+      this.timeCount = setTimeout(function() {
+          _this.changeBarStatus();
+      }, 500);
     }
   };
 
@@ -391,7 +389,6 @@ class AcEditorSany extends Component {
     this.props.saveFunc(textHtml);
   };
 
-
   //保存方法回调
   getHtml2String = () => {
     const doc = document.getElementById(this.props.editorId).innerHTML;
@@ -425,7 +422,7 @@ class AcEditorSany extends Component {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
-    const { editorId, height, fixedDate } = this.props;
+    const { editorId, height,fixedDate } = this.props;
 
     return (
       <div className="editor-sany">
@@ -434,13 +431,13 @@ class AcEditorSany extends Component {
 
           {/*对比*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi" />
+            <span className="iconfont icon-duibi"/>
             <span className="tooltip-text">对比</span>
           </span>
 
           {/*预览*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
             <span className="tooltip-text">预览</span>
           </span>
 
@@ -459,13 +456,13 @@ class AcEditorSany extends Component {
 
           {/*文本 输入*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput} />
+            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput}/>
             <span className="tooltip-text">输入框</span>
           </span>
 
           {/*日期*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate} />
+            <span className="iconfont icon-calendar" onClick={this.onDate}/>
             <span className="tooltip-text">日期</span>
           </span>
 
@@ -511,8 +508,8 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-zitibiaoti" />
-            <div className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
+            <span className="iconfont icon-zitibiaoti"/>
+            <span className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
               <ul className="w-e-list" onClick={this.onInsertTitle}>
                 <li className="w-e-item"><h1 className="clearWidth">H1</h1></li>
@@ -522,7 +519,7 @@ class AcEditorSany extends Component {
                 <li className="w-e-item"><h5 className="clearWidth">H5</h5></li>
                 <li className="w-e-item"><p className="clearWidth">正文</p></li>
               </ul>
-            </div>
+            </span>
           </span>
 
           {/*加粗*/}
@@ -533,9 +530,8 @@ class AcEditorSany extends Component {
                 <span className="w-e-menu tooltip" key={uuid()}>
                   <button onClick={() => {
                     this.insertCommand(cmd);
-                  }}
-                  >
-                    <span className={`iconfont ${icon}`} />
+                  }}>
+                    <span className={`iconfont ${icon}`}/>
                   </button>
                   <span className="tooltip-text">{title}</span>
                 </span>
@@ -558,8 +554,8 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-align-left" />
-            <div className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
+            <span className="iconfont icon-align-left"/>
+            <span className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
                 {/*对齐方式*/}
@@ -572,14 +568,14 @@ class AcEditorSany extends Component {
                       onClick={event => this.onPopSelect(cmd, event)}
                     >
                       <button>
-                        <span value={cmd} className={`iconfont ${icon}`} />
+                        <span value={cmd} className={`iconfont ${icon}`}/>
                         <span className="text-align-icon">{title}</span>
                       </button>
                     </li>
                   );
                 })}
               </ul>
-            </div>
+            </span>
           </span>
 
 
@@ -608,7 +604,7 @@ class AcEditorSany extends Component {
                     this.showCloseBar();
                   }}
                 >
-                  <span className={`iconfont ${icon}`} />
+                  <span className={`iconfont ${icon}`}/>
                   <div
                     className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
                     style={{ width }}
