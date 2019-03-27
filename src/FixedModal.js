@@ -56,14 +56,14 @@ class FixedModal extends Component {
     },
     {
       title: '显示名称',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'fieldName',
+      key: 'fieldName',
       width: '100px',
     },
     {
       title: '类型',
-      dataIndex: 'type_cn',
-      key: 'type_cn',
+      dataIndex: 'filedType',
+      key: 'filedType',
       width: '60px',
     },
     // {

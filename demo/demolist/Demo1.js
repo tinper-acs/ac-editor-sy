@@ -19,68 +19,53 @@ class Demo1 extends Component {
 
   fixedDate = [
     {
-      id: 'buyer',
+      field: 'buyer',
       type: 'text',
-      type_cn: '文本',
-      title: '买方名称',
+      filedType: '文本',
+      fieldName: '买方名称',
       data: ['xxxx'],
-      defaultVal: 'xxxx',
-      status: false,
     },
     {
-      id: 'salername',
+      field: 'salername',
       type: 'text',
-      type_cn: '文本',
-      title: '卖方名称',
+      filedType: '文本',
+      fieldName: '卖方名称',
       data: ['xxxx'],
-      defaultVal: 'xxxx',
-      status: false,
     },
     {
-      id: 'contractsign',
+      field: 'contractsign',
       type: 'date',
-      title: '合同签订日期',
-      type_cn: '日期',
+      fieldName: '合同签订日期',
+      filedType: '日期',
       data: ['2019-02-20'],
-      defaultVal: '2019-02-20',
-      status: false,
     },
     {
-      id: 'contractstr',
+      field: 'contractstr',
       type: 'date',
-      title: '合同开始日期',
-      type_cn: '日期',
+      fieldName: '合同开始日期',
+      filedType: '日期',
       data: ['2019-02-20'],
-      defaultVal: '2019-02-20',
-      status: false,
     },
     {
-      id: 'contractend',
+      field: 'contractend',
       type: 'date',
-      title: '合同结束日期',
-      type_cn: '日期',
+      fieldName: '合同结束日期',
+      filedType: '日期',
       data: ['2019-02-20'],
-      defaultVal: '2019-02-20',
-      status: false,
     },
     {
-      id: 'payterm',
+      field: 'payterm',
       type: 'select',
-      type_cn: '下拉',
-      title: '付款条件',
+      filedType: '下拉',
+      fieldName: '付款条件',
       data: ['现金支付', '微信支付', '支付宝支付'],
-      defaultVal: '现金支付',
-      isEdit: false,
-      status: false,
     },
     {
-      id: 'isrebate',
+      field: 'isrebate',
       type: 'radio',
-      type_cn: '单选',
-      title: '是否返利',
+      filedType: '单选',
+      fieldName: '是否返利',
       data: ['是', '否'],
-      defaultVal: '是',
-      status: false,
     },
   ];
 
@@ -88,7 +73,7 @@ class Demo1 extends Component {
     const htmlString = '<h3>xxxx公司供应商合同</h3>';
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc} style={{marginLeft:'20px',marginBottom:"10px"}}>保存</button>
+        <button onClick={this.saveFunc} style={{ marginLeft: '20px', marginBottom: '10px' }}>保存</button>
         <AcEditorSany
           // 组件id
           editorId="acEditorSanyId"

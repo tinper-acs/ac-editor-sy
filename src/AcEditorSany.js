@@ -71,7 +71,9 @@ class AcEditorSany extends Component {
 
   // 定义最后光标对象
   lastEditRange = null;
+
   hrefTitle = '';
+
   timeCount = 0;  // 缓存定时器
 
 
@@ -173,7 +175,7 @@ class AcEditorSany extends Component {
       textArray: param,
       id,
     }));
-    this.addTypeId(id, 'select');
+    this.addTypeId(id, 'select', param);
   };
 
   // 插入radio
@@ -182,7 +184,7 @@ class AcEditorSany extends Component {
     param.id = id;
     this.insertContent(initRadio(param));
     const { direction } = param;
-    this.addTypeId(id, 'radio', direction);
+    this.addTypeId(id, 'radio', direction, param.data);
   };
 
   // 插入多选框
@@ -191,20 +193,26 @@ class AcEditorSany extends Component {
     param.id = id;
     this.insertContent(initCheckbox(param));
     const { direction } = param;
-    this.addTypeId(id, 'checkbox', direction);
+    this.addTypeId(id, 'checkbox', direction, param.data);
   };
 
 
   // 插入固定字段
   onInsertFixed = (param) => {
     let htmlString = '';
-    for (const item of param) {
+    for (const fixedData of param) {
       const {
-        data, type, status, id, title,
-      } = item;
+        data, type, status, field: id, fieldName: title, check = 1,
+      } = fixedData;
+
+      //
+      const item = {
+        data, type, id, check,
+      };
+
       if (status) {
         if (type === 'text') {
-          htmlString += `<span>${title}</span>${initInput(id)}`;
+          htmlString += `<span>${title}</span>${initInput(id, data)}`;
         }
         if (type === 'select') {
           const temp = {
@@ -217,15 +225,15 @@ class AcEditorSany extends Component {
           htmlString += `<span>${title}</span>${initDate(id)}`;
         }
         if (type === 'radio') {
-          htmlString += `<span>${title}</span>${initFixedRadio(item)}`;
+          htmlString += `<span>${title}</span>${initRadio(item)}`;
         }
         if (type === 'checkbox') {
-          htmlString += `<span>${title}</span>${initFixedCheckbox(item)}`;
+          htmlString += `<span>${title}</span>${initCheckbox(item)}`;
         }
-        this.addTypeId(id, type, 'horizontal');
+        this.addTypeId(id, type, 'horizontal', data, check);
       }
     }
-    this.insertContent(`<div>${htmlString}</div>`);
+    this.insertContent(`<span>${htmlString}</span>`);
   };
 
   // 插入日期
@@ -333,13 +341,13 @@ class AcEditorSany extends Component {
   showCloseBar = (param) => {
     if (param) {
       this.changeBarStatus(param);
-      let count=this.timeCount;
+      const count = this.timeCount;
       window.clearInterval(count);
     } else {
       // 设置定时器
-      let _this=this;
-      this.timeCount = setTimeout(function() {
-          _this.changeBarStatus();
+      const _this = this;
+      this.timeCount = setTimeout(() => {
+        _this.changeBarStatus();
       }, 500);
     }
   };
@@ -394,7 +402,7 @@ class AcEditorSany extends Component {
     const doc = document.getElementById(this.props.editorId).innerHTML;
     const { idList } = this.state;
     // 查看id是否真的有效
-    const list = idList.filter(item => document.getElementById(item.id));
+    const list = idList.filter(item => document.getElementById(item.field));
     return {
       doc,
       idList: list,
@@ -402,12 +410,13 @@ class AcEditorSany extends Component {
   };
 
   // 添加类型和id
-  addTypeId = (id, type, direction = 'horizontal') => {
+  addTypeId = (id, type, direction = 'horizontal', data = []) => {
     const { idList } = this.state;
     idList.push({
-      id,
+      field: id,
       type,
       direction,
+      data,
     });
     this.setState({ idList });
   };
@@ -422,7 +431,7 @@ class AcEditorSany extends Component {
       hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
     } = barObj;
 
-    const { editorId, height,fixedDate } = this.props;
+    const { editorId, height, fixedDate } = this.props;
 
     return (
       <div className="editor-sany">
@@ -431,13 +440,13 @@ class AcEditorSany extends Component {
 
           {/*对比*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi"/>
+            <span className="iconfont icon-duibi" />
             <span className="tooltip-text">对比</span>
           </span>
 
           {/*预览*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
             <span className="tooltip-text">预览</span>
           </span>
 
@@ -456,13 +465,13 @@ class AcEditorSany extends Component {
 
           {/*文本 输入*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput}/>
+            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput} />
             <span className="tooltip-text">输入框</span>
           </span>
 
           {/*日期*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate}/>
+            <span className="iconfont icon-calendar" onClick={this.onDate} />
             <span className="tooltip-text">日期</span>
           </span>
 
@@ -508,7 +517,7 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-zitibiaoti"/>
+            <span className="iconfont icon-zitibiaoti" />
             <span className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
               <ul className="w-e-list" onClick={this.onInsertTitle}>
@@ -530,8 +539,9 @@ class AcEditorSany extends Component {
                 <span className="w-e-menu tooltip" key={uuid()}>
                   <button onClick={() => {
                     this.insertCommand(cmd);
-                  }}>
-                    <span className={`iconfont ${icon}`}/>
+                  }}
+                  >
+                    <span className={`iconfont ${icon}`} />
                   </button>
                   <span className="tooltip-text">{title}</span>
                 </span>
@@ -554,7 +564,7 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-align-left"/>
+            <span className="iconfont icon-align-left" />
             <span className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
@@ -568,7 +578,7 @@ class AcEditorSany extends Component {
                       onClick={event => this.onPopSelect(cmd, event)}
                     >
                       <button>
-                        <span value={cmd} className={`iconfont ${icon}`}/>
+                        <span value={cmd} className={`iconfont ${icon}`} />
                         <span className="text-align-icon">{title}</span>
                       </button>
                     </li>
@@ -604,7 +614,7 @@ class AcEditorSany extends Component {
                     this.showCloseBar();
                   }}
                 >
-                  <span className={`iconfont ${icon}`}/>
+                  <span className={`iconfont ${icon}`} />
                   <div
                     className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
                     style={{ width }}
