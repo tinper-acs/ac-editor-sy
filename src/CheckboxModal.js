@@ -17,10 +17,13 @@ class CheckboxModal extends Component {
 
   // 获取单选框设置
   getInputSetting = () => {
-    const num = parseInt(document.getElementById('checkBox_num').value);
+    const totalNum = parseInt(document.getElementById('checkBox_num').value);
     const check = parseInt(document.getElementById('checkBox_check').value);
     const direction = document.getElementById('checkBox_direction').value;
-    const data = new Array(num).fill('YYYYYY');
+    const data = [];
+    for (let num = 1; num <= totalNum; num += 1) {
+      data.push(`${num}YYYYYYYY`);
+    }
     this.props.onInsertCheckbox({
       data,
       direction,

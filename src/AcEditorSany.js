@@ -17,8 +17,6 @@ import {
   initRadio,
   initCheckbox,
   initDate,
-  initFixedRadio,
-  initFixedCheckbox,
   popList,
   textAlignList,
   iconCmdList,
@@ -164,8 +162,8 @@ class AcEditorSany extends Component {
   // 插入Input
   onInsertInput = () => {
     const id = uuid();
-    this.insertContent(initInput(id));
-    this.addTypeId(id, 'text');
+    this.insertContent(initInput({id}));
+    this.addTypeId(id, 'text','horizontal','','');
   };
 
   // 插入select
@@ -175,7 +173,7 @@ class AcEditorSany extends Component {
       textArray: param,
       id,
     }));
-    this.addTypeId(id, 'select', param);
+    this.addTypeId(id, 'select','horizontal', param.join('|||'),param[0]);
   };
 
   // 插入radio
@@ -183,8 +181,8 @@ class AcEditorSany extends Component {
     const id = uuid();
     param.id = id;
     this.insertContent(initRadio(param));
-    const { direction } = param;
-    this.addTypeId(id, 'radio', direction, param.data);
+    const { data, check,direction } = param;
+    this.addTypeId(id, 'radio', direction, data.join('|||'),data[check - 1]);
   };
 
   // 插入多选框
@@ -192,8 +190,8 @@ class AcEditorSany extends Component {
     const id = uuid();
     param.id = id;
     this.insertContent(initCheckbox(param));
-    const { direction } = param;
-    this.addTypeId(id, 'checkbox', direction, param.data);
+    const { data, check,direction } = param;
+    this.addTypeId(id, 'checkbox', direction, data.join('|||'), data[check - 1]);
   };
 
 
@@ -202,35 +200,39 @@ class AcEditorSany extends Component {
     let htmlString = '';
     for (const fixedData of param) {
       const {
-        data, type, status, field: id, fieldName: title, check = 1,
+        data, type, status, field: id, check = 1,
       } = fixedData;
 
-      //
       const item = {
-        data, type, id, check,
+        data,
+        type,
+        id,
+        check,
       };
 
       if (status) {
         if (type === 'text') {
-          htmlString += `<span>${title}</span>${initInput(id, data)}`;
+          htmlString += initInput(id, data);
         }
         if (type === 'select') {
           const temp = {
             textArray: data,
             id,
           };
-          htmlString += `<span>${title}</span>${initSelect(temp)}`;
+          htmlString += initSelect(temp);
         }
         if (type === 'date') {
-          htmlString += `<span>${title}</span>${initDate(id)}`;
+          htmlString += initDate(item);
         }
         if (type === 'radio') {
-          htmlString += `<span>${title}</span>${initRadio(item)}`;
+          htmlString += initRadio(item);
         }
         if (type === 'checkbox') {
-          htmlString += `<span>${title}</span>${initCheckbox(item)}`;
+          htmlString += initCheckbox(item);
         }
-        this.addTypeId(id, type, 'horizontal', data, check);
+        // 默认选中
+        const defaultValue = data[check - 1];
+        this.addTypeId(id, type, 'horizontal', data.join('|||'), defaultValue);
       }
     }
     this.insertContent(`<span>${htmlString}</span>`);
@@ -239,8 +241,10 @@ class AcEditorSany extends Component {
   // 插入日期
   onDate = () => {
     const id = uuid();
-    this.insertContent(initDate(id));
-    this.addTypeId(id, 'date');
+    const date = moment()
+      .format('YYYY-MM-DD');
+    this.insertContent(initDate({ id, date }));
+    this.addTypeId(id, 'date', 'horizontal', date, date);
   };
 
   // 插入命令
@@ -410,13 +414,14 @@ class AcEditorSany extends Component {
   };
 
   // 添加类型和id
-  addTypeId = (id, type, direction = 'horizontal', data = []) => {
+  addTypeId = (id, type, direction, data,defaultValue) => {
     const { idList } = this.state;
     idList.push({
       field: id,
       type,
       direction,
       data,
+      defaultValue,
     });
     this.setState({ idList });
   };
@@ -424,7 +429,7 @@ class AcEditorSany extends Component {
 
   render() {
     const {
-      showDate, currentDateLeft, currentDateTop, idList, previewHtml, barObj,
+      showDate, currentDateLeft, currentDateTop, previewHtml, barObj,
     } = this.state;
 
     const {

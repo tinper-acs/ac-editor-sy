@@ -17,10 +17,13 @@ class RadioModal extends Component {
 
   // 获取单选框设置
   getInputSetting = () => {
-    const num = parseInt(document.getElementById('radio_num').value);
+    const totalNum = parseInt(document.getElementById('radio_num').value);
     const check = parseInt(document.getElementById('radio_check').value);
     const direction = document.getElementById('radio_direction').value;
-    const data = new Array(num).fill('xxxxxxx');
+    const data = [];
+    for (let num = 1; num <= totalNum; num += 1) {
+      data.push(`${num}xxxxxxx`);
+    }
     this.props.onInsertRadio({
       data,
       direction,

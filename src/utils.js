@@ -113,36 +113,11 @@ export function initCheckbox(param) {
   return `<span id="${id}">${checkboxString}</span>`;
 }
 
-export function initDate(id) {
-  const date = moment()
-    .format('YYYY-MM-DD');
-  return `<input type="text" id="${id}" value="${date}" acType="date" style="width: 90px"/>`;
+export function initDate(param) {
+  const { data, id } = param;
+  const title = (data && Array.isArray(data) && data.length > 0) ? data[0] : '';
+  return `<input type="text" id="${id}" value="${title}" acType="date" style="width: 100px" readOnly="true"/>`;
 }
-
-//
-// export function initFixedRadio(param) {
-//   const { data, field: id, defaultVal } = param;
-//   let radioString = '';
-//   for (const [index,item] of data.entity()) {
-//     console.log()
-//     // 默认选中
-//     const checked = item === defaultVal ? 'checked' : '';
-//     radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} value=${item} />&nbsp;&nbsp;&nbsp;&nbsp;${item}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
-//   }
-//   return `<span id="${id}">${radioString}</span>`;
-// }
-//
-//
-// export function initFixedCheckbox(param) {
-//   const { data, field: id, defaultVal } = param;
-//   let checkboxString = '';
-//   for (const item of data) {
-//     // 默认选中
-//     const checked = item === defaultVal ? 'checked' : '';
-//     checkboxString += `<span><input name="${id}" onclick="onClickCheckbox()" type="checkbox"  ${checked} value=${item}  />&nbsp;&nbsp;&nbsp;&nbsp;${item}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
-//   }
-//   return `<span id="${id}">${checkboxString}</span>`;
-// }
 
 
 export function sectionToChinese(section) {
