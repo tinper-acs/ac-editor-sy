@@ -79,8 +79,6 @@ class AcEditorShow extends Component {
           type, id, data, defaultValue, direction,
         } = item;
 
-        console.log('999',defaultData)
-
         const doc = document.getElementById(id);
         // id是否存在
         if (!doc) {
@@ -102,7 +100,7 @@ class AcEditorShow extends Component {
         // 更改select
         if (type === 'select' && data) {
           newDoc.innerHTML = initSelect({
-            textArray: data.split('|||'),
+            data: data.split('|||'),
             id,
             defaultValue,
           });

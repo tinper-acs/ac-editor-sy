@@ -10,6 +10,7 @@ import FixedModal from './FixedModal.js';
 import HrefModal from './HrefModal.js';
 
 import {
+  arrayObjClear,
   uuid,
   initTable,
   initInput,
@@ -170,7 +171,7 @@ class AcEditorSany extends Component {
   onInsertSelect = (param) => {
     const id = uuid();
     this.insertContent(initSelect({
-      textArray: param,
+      data: param,
       id,
     }));
     this.addTypeId(id, 'select', 'horizontal', param.join('|||'), param[0]);
@@ -200,25 +201,24 @@ class AcEditorSany extends Component {
     let htmlString = '';
     for (const fixedData of param) {
       const {
-        data, type, field: id, check = 1,
+        data='', type, field: id, defaultValue='',
       } = fixedData;
 
+      // 将字符串转换成数组
+      const dateArray = data ? data.split('|||') : [];
+
       const item = {
-        data,
+        data: dateArray,
         type,
         id,
-        check,
+        defaultValue,
       };
 
       if (type === 'text') {
-        htmlString += initInput(id, data);
+        htmlString += initInput(item);
       }
       if (type === 'select') {
-        const temp = {
-          textArray: data,
-          id,
-        };
-        htmlString += initSelect(temp);
+        htmlString += initSelect(item);
       }
       if (type === 'date') {
         htmlString += initDate(item);
@@ -230,9 +230,7 @@ class AcEditorSany extends Component {
         htmlString += initCheckbox(item);
       }
       // 默认选中
-      const defaultValue = data[check - 1];
-      this.addTypeId(id, type, 'horizontal', data.join('|||'), defaultValue);
-
+      this.addTypeId(id, type, 'horizontal', data, defaultValue);
     }
     this.insertContent(`<span>${htmlString}</span>`);
   };
@@ -240,13 +238,8 @@ class AcEditorSany extends Component {
   // 插入日期
   onDate = () => {
     const id = uuid();
-    const date = moment()
-      .format('YYYY-MM-DD');
-    this.insertContent(initDate({
-      id,
-      date
-    }));
-    this.addTypeId(id, 'date', 'horizontal', date, date);
+    this.insertContent(initDate({ id}));
+    this.addTypeId(id, 'date', 'horizontal', '', '');
   };
 
   // 插入命令
@@ -402,9 +395,12 @@ class AcEditorSany extends Component {
     const { idList } = this.state;
     // 查看id是否真的有效
     const list = idList.filter(item => document.getElementById(item.field));
+
+    // 对象去重
+    const clearList=arrayObjClear(list,'field');
     return {
       doc,
-      idList: list,
+      idList: clearList,
     };
   };
 
@@ -440,13 +436,13 @@ class AcEditorSany extends Component {
 
           {/*对比*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi"/>
+            <span className="iconfont icon-duibi" />
             <span className="tooltip-text">对比</span>
           </span>
 
           {/*预览*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow}/>
+            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
             <span className="tooltip-text">预览</span>
           </span>
 
@@ -465,13 +461,13 @@ class AcEditorSany extends Component {
 
           {/*文本 输入*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput}/>
+            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput} />
             <span className="tooltip-text">输入框</span>
           </span>
 
           {/*日期*/}
           <span className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate}/>
+            <span className="iconfont icon-calendar" onClick={this.onDate} />
             <span className="tooltip-text">日期</span>
           </span>
 
@@ -517,7 +513,7 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-zitibiaoti"/>
+            <span className="iconfont icon-zitibiaoti" />
             <span className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">设置标题</p>
               <ul className="w-e-list" onClick={this.onInsertTitle}>
@@ -541,7 +537,7 @@ class AcEditorSany extends Component {
                     this.insertCommand(cmd);
                   }}
                   >
-                    <span className={`iconfont ${icon}`}/>
+                    <span className={`iconfont ${icon}`} />
                   </button>
                   <span className="tooltip-text">{title}</span>
                 </span>
@@ -564,7 +560,7 @@ class AcEditorSany extends Component {
               this.showCloseBar();
             }}
           >
-            <span className="iconfont icon-align-left"/>
+            <span className="iconfont icon-align-left" />
             <span className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
               <p className="w-e-dp-title">对齐方式</p>
               <ul className="w-e-list">
@@ -578,7 +574,7 @@ class AcEditorSany extends Component {
                       onClick={event => this.onPopSelect(cmd, event)}
                     >
                       <button>
-                        <span value={cmd} className={`iconfont ${icon}`}/>
+                        <span value={cmd} className={`iconfont ${icon}`} />
                         <span className="text-align-icon">{title}</span>
                       </button>
                     </li>
@@ -614,7 +610,7 @@ class AcEditorSany extends Component {
                     this.showCloseBar();
                   }}
                 >
-                  <span className={`iconfont ${icon}`}/>
+                  <span className={`iconfont ${icon}`} />
                   <div
                     className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
                     style={{ width }}

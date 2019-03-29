@@ -41,7 +41,6 @@ export function initTable(rowNum, colNum) {
     trTdList += `<tr>${tdList}</tr>`;
   }
   return `<table border="1" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
-
 }
 
 /**
@@ -49,9 +48,10 @@ export function initTable(rowNum, colNum) {
  * @param param
  * @returns {string}
  */
-export function initInput(id, data) {
+export function initInput(param) {
   // 输入框类型为文本
-  const title = (data && Array.isArray(data) && data.length > 0) ? data[0] : '';
+  const { id, defaultValue } = param;
+  const title = defaultValue || '';
   return `<textarea rows="1" cols="30" id="${id}" onkeyup="onKeyUpTextArea('${id}')" style="resize: horizontal;vertical-align: middle;width: 80px;">${title}</textarea>`;
 }
 
@@ -60,8 +60,8 @@ export function initInput(id, data) {
  * 插入下拉框
  */
 export function initSelect(param) {
-  const { textArray, id, defaultValue } = param;
-  const option = textArray.map((item, index) => {
+  const { data, id, defaultValue } = param;
+  const option = data.map((item, index) => {
     const selected = defaultValue === item ? 'selected' : '';
     return `<option name="${id}" value="${index}" ${selected} >${item}</option>`;
   });
@@ -83,10 +83,8 @@ export function initRadio(param) {
     const checked = defaultValue === data[i] ? 'checked' : '';
     if (direction && direction !== 'horizontal') {
       radioString += `<div><span><input name="${id}"  onclick="onClickRadio('${id}')" style="vertical-align: middle;" type="radio" ${checked} value=${data[i]} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}</span></div>`;
-
     } else {
       radioString += `<span><input name="${id}" onclick="onClickRadio('${id}')" type="radio" ${checked} style="vertical-align: middle;" value=${data[i]} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
-
     }
   }
   return `<span id="${id}">${radioString}</span>`;
@@ -114,9 +112,8 @@ export function initCheckbox(param) {
 }
 
 export function initDate(param) {
-  const { data, id } = param;
-  const title = (data && Array.isArray(data) && data.length > 0) ? data[0] : '';
-  return `<input type="text" id="${id}" value="${title}" acType="date" style="width: 100px" readOnly="true"/>`;
+  const { defaultValue, id } = param;
+  return `<input type="text" id="${id}" value="${defaultValue}" acType="date" style="width: 100px" readOnly="true"/>`;
 }
 
 
@@ -145,6 +142,24 @@ export function sectionToChinese(section) {
   }
   return chnStr;
 }
+
+
+/**
+ * 数组对象去重
+ * @param arr 对象数组,key对象唯一标识
+ */
+export function arrayObjClear(arr, key) {
+  const result = [];
+  const obj = {};
+  for (let i = 0; i < arr.length; i += 1) {
+    if (!obj[arr[i][key]]) {
+      result.push(arr[i]);
+      obj[arr[i][key]] = true;
+    }
+  }
+  return result;
+}
+
 
 // CMD
 export var iconCmdList = [
