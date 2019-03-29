@@ -41,6 +41,7 @@
 <li>用友内网通过<code>ynpm</code>安装<pre class="hljs"><code> ynpm install ac-editor-sany --save</code></pre></li>
 </ol>
 <h3 id="3.-使用">3. 使用</h3>
+<p>1.AcEditorSany使用</p>
 <pre class="hljs"><code><span class="hljs-keyword">import</span> { AcEditorSany } <span class="hljs-keyword">from</span> <span class="hljs-string">'ac-editor-sany'</span>;
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo1</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
@@ -73,7 +74,89 @@
 }
 
 export default Demo1;
-</span></code></pre><h3 id="4.-aceditorsany-api">4. AcEditorSany API</h3>
+</span></code></pre><p>2.AcEditorShow 使用</p>
+<pre class="hljs"><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+
+  saveFunc = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-comment">// 为文本编辑器里的html字符串</span>
+    <span class="hljs-keyword">const</span> html = <span class="hljs-keyword">this</span>.child.getHtml2String();
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'文本编辑器内容为'</span>, html);
+  };
+
+  render() {
+    <span class="hljs-keyword">const</span> defaultData = [
+      {
+        <span class="hljs-attr">direction</span>: <span class="hljs-string">'horizontal'</span>,
+        <span class="hljs-attr">type</span>: <span class="hljs-string">'select'</span>,
+        <span class="hljs-attr">id</span>: <span class="hljs-string">'payterm'</span>,
+        <span class="hljs-attr">dataList</span>: [<span class="hljs-string">'微信支付'</span>, <span class="hljs-string">'支付宝支付'</span>, <span class="hljs-string">'银行卡支付'</span>, <span class="hljs-string">'现金支付'</span>],
+        <span class="hljs-attr">check</span>: <span class="hljs-number">2</span>,
+      },
+    ];
+    <span class="hljs-keyword">const</span> isActive = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">const</span> htmlString = <span class="hljs-string">'&lt;div&gt;&lt;h1 style="text-align: center;"&gt;xxx公司供应商合同&lt;/h1&gt;&lt;div&gt;&lt;div&gt;&lt;span&gt;买方名称&lt;/span&gt;&lt;textarea rows="1" cols="30" id="buyer" onkeyup="onKeyUpTextArea(\'buyer\')" style="resize: horizontal;vertical-align: middle;width: 80px;"&gt;xxxx&lt;/textarea&gt;&lt;span&gt;卖方名称&lt;/span&gt;&lt;textarea rows="1" cols="30" id="salername" onkeyup="onKeyUpTextArea(\'salername\')" style="resize: horizontal;vertical-align: middle;width: 80px;"&gt;xxxx&lt;/textarea&gt;&lt;span&gt;合同签订日期&lt;/span&gt;&lt;input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"&gt;&lt;span&gt;合同开始日期&lt;/span&gt;&lt;input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"&gt;&lt;span&gt;合同结束日期&lt;/span&gt;&lt;input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"&gt;&lt;span&gt;付款条件&lt;/span&gt;&lt;select id="payterm" class="select ac-select" onchange="onChangeSelect()"&gt;&lt;option name="payterm" value="0" selected=""&gt;现金支付&lt;/option&gt;,&lt;option name="payterm" value="1"&gt;微信支付&lt;/option&gt;,&lt;option name="payterm" value="2"&gt;支付宝支付&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;&lt;div class="form"&gt;&lt;div class="row"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;'</span>;
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">"demoPadding"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{this.saveFunc}</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{marginLeft:</span>'<span class="hljs-attr">20px</span>',<span class="hljs-attr">marginBottom:</span>"<span class="hljs-attr">10px</span>"}}&gt;</span>保存<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">AcEditorShow</span>
+          <span class="hljs-attr">htmlString</span>=<span class="hljs-string">{htmlString}</span> // 用 <span class="hljs-attr">AcEditorShow</span> 生成的<span class="hljs-attr">html</span>字符串
+          <span class="hljs-attr">editorId</span>=<span class="hljs-string">"showId"</span> // 组件 <span class="hljs-attr">id</span>
+          <span class="hljs-attr">isActive</span>=<span class="hljs-string">{isActive}</span> // 组件是否可以操作
+          <span class="hljs-attr">defaultData</span>=<span class="hljs-string">{defaultData}</span> // 替换组件默认值
+          <span class="hljs-attr">waterMarkerText</span>=<span class="hljs-string">"用友网络"</span> // 添加水印
+          // 设置<span class="hljs-attr">ref</span>属性
+          <span class="hljs-attr">onRef</span>=<span class="hljs-string">{(ref)</span> =&gt;</span> {
+            this.child = ref;
+          }}
+        /&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    );
+  }
+}
+export default Demo2;
+
+</span></code></pre><p>2.AcEditorPDF 使用</p>
+<pre class="hljs"><code>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Demo3</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+
+  render() {
+    <span class="hljs-keyword">const</span> defaultData = [
+      {
+        <span class="hljs-attr">direction</span>: <span class="hljs-string">'horizontal'</span>,
+        <span class="hljs-attr">type</span>: <span class="hljs-string">'select'</span>,
+        <span class="hljs-attr">id</span>: <span class="hljs-string">'payterm'</span>,
+        <span class="hljs-attr">dataList</span>: [<span class="hljs-string">'微信支付'</span>, <span class="hljs-string">'支付宝支付'</span>, <span class="hljs-string">'银行卡支付'</span>, <span class="hljs-string">'现金支付'</span>],
+        <span class="hljs-attr">check</span>: <span class="hljs-number">2</span>,
+      },
+    ];
+    <span class="hljs-keyword">const</span> isActive = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">const</span> htmlString = <span class="hljs-string">'&lt;div&gt;&lt;h1 style="text-align: center;"&gt;xxx公司供应商合同&lt;/h1&gt;&lt;div&gt;&lt;div&gt;&lt;span&gt;买方名称&lt;/span&gt;&lt;textarea rows="1" cols="30" id="buyer" onkeyup="onKeyUpTextArea(\'buyer\')" style="resize: horizontal;vertical-align: middle;width: 80px;"&gt;xxxx&lt;/textarea&gt;&lt;span&gt;卖方名称&lt;/span&gt;&lt;textarea rows="1" cols="30" id="salername" onkeyup="onKeyUpTextArea(\'salername\')" style="resize: horizontal;vertical-align: middle;width: 80px;"&gt;xxxx&lt;/textarea&gt;&lt;span&gt;合同签订日期&lt;/span&gt;&lt;input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"&gt;&lt;span&gt;合同开始日期&lt;/span&gt;&lt;input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"&gt;&lt;span&gt;合同结束日期&lt;/span&gt;&lt;input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"&gt;&lt;span&gt;付款条件&lt;/span&gt;&lt;select id="payterm" class="select ac-select" onchange="onChangeSelect()"&gt;&lt;option name="payterm" value="0" selected=""&gt;现金支付&lt;/option&gt;,&lt;option name="payterm" value="1"&gt;微信支付&lt;/option&gt;,&lt;option name="payterm" value="2"&gt;支付宝支付&lt;/option&gt;&lt;/select&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;ul&gt;&lt;li&gt;&lt;div class="form"&gt;&lt;div class="row"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;'</span>;
+    <span class="hljs-keyword">return</span> (
+      &lt;div className="demoPadding"&gt;
+        &lt;div style={{
+          marginLeft: '20px',
+          marginBottom: '10px'
+        }}&gt;
+          &lt;AcEditorPDF
+            pdfId="demo3EditorId"
+            title={&lt;button&gt;打印&lt;/button&gt;}
+          /&gt;
+        &lt;/div&gt;
+        &lt;AcEditorShow
+          htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
+          editorId="demo3EditorId" // 组件 id
+          isActive={isActive} // 组件是否可以操作
+          defaultData={defaultData} // 替换组件默认值
+          waterMarkerText="用友网络" // 添加水印
+        /&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+export default Demo3;
+
+</code></pre><h3 id="4.-aceditorsany-api">4. AcEditorSany API</h3>
 <table>
 <thead>
 <tr>

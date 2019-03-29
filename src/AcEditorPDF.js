@@ -83,6 +83,10 @@ class AcEditorPDF extends Component {
                  span{
                  font-size: 16px !important;
                  }
+                 table{
+                   border: 1px solid #999;
+                   border-collapse:collapse;
+                 }
             }
                        
            </style>`);
@@ -95,6 +99,7 @@ class AcEditorPDF extends Component {
 
   render() {
     const { title } = this.props;
+
     return (
       <span className="editor-sany-pdf">
          <span onClick={this.onClickPrint}>{title}</span>

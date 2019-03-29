@@ -40,7 +40,8 @@ export function initTable(rowNum, colNum) {
     }
     trTdList += `<tr>${tdList}</tr>`;
   }
-  return `<table border="0" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
+  return `<table border="1" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
+
 }
 
 /**
