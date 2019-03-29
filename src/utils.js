@@ -60,9 +60,9 @@ export function initInput(id, data) {
  * 插入下拉框
  */
 export function initSelect(param) {
-  const { textArray, id, check = 1 } = param;
+  const { textArray, id, defaultValue } = param;
   const option = textArray.map((item, index) => {
-    const selected = (index + 1) === check ? 'selected' : '';
+    const selected = defaultValue === item ? 'selected' : '';
     return `<option name="${id}" value="${index}" ${selected} >${item}</option>`;
   });
   return `<select id="${id}" class="select ac-select" onchange="onChangeSelect()">${option}</select>`;
@@ -75,12 +75,12 @@ export function initSelect(param) {
  */
 export function initRadio(param) {
   const {
-    data, id, check, direction,
+    data, id, defaultValue, direction,
   } = param;
   let radioString = '';
   for (let i = 0; i < data.length; i += 1) {
     // 默认选中
-    const checked = (i + 1) === check ? 'checked' : '';
+    const checked = defaultValue === data[i] ? 'checked' : '';
     if (direction && direction !== 'horizontal') {
       radioString += `<div><span><input name="${id}"  onclick="onClickRadio('${id}')" style="vertical-align: middle;" type="radio" ${checked} value=${data[i]} acType="radio" />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}</span></div>`;
 
@@ -99,11 +99,11 @@ export function initRadio(param) {
  */
 export function initCheckbox(param) {
   const {
-    data, id, check, direction,
+    data, id, defaultValue, direction,
   } = param;
   let checkboxString = '';
   for (let i = 0; i < data.length; i += 1) {
-    const checked = (i + 1) === check ? 'checked' : '';
+    const checked = defaultValue === data[i] ? 'checked' : '';
     if (direction && direction !== 'horizontal') {
       checkboxString += `<div><input name="${id}" onclick="onClickCheckbox()"  type="checkbox" ${checked} value=${data[i]} />&nbsp;&nbsp;&nbsp;&nbsp;${data[i]}</div>`;
     } else {

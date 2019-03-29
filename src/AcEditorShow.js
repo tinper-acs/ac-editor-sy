@@ -72,12 +72,14 @@ class AcEditorShow extends Component {
     }
 
     // 修改默认值
-    if (defaultData && Array.isArray(defaultData) && defaultData.length) {
+    if (defaultData && Array.isArray(defaultData) && defaultData.length>0) {
       for (const item of defaultData) {
         // 插入组件的类型 (text,select,radio,checkbox,date)
         const {
-          type, id, dataList, check, direction,
+          type, id, data, defaultValue, direction,
         } = item;
+
+        console.log('999',defaultData)
 
         const doc = document.getElementById(id);
         // id是否存在
@@ -86,31 +88,31 @@ class AcEditorShow extends Component {
         }
         // 日期直接修改值
         if (type === 'date') {
-          doc.setAttribute('value', dataList[0]);
+          doc.setAttribute('value',data );
           break;
         }
 
         // 文本类型
         if (type === 'text') {
-          doc.innerHTML = dataList[0];
+          doc.innerHTML = data;
           break;
         }
 
         const newDoc = document.createElement('span');
         // 更改select
-        if (type === 'select') {
+        if (type === 'select' && data) {
           newDoc.innerHTML = initSelect({
-            textArray: dataList,
+            textArray: data.split('|||'),
             id,
-            check,
+            defaultValue,
           });
         }
         // 更改radio，
         if (type === 'radio') {
           newDoc.innerHTML = initRadio({
-            data: dataList,
+            data: data.split('|||'),
             id,
-            check,
+            defaultValue,
             direction,
           });
         }
@@ -118,9 +120,9 @@ class AcEditorShow extends Component {
         // 更改checkbox，
         if (type === 'checkbox') {
           newDoc.innerHTML = initCheckbox({
-            data: dataList,
+            data: data.split('|||'),
             id,
-            check,
+            defaultValue,
             direction,
           });
         }
@@ -208,7 +210,6 @@ class AcEditorShow extends Component {
     const { isActive = true } = this.props;
     // 判断input 是否可以点击
     const { showDate } = _this.state;
-    debugger
     if (isActive && !showDate) {
       // 判断是否为日期 input
       const target = event.target;
