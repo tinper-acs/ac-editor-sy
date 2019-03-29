@@ -21,7 +21,7 @@
     <li class="sidebar-header-3"><a href="#3.-使用">3. 使用</a></li>
     <li class="sidebar-header-3"><a href="#4.-aceditorsany-api">4. AcEditorSany API</a></li>
     <li class="sidebar-header-3"><a href="#5.-aceditorshow-api">5. AcEditorShow API</a></li>
-    <li class="sidebar-header-3"><a href="#6.-aceditorshow-api">6. AcEditorShow API</a></li>
+    <li class="sidebar-header-3"><a href="#6.-aceditorpdf-api">6. AcEditorPDF API</a></li>
     <li class="sidebar-header-3"><a href="#目录结构">目录结构</a></li>
     <li class="sidebar-header-3"><a href="#常用命令">常用命令</a></li>
 </ul>
@@ -89,8 +89,8 @@ export default Demo1;
         <span class="hljs-attr">direction</span>: <span class="hljs-string">'horizontal'</span>,
         <span class="hljs-attr">type</span>: <span class="hljs-string">'select'</span>,
         <span class="hljs-attr">id</span>: <span class="hljs-string">'payterm'</span>,
-        <span class="hljs-attr">dataList</span>: [<span class="hljs-string">'微信支付'</span>, <span class="hljs-string">'支付宝支付'</span>, <span class="hljs-string">'银行卡支付'</span>, <span class="hljs-string">'现金支付'</span>],
-        <span class="hljs-attr">check</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-attr">data</span>: <span class="hljs-string">'微信支付|||支付宝支付|||银行卡支付|||现金支付'</span>,
+        <span class="hljs-attr">defaultValue</span>: <span class="hljs-string">'银行卡支付'</span>,
       },
     ];
     <span class="hljs-keyword">const</span> isActive = <span class="hljs-literal">true</span>;
@@ -125,8 +125,8 @@ export default Demo2;
         <span class="hljs-attr">direction</span>: <span class="hljs-string">'horizontal'</span>,
         <span class="hljs-attr">type</span>: <span class="hljs-string">'select'</span>,
         <span class="hljs-attr">id</span>: <span class="hljs-string">'payterm'</span>,
-        <span class="hljs-attr">dataList</span>: [<span class="hljs-string">'微信支付'</span>, <span class="hljs-string">'支付宝支付'</span>, <span class="hljs-string">'银行卡支付'</span>, <span class="hljs-string">'现金支付'</span>],
-        <span class="hljs-attr">check</span>: <span class="hljs-number">2</span>,
+        <span class="hljs-attr">data</span>: <span class="hljs-string">'微信支付|||支付宝支付|||银行卡支付|||现金支付'</span>,
+        <span class="hljs-attr">defaultValue</span>: <span class="hljs-string">'银行卡支付'</span>,
       },
     ];
     <span class="hljs-keyword">const</span> isActive = <span class="hljs-literal">true</span>;
@@ -242,7 +242,7 @@ export default Demo3;
 </tr>
 </tbody>
 </table>
-<h3 id="6.-aceditorshow-api">6. AcEditorShow API</h3>
+<h3 id="6.-aceditorpdf-api">6. AcEditorPDF API</h3>
 <table>
 <thead>
 <tr>

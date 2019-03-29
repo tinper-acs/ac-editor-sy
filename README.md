@@ -85,8 +85,8 @@ class Demo2 extends Component {
         direction: 'horizontal',
         type: 'select',
         id: 'payterm',
-        dataList: ['微信支付', '支付宝支付', '银行卡支付', '现金支付'],
-        check: 2,
+        data: '微信支付|||支付宝支付|||银行卡支付|||现金支付',
+        defaultValue: '银行卡支付',
       },
     ];
     const isActive = true;
@@ -126,8 +126,8 @@ class Demo3 extends Component {
         direction: 'horizontal',
         type: 'select',
         id: 'payterm',
-        dataList: ['微信支付', '支付宝支付', '银行卡支付', '现金支付'],
-        check: 2,
+        data: '微信支付|||支付宝支付|||银行卡支付|||现金支付',
+        defaultValue: '银行卡支付',
       },
     ];
     const isActive = true;
@@ -183,7 +183,7 @@ isActive  | boolean              | true         | 文本内容可交互
 defaultData| array               | []           | 文本内容被替换信息
 waterMarkerText| string          | “”           | 生成水印
 
-### 6. AcEditorShow API
+### 6. AcEditorPDF API
 
  参数      | 类型                 | 默认值        | 说明
 ----------|----------------------|--------------|------------------
