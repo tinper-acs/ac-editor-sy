@@ -96,18 +96,20 @@ class FixedModal extends Component {
             this.props.showCloseBar('fixedStatus');
           }
         }}
-        onMouseLeave={() => {
-          this.props.showCloseBar();
-        }}
+        // onMouseLeave={() => {
+        //   this.props.showCloseBar();
+        // }}
       >
         <span className="iconfont icon-menu" />
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '250px',marginTop:'30px' }}>
           <p className="w-e-dp-title">插入固定字段</p>
-          <Table
-            rowKey={(r, i) => i} //生成行的key
-            columns={this.columns}
-            data={fixedDate}
-          />
+          <div className='fixedTable'>
+            <Table
+              rowKey={(r, i) => i} //生成行的key
+              columns={this.columns}
+              data={fixedDate}
+            />
+          </div>
           <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
         </div>
       </span>
