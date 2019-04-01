@@ -33,7 +33,7 @@ class Demo3 extends Component {
         }}>
           <AcEditorPDF
             pdfId="demo3EditorId"
-            title={<button>打印</button>}
+            title={<button>打印PDF</button>}
           />
         </div>
         <AcEditorShow
