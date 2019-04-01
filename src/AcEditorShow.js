@@ -72,11 +72,11 @@ class AcEditorShow extends Component {
     }
 
     // 修改默认值
-    if (defaultData && Array.isArray(defaultData) && defaultData.length>0) {
+    if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
       for (const item of defaultData) {
         // 插入组件的类型 (text,select,radio,checkbox,date)
         const {
-          type, id, data, defaultValue, direction,
+          type, field: id, data, defaultValue, direction,
         } = item;
 
         const doc = document.getElementById(id);
@@ -86,7 +86,7 @@ class AcEditorShow extends Component {
         }
         // 日期直接修改值
         if (type === 'date') {
-          doc.setAttribute('value',data );
+          doc.setAttribute('value', data);
           break;
         }
 

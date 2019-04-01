@@ -77,8 +77,15 @@ class AcEditorSany extends Component {
 
 
   componentDidMount() {
-    const { htmlString = '', editorId } = this.props;
+    const { htmlString = '', editorId, defaultData=[] } = this.props;
+
     document.getElementById(editorId).innerHTML = htmlString;
+    const { idList } = this.state;
+    // 将id 变成 field
+    for (const item of defaultData) {
+      idList.push(item);
+    }
+    this.setState({ idList });
     // 在父组件上绑定子组件方法
     this.props.onRef(this);
   }
@@ -201,7 +208,7 @@ class AcEditorSany extends Component {
     let htmlString = '';
     for (const fixedData of param) {
       const {
-        data='', type, field: id, defaultValue='',
+        data = '', type, field: id, defaultValue = '',
       } = fixedData;
 
       // 将字符串转换成数组
@@ -238,7 +245,7 @@ class AcEditorSany extends Component {
   // 插入日期
   onDate = () => {
     const id = uuid();
-    this.insertContent(initDate({ id}));
+    this.insertContent(initDate({ id }));
     this.addTypeId(id, 'date', 'horizontal', '', '');
   };
 
@@ -393,11 +400,12 @@ class AcEditorSany extends Component {
   getHtml2String = () => {
     const doc = document.getElementById(this.props.editorId).innerHTML;
     const { idList } = this.state;
+    console.log('xxxx', idList);
     // 查看id是否真的有效
     const list = idList.filter(item => document.getElementById(item.field));
 
     // 对象去重
-    const clearList=arrayObjClear(list,'field');
+    const clearList = arrayObjClear(list, 'field');
     return {
       doc,
       idList: clearList,

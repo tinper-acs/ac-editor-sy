@@ -8,6 +8,7 @@
 import React, { Component } from 'react';
 import { AcEditorSany } from '../../src/index';
 import '../../src/index.less';
+import AcEditorShow from '../../src/AcEditorShow';
 
 class Demo1 extends Component {
   saveFunc = () => {
@@ -71,8 +72,22 @@ class Demo1 extends Component {
     },
   ];
 
+
+
+
+
   render() {
-    const htmlString = '<h3>xxxx公司供应商合同</h3>';
+    const defaultData = [
+      {
+        direction: 'horizontal',
+        type: 'select',
+        field: 'payterm1',
+        data: '微信支付|||支付宝支付|||银行卡支付|||现金支付|||其他支付',
+        defaultValue: '银行卡支付',
+      },
+    ];
+    let htmlString = '<div><h1 style="text-align: center;">xxx公司供应商合同</h1><div><div><span>买方名称</span><textarea rows="1" cols="30" id="buyer1" onkeyup="onKeyUpTextArea(\'buyer1\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>卖方名称</span><textarea rows="1" cols="30" id="salername" onkeyup="onKeyUpTextArea(\'salername\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>合同签订日期</span><input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"><span>合同开始日期</span><input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"><span>合同结束日期</span><input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"><span>付款条件</span><select id="payterm1" class="select ac-select" onchange="onChangeSelect()"><option name="payterm" value="0" selected="">现金支付</option>,<option name="payterm" value="1">微信支付</option>,<option name="payterm" value="2">支付宝支付</option></select></div><br></div><div><br></div><ul><li><div class="form"><div class="row"></div></div></li></ul></div>';
+
     return (
       <div className="demoPadding">
         <button onClick={this.saveFunc} style={{ marginLeft: '20px', marginBottom: '10px' }}>保存</button>
@@ -85,6 +100,7 @@ class Demo1 extends Component {
           }}
           // 文本框默认值
           htmlString={htmlString}
+          defaultData={defaultData} // 替换组件默认值
           // 文本框默认最小高
           height="300px"
           fixedDate={this.fixedDate}
