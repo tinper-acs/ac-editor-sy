@@ -151,7 +151,71 @@ class AcEditorShow extends Component {
 
 
   //保存方法回调
-  getHtml2String = () => document.getElementById(this.props.editorId).innerHTML;
+  getHtml2String = () => {
+    const idList = this.getFormId();
+    const doc = document.getElementById(this.props.editorId).innerHTML;
+    return {
+      idList,
+      doc,
+    };
+  };
+
+
+  // 获取id值
+
+  getFormId = () => {
+    const result = [];
+    const { editorId } = this.props;
+    const activeDoc = document.getElementById(editorId);
+    const inputList = activeDoc.getElementsByTagName('input');
+    // 获取 input 内容
+    for (const item of inputList) {
+      const type = item.getAttribute('type');
+      let field = item.getAttribute('id');
+      let value = item.getAttribute('value');
+      const { checked } = item;
+      if (type === 'radio' && checked) {
+        field = item.getAttribute('name');
+        value = item.parentNode.textContent;
+      }
+      result.push({
+        field,
+        value,
+      });
+    }
+
+
+    // 获取 textarea 内容
+    const textareaList = activeDoc.getElementsByTagName('textarea');
+    for (const item of textareaList) {
+      const field = item.getAttribute('id');
+      const value = item.value;
+      result.push({
+        field,
+        value,
+      });
+    }
+
+    // 获取 select 内容
+    const selectList = activeDoc.getElementsByTagName('select');
+    for (const item of selectList) {
+      const field = item.getAttribute('id');
+      let value = '';
+      const options = item.getElementsByTagName('option');
+      for (const option of options) {
+        // 获取选中的slect
+        if (option.selected) {
+          value = option.innerText;
+          break;
+        }
+      }
+      result.push({
+        field,
+        value,
+      });
+    }
+    return result;
+  };
 
 
   // 下拉框选择
