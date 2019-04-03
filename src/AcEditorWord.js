@@ -101,6 +101,19 @@ class ExportWord extends Component {
   }
 
 
+  // 删除日期弹框
+  delDateModal=(activeDoc)=>{
+    const acDateBody = activeDoc.getElementsByClassName('ac-date-body');
+    // 删除日期弹框
+    for (const dateItem of acDateBody) {
+      // 删除子节点
+      if (dateItem) {
+        dateItem.parentNode.removeChild(dateItem);
+      }
+    }
+  }
+
+
   getBlob = (wordId, fileName) => {
     // IE10 以下
     if (typeof window === 'undefined' || (typeof navigator !== 'undefined' && /MSIE [1-9]\./.test(navigator.userAgent))) {
@@ -114,8 +127,11 @@ class ExportWord extends Component {
     };
 
     // 获取导出文本dom 节点
-    const activeDoc = document.getElementById(wordId)
+    let activeDoc = document.getElementById(wordId)
       .cloneNode(true);
+
+    // 删除日期弹框
+    this.delDateModal(activeDoc);
     // 替换单选 多选 input
     this.replaceInput(activeDoc);
     // 对 textarea 处理

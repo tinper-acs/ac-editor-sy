@@ -85,20 +85,20 @@ class AcEditorShow extends Component {
           break;
         }
         // 日期直接修改值
-        if (type === 'date') {
+        if (type === 'date' && data && defaultValue) {
           doc.setAttribute('value', data);
           break;
         }
 
         // 文本类型
-        if (type === 'text') {
+        if (type === 'text' && data && defaultValue) {
           doc.innerHTML = data;
           break;
         }
 
         const newDoc = document.createElement('span');
         // 更改select
-        if (type === 'select' && data) {
+        if (type === 'select' && data && defaultValue) {
           newDoc.innerHTML = initSelect({
             data: data.split('|||'),
             id,
@@ -106,7 +106,7 @@ class AcEditorShow extends Component {
           });
         }
         // 更改radio，
-        if (type === 'radio') {
+        if (type === 'radio' && data && defaultValue) {
           newDoc.innerHTML = initRadio({
             data: data.split('|||'),
             id,
@@ -116,7 +116,7 @@ class AcEditorShow extends Component {
         }
 
         // 更改checkbox，
-        if (type === 'checkbox') {
+        if (type === 'checkbox' && data && defaultValue) {
           newDoc.innerHTML = initCheckbox({
             data: data.split('|||'),
             id,
@@ -176,12 +176,14 @@ class AcEditorShow extends Component {
       const { checked } = item;
       if (type === 'radio' && checked) {
         field = item.getAttribute('name');
-        value = item.parentNode.textContent;
+        value = item.parentNode.textContent.trim();
       }
-      result.push({
-        field,
-        value,
-      });
+      if (field) {
+        result.push({
+          field,
+          value,
+        });
+      }
     }
 
 
@@ -189,11 +191,13 @@ class AcEditorShow extends Component {
     const textareaList = activeDoc.getElementsByTagName('textarea');
     for (const item of textareaList) {
       const field = item.getAttribute('id');
-      const value = item.value;
-      result.push({
-        field,
-        value,
-      });
+      const value = item.value.trim();
+      if (field) {
+        result.push({
+          field,
+          value,
+        });
+      }
     }
 
     // 获取 select 内容
@@ -205,14 +209,16 @@ class AcEditorShow extends Component {
       for (const option of options) {
         // 获取选中的slect
         if (option.selected) {
-          value = option.innerText;
+          value = option.innerText.trim();
           break;
         }
       }
-      result.push({
-        field,
-        value,
-      });
+      if (field) {
+        result.push({
+          field,
+          value,
+        });
+      }
     }
     return result;
   };
