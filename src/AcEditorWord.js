@@ -52,7 +52,8 @@ class ExportWord extends Component {
       }
       // input
       if (type === 'text') {
-        newDoc.innerHTML = item.getAttribute('value');
+        const htmlText = item.getAttribute('value');
+        newDoc.innerHTML = htmlText || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         newDoc.style.textDecoration = 'underline';
       }
       item.parentNode.replaceChild(newDoc, item);
@@ -67,7 +68,8 @@ class ExportWord extends Component {
     const textareaList = activeDoc.getElementsByTagName('textarea');
     for (const item of textareaList) {
       const newDoc = document.createElement('span');
-      newDoc.innerHTML = item.value;
+      const htmlText = item.value;
+      newDoc.innerHTML = htmlText || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
       newDoc.style.textDecoration = 'underline';
       item.parentNode.replaceChild(newDoc, item);
     }
@@ -77,7 +79,7 @@ class ExportWord extends Component {
   };
 
   // 替换下拉框
-  replaceSelect=(activeDoc) => {
+  replaceSelect = (activeDoc) => {
     const selectList = activeDoc.getElementsByTagName('select');
     for (const item of selectList) {
       const newDoc = document.createElement('span');
@@ -98,11 +100,11 @@ class ExportWord extends Component {
     if (activeDoc.getElementsByTagName('select').length > 0) {
       this.replaceSelect(activeDoc, 'select');
     }
-  }
+  };
 
 
   // 删除日期弹框
-  delDateModal=(activeDoc)=>{
+  delDateModal = (activeDoc) => {
     const acDateBody = activeDoc.getElementsByClassName('ac-date-body');
     // 删除日期弹框
     for (const dateItem of acDateBody) {
@@ -111,7 +113,7 @@ class ExportWord extends Component {
         dateItem.parentNode.removeChild(dateItem);
       }
     }
-  }
+  };
 
 
   getBlob = (wordId, fileName) => {
@@ -127,7 +129,7 @@ class ExportWord extends Component {
     };
 
     // 获取导出文本dom 节点
-    let activeDoc = document.getElementById(wordId)
+    const activeDoc = document.getElementById(wordId)
       .cloneNode(true);
 
     // 删除日期弹框
