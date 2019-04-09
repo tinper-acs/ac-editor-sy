@@ -85,14 +85,14 @@ class AcEditorShow extends Component {
           break;
         }
         // 日期直接修改值
-        if (type === 'date' && data && defaultValue) {
-          doc.setAttribute('value', data);
+        if (type === 'date' &&  defaultValue) {
+          doc.setAttribute('value', defaultValue);
           break;
         }
 
         // 文本类型
-        if (type === 'text' && data && defaultValue) {
-          doc.innerHTML = data;
+        if (type === 'text'  && defaultValue) {
+          doc.innerHTML = defaultValue;
           break;
         }
 
@@ -124,7 +124,10 @@ class AcEditorShow extends Component {
             direction,
           });
         }
-        doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
+        // 有子节点才替换
+        if (defaultValue && newDoc.firstElementChild) {
+          doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
+        }
       }
     }
 
