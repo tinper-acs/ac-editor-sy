@@ -73,6 +73,7 @@ class AcEditorShow extends Component {
 
     // 修改默认值
     if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
+
       for (const item of defaultData) {
         // 插入组件的类型 (text,select,radio,checkbox,date)
         const {
@@ -80,20 +81,21 @@ class AcEditorShow extends Component {
         } = item;
 
         const doc = document.getElementById(id);
+
         // id是否存在
         if (!doc) {
-          break;
+          continue;
         }
         // 日期直接修改值
         if (type === 'date' &&  defaultValue) {
           doc.setAttribute('value', defaultValue);
-          break;
+          continue;
         }
 
         // 文本类型
         if (type === 'text'  && defaultValue) {
           doc.innerHTML = defaultValue;
-          break;
+          continue;
         }
 
         const newDoc = document.createElement('span');

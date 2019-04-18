@@ -26,9 +26,23 @@ class Demo2 extends Component {
         data: '微信支付|||支付宝支付|||银行卡支付|||现金支付',
         defaultValue: '银行卡支付',
       },
+      {
+        field: 'buyer',
+        type: 'text',
+        filedType: '文本',
+        fieldName: '买方名称',
+        defaultValue: '用友集团',
+      },
+      {
+        field: 'salernamerr',
+        type: 'text',
+        filedType: '文本',
+        fieldName: '买方名称',
+        defaultValue: '777777',
+      },
     ];
     const isActive = true;
-    const htmlString = '<div><h1 style="text-align: center;">xxx公司供应商合同</h1><div><div><span>买方名称</span><textarea rows="1" cols="30" id="buyer" onkeyup="onKeyUpTextArea(\'buyer\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>卖方名称</span><textarea rows="1" cols="30" id="salername" onkeyup="onKeyUpTextArea(\'salername\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span id="d11df29a-9f36-452c-8de8-b3b4a9c4ef62"><span><input name="d11df29a-9f36-452c-8de8-b3b4a9c4ef62" onclick="onClickRadio(\'d11df29a-9f36-452c-8de8-b3b4a9c4ef62\')" type="radio" style="vertical-align: middle;" value="1xxxxxxx" actype="radio">&nbsp;&nbsp;&nbsp;&nbsp;1xxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span><span><input name="d11df29a-9f36-452c-8de8-b3b4a9c4ef62" onclick="onClickRadio(\'d11df29a-9f36-452c-8de8-b3b4a9c4ef62\')" type="radio" style="vertical-align: middle;" value="2xxxxxxx" actype="radio" checked>&nbsp;&nbsp;&nbsp;&nbsp;2xxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span>合同签订日期</span><input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"><span>合同开始日期</span><input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"><span>合同结束日期</span><input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"><span>付款条件</span><select id="paytermDemo2" class="select ac-select" onchange="onChangeSelect()"><option name="paytermDemo2" value="0" selected="">现金支付</option>,<option name="paytermDemo2" value="1">微信支付</option>,<option name="paytermDemo2" value="2">支付宝支付</option></select></div><br></div><div><br></div><ul><li><div class="form"><div class="row"></div></div></li></ul></div>';
+    const htmlString = '<div><h1 style="text-align: center;">xxx公司供应商合同</h1><div><div><span>买方名称</span><textarea rows="1" cols="30" id="buyer" onkeyup="onKeyUpTextArea(\'buyer\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>卖方名称</span><textarea rows="1" cols="30" id="salernamerr" onkeyup="onKeyUpTextArea(\'salernamerr\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span id="d11df29a-9f36-452c-8de8-b3b4a9c4ef62"><span><input name="d11df29a-9f36-452c-8de8-b3b4a9c4ef62" onclick="onClickRadio(\'d11df29a-9f36-452c-8de8-b3b4a9c4ef62\')" type="radio" style="vertical-align: middle;" value="1xxxxxxx" actype="radio">&nbsp;&nbsp;&nbsp;&nbsp;1xxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span><span><input name="d11df29a-9f36-452c-8de8-b3b4a9c4ef62" onclick="onClickRadio(\'d11df29a-9f36-452c-8de8-b3b4a9c4ef62\')" type="radio" style="vertical-align: middle;" value="2xxxxxxx" actype="radio" checked>&nbsp;&nbsp;&nbsp;&nbsp;2xxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span>合同签订日期</span><input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"><span>合同开始日期</span><input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"><span>合同结束日期</span><input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"><span>付款条件</span><select id="paytermDemo2" class="select ac-select" onchange="onChangeSelect()"><option name="paytermDemo2" value="0" selected="">现金支付</option>,<option name="paytermDemo2" value="1">微信支付</option>,<option name="paytermDemo2" value="2">支付宝支付</option></select></div><br></div><div><br></div><ul><li><div class="form"><div class="row"></div></div></li></ul></div>';
     return (
       <div className="demoPadding">
         <button onClick={this.saveFunc} style={{marginLeft:'20px',marginBottom:"10px"}}>保存</button>
