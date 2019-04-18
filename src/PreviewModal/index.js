@@ -35,7 +35,7 @@ class PreviewModal extends Component {
           editorId="pop-content-preview" // 组件 id
           isActive // 组件是否可以操作
           defaultData={[]} // 替换组件默认值
-          waterMarkerText="用友网络" // 添加水印
+          // waterMarkerText="用友网络" // 添加水印
         />
       </EditorModal>
     );
