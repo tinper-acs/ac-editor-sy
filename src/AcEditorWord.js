@@ -113,6 +113,12 @@ class ExportWord extends Component {
         dateItem.parentNode.removeChild(dateItem);
       }
     }
+
+    // 检查是否都替换了
+    const twoAcDateBody = activeDoc.getElementsByClassName('ac-date-body');
+    if (twoAcDateBody && twoAcDateBody.length > 0) {
+      this.delDateModal(activeDoc);
+    }
   };
 
 
