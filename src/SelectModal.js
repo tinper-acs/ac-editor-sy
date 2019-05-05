@@ -34,9 +34,9 @@ class SelectModal extends Component {
                this.props.showCloseBar('selectStatus');
              }
            }}
-           onMouseLeave={() => {
-             this.props.showCloseBar();
-           }}
+           // onMouseLeave={() => {
+           //   this.props.showCloseBar();
+           // }}
       >
         <span className="iconfont icon-xialakuang"/>
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>

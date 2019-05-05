@@ -108,9 +108,9 @@ class FixedModal extends Component {
             _this.props.showCloseBar('fixedStatus');
           }
         }}
-        onMouseLeave={() => {
-          this.props.showCloseBar();
-        }}
+        // onMouseLeave={() => {
+        //   this.props.showCloseBar();
+        // }}
       >
         <span className="iconfont icon-menu" />
         <div

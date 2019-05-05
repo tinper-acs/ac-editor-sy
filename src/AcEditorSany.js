@@ -517,9 +517,9 @@ class AcEditorSany extends Component {
               }
             }}
 
-            onMouseLeave={() => {
-              this.showCloseBar();
-            }}
+            // onMouseLeave={() => {
+            //   this.showCloseBar();
+            // }}
           >
             <span className="iconfont icon-zitibiaoti" />
             <span className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
@@ -564,9 +564,9 @@ class AcEditorSany extends Component {
               }
             }}
 
-            onMouseLeave={() => {
-              this.showCloseBar();
-            }}
+            // onMouseLeave={() => {
+            //   this.showCloseBar();
+            // }}
           >
             <span className="iconfont icon-align-left" />
             <span className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
@@ -614,9 +614,9 @@ class AcEditorSany extends Component {
                     }
                   }}
 
-                  onMouseLeave={() => {
-                    this.showCloseBar();
-                  }}
+                  // onMouseLeave={() => {
+                  //   this.showCloseBar();
+                  // }}
                 >
                   <span className={`iconfont ${icon}`} />
                   <div

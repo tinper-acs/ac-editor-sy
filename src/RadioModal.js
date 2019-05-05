@@ -43,9 +43,9 @@ class RadioModal extends Component {
             this.props.showCloseBar('radioStatus');
           }
         }}
-        onMouseLeave={() => {
-          this.props.showCloseBar();
-        }}
+        // onMouseLeave={() => {
+        //   this.props.showCloseBar();
+        // }}
       >
         <span className="iconfont icon-RectangleCopy" />
         <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
