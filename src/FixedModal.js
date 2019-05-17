@@ -1,39 +1,52 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline */
 import React, { Component } from 'react';
-import { Table, Checkbox } from 'tinper-bee';
 
+import { Modal, Checkbox, Table, Button } from 'tinper-bee';
 
 import './index.less';
-
 
 class FixedModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropStatus: false,
-      fixedDate: this.props.fixedDate,
+      status: false,
+      fixedDate: [...this.props.fixedDate],
     };
   }
 
+
   componentWillReceiveProps(nextProps) {
-    const { dropStatus } = nextProps;
-    this.setState({ dropStatus });
+    const { status, fixedDate, idList } = nextProps;
+
+    const newfixedDate = [...fixedDate.map((item) => { //去掉选中
+      delete item.status;
+      return item;
+    })];
+    const data = this.clearCheckData(idList, newfixedDate);
+    this.setState({
+      status,
+      fixedDate: data,
+    });
+
   }
 
-  // 获取单选框设置
-  getInputSetting = () => {
+
+  onClose = () => {
+    this.props.onHideModal('fixedStatus');
+  };
+
+
+  onSubmit = () => {
+    const { onInsert, onHideModal } = this.props;
     const { fixedDate } = this.state;
     // 获取选中的checkbox
     const list = fixedDate.filter(item => item.status);
-    this.props.onInsertFixed(list);
-    this.setState({ dropStatus: false });
+    onInsert(list);
+    onHideModal('fixedStatus');
+
   };
 
-  // 打开弹框
-  onShow = () => {
-    this.props.showCloseBar('fixedStatus');
-  };
-
+  // // 选中固定字段
   onClickCheck = (index, param) => {
     const { fixedDate } = this.state;
     fixedDate[index][param] = !fixedDate[index][param];
@@ -68,69 +81,51 @@ class FixedModal extends Component {
       key: 'filedType',
       width: '60px',
     },
-    // {
-    //   title: '是否编辑',
-    //   dataIndex: 'isEdit',
-    //   key: 'isEdit',
-    //   width: '30px',
-    //   render: (text, record, index) => {
-    //     return (
-    //       <Checkbox
-    //         checked={text}
-    //         onClick={() => {
-    //           this.onClickCheck(index, 'isEdit');
-    //         }}
-    //       />
-    //     );
-    //   }
-    // },
   ];
 
 
+  clearCheckData = (checkArray, sourceArray) => {
+    const result = [];
+    for (const sourceItem of sourceArray) {
+      let status = true;
+      for (const checkItem of checkArray) {
+        if (checkItem.field === sourceItem.field) {
+          status = false;
+        }
+      }
+      if (status) {
+        result.push(sourceItem);
+      }
+    }
+    return result;
+  };
+
+
   render() {
-    const { dropStatus, fixedDate } = this.state;
-
-    const _this = this;
-
+    const { status, fixedDate } = this.state;
     return (
-      <span
-        className="w-e-menu"
-        onMouseOver={() => {
-          if (!dropStatus) {
-            // 过滤插入的字段
-            const list = _this.props.fixedDate.filter(item => !document.getElementById(item.field));
-            // 将状态更改为未点击状态
-            const clearStatus = list.map((itemClear) => {
-              itemClear.status = false;
-              return itemClear;
-            });
-            this.setState({ fixedDate: clearStatus });
-            _this.props.showCloseBar('fixedStatus');
-          }
-        }}
-        // onMouseLeave={() => {
-        //   this.props.showCloseBar();
-        // }}
+      <Modal
+        show={status}
+        onHide={this.onClose}
+        className="sany-modal"
+        size="sm"
       >
-        <span className="iconfont icon-menu" />
-        <div
-          className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'}
-          style={{
-            width: '250px',
-            marginTop: '30px',
-          }}
-        >
-          <p className="w-e-dp-title">插入固定字段</p>
-          <div className="fixedTable">
-            <Table
-              rowKey={(r, i) => i} //生成行的key
-              columns={this.columns}
-              data={fixedDate}
-            />
-          </div>
-          <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
-        </div>
-      </span>
+        <Modal.Header closeButton>
+          <Modal.Title>固定字段</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Table
+            rowKey={(r, i) => i} // 生成行的key
+            columns={this.columns}
+            data={fixedDate}
+          />
+        </Modal.Body>
+
+        <Modal.Footer className="text-center">
+          <Button colors="primary" onClick={this.onSubmit}>确认</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }

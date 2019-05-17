@@ -1,65 +1,87 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline */
 import React, { Component } from 'react';
+
+import { Modal, FormControl, Label, Button } from 'tinper-bee';
+import Form from 'bee-form';
+
 import './index.less';
 
-class InputModal extends Component {
+const { FormItem } = Form;
+
+class HrefModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropStatus: false,
+      status: false,
     };
   }
 
+
   componentWillReceiveProps(nextProps) {
-    const { dropStatus } = nextProps;
-    this.setState({ dropStatus });
+    const { status } = nextProps;
+    this.setState({ status });
   }
 
-  // 获取单选框设置
-  getInputSetting = () => {
-    const url = document.getElementById('input_url').value;
-    const text = document.getElementById('input_text').value;
-    this.props.onInsertURl({ url, text });
-    this.setState({ dropStatus: false });
+
+  onClose = () => {
+    this.props.onHideModal('hrefStatus');
   };
 
 
+  onSubmit = () => {
+    const { onInsert, onHideModal, form } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        onInsert(values);
+        onHideModal('hrefStatus');
+      }
+    });
+  };
+
   render() {
-    const { dropStatus } = this.state;
+    const { form } = this.props;
+    const { getFieldProps } = form;
+    const { status } = this.state;
+
     return (
-      <span
-        className="w-e-menu"
-        onMouseOver={() => {
-          if (!dropStatus) {
-            this.props.showCloseBar('hrefStatus');
-          }
-        }}
-        onMouseLeave={() => {
-          this.props.showCloseBar();
-        }}
+      <Modal
+        show={status}
+        onHide={this.onClose}
+        className="sany-modal"
+        size="sm"
       >
-        <span className="iconfont icon-link" />
-        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
-          <p className="w-e-dp-title">插入链接</p>
-          <div className="ac-input-body">
+        <Modal.Header closeButton>
+          <Modal.Title>超链接</Modal.Title>
+        </Modal.Header>
 
-            <div className="ac-input-item">
-              <label className="ac-item-label">文本</label>
-              <input type="text" className="ac-input-number" id="input_text" />
-            </div>
+        <Modal.Body className="form-body-padding">
+          <FormItem>
+            <Label>URL</Label>
+            <FormControl
+              placeholder="请输入URL"
+              {...getFieldProps('url',{
+                initialValue:'',
+              })}
+            />
+          </FormItem>
 
-            <div className="ac-input-item">
-              <label className="ac-item-label">URL</label>
-              <input type="text" className="ac-input-number" id="input_url" />
-            </div>
-          </div>
-          <div className="ac-pop-action" onClick={this.getInputSetting}>
-            插入
-          </div>
-        </div>
-      </span>
+          <FormItem>
+            <Label>文本</Label>
+            <FormControl
+              placeholder="请输入文本"
+              {...getFieldProps('text',{
+                initialValue:'',
+              })}
+            />
+          </FormItem>
+        </Modal.Body>
+
+        <Modal.Footer className="text-center">
+          <Button colors="primary" onClick={this.onSubmit}>确认</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
 
-export default InputModal;
+export default Form.createForm()(HrefModal);

@@ -20,42 +20,47 @@ class Demo1 extends Component {
 
   fixedDate = [
     {
-      field: 'buyer1',
+      field: 'buyerww1',
       type: 'text',
       filedType: '文本',
       fieldName: '买方名称',
       data: 'xxxx',
+      defaultValue: '买方名称',
     },
     {
-      field: 'salername2',
+      field: 'salername22',
       type: 'text',
       filedType: '文本',
       fieldName: '卖方名称',
       data: 'xxxx',
+      defaultValue: '卖方名称',
     },
     {
-      field: 'contractsign3',
+      field: 'contractswwwign3',
       type: 'date',
       fieldName: '合同签订日期',
       filedType: '日期',
       data: '2019-02-20',
+      defaultValue: '2019-02-20',
     },
     {
-      field: 'contractstr4',
+      field: 'contractstrwww4',
       type: 'date',
       fieldName: '合同开始日期',
       filedType: '日期',
       data: '2019-02-20',
+      defaultValue: '2019-02-20',
     },
     {
-      field: 'contractend5',
+      field: 'contractendxxx5',
       type: 'date',
       fieldName: '合同结束日期',
       filedType: '日期',
       data: '2019-02-20',
+      defaultValue: '2019-02-20',
     },
     {
-      field: 'payterm6',
+      field: 'paytewwwrm6',
       type: 'select',
       filedType: '下拉',
       fieldName: '付款条件',
@@ -63,7 +68,7 @@ class Demo1 extends Component {
       defaultValue: '微信支付',
     },
     {
-      field: 'isrebate7',
+      field: 'isrebatwwwe7',
       type: 'radio',
       filedType: '单选',
       fieldName: '是否返利',
@@ -87,7 +92,11 @@ class Demo1 extends Component {
 
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc} style={{ marginLeft: '20px', marginBottom: '10px' }}>保存</button>
+        <button onClick={this.saveFunc} style={{
+          marginLeft: '20px',
+          marginBottom: '10px'
+        }}>保存
+        </button>
         <AcEditorSany
           // 组件id
           editorId="acEditorSanyId"
@@ -96,8 +105,8 @@ class Demo1 extends Component {
             this.child = ref;
           }}
           // 文本框默认值
-          htmlString={htmlString}
-          defaultData={defaultData} // 替换组件默认值
+          htmlString={''}
+          // defaultData={defaultData} // 替换组件默认值
           // 文本框默认最小高
           height="300px"
           fixedDate={this.fixedDate}

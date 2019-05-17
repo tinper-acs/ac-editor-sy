@@ -1,13 +1,40 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,react/jsx-indent-props,jsx-a11y/alt-text,object-curly-newline,padded-blocks,no-restricted-syntax,react/prop-types,object-curly-spacing,react/destructuring-assignment,no-param-reassign,no-shadow,prefer-const,no-underscore-dangle,prefer-destructuring,import/no-extraneous-dependencies,no-fallthrough,no-continue,import/order,react/jsx-indent,react/jsx-no-bind */
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
-import TableModal from './TableModal.js';
-import SelectModal from './SelectModal.js';
-import CheckboxModal from './CheckboxModal.js';
-import RadioModal from './RadioModal.js';
+import { Select } from 'tinper-bee';
+
+
 import PreviewModal from './PreviewModal';
-import FixedModal from './FixedModal.js';
+
 import HrefModal from './HrefModal.js';
+import RadioModal from './RadioModal.js';
+import CheckboxModal from './CheckboxModal.js';
+import SelectModal from './SelectModal.js';
+import TableModal from './TableModal.js';
+import FixedModal from './FixedModal.js';
+
+
+// icon 图片
+import hrefIcon from './assets/icon/href.png';
+import radioIcon from './assets/icon/radio.png';
+import checkboxIcon from './assets/icon/checkbox.png';
+import selectIcon from './assets/icon/select.png';
+import tableIcon from './assets/icon/table.png';
+import inputIcon from './assets/icon/input.png';
+import dateIcon from './assets/icon/date.png';
+import fixedIcon from './assets/icon/fixed.png';
+import viewIcon from './assets/icon/view.png';
+import backColorIcon from './assets/icon/back-color.png';
+import justifyIcon from './assets/icon/justify.png';
+import indentIcon from './assets/icon/indent.png';
+import fontColorIcon from './assets/icon/font-color.png';
+import lineHeightIcon from './assets/icon/line-height.png';
+import letterSpacingIcon from './assets/icon/letter-spacing.png';
+import fontNameIcon from './assets/icon/font-name.png';
+import otherActionIcon from './assets/icon/other-action.png';
+import titleIcon from './assets/icon/title.png';
+import fontSizeIcon from './assets/icon/font-size.png';
+
 
 import {
   arrayObjClear,
@@ -18,18 +45,17 @@ import {
   initRadio,
   initCheckbox,
   initDate,
-  popList,
-  textAlignList,
-  iconCmdList,
 } from './utils';
-
-import './assets/font/iconfont.css';
-import './index.less';
-
 import zhCN from 'rc-calendar/lib/locale/zh_CN';
+
+import 'bee-datepicker/build/DatePicker.css';
+import './index.less';
+import './tooltip.less';
+
 import moment from 'moment';
 
 const formatRule = 'YYYY-MM-DD';
+const { Option } = Select;
 
 
 class AcEditorSany extends Component {
@@ -38,95 +64,65 @@ class AcEditorSany extends Component {
     this.state = {
       showDate: false,
       currentDateId: '',
-      currentDateLeft: '0px',
-      currentDateTop: '0px',
-      barObj: {
-        hTitle: false,
-        fontSize: false,
-        fontName: false,
-        backColor: false,
-        highlight: false,
-        textAlign: false,
-        lineHeight: false,
-        tableStatus: false,
-        radioStatus: false,
-        checkboxStatus: false,  //是否展示插入 checkbox 弹框
-        inputStatus: false, //是否展示插入 input 弹框
-        selectStatus: false, //是否展示插入 select 弹框
-        fixedStatus: false,  // 是否展示插入 fixed 弹框
-        previewStatus: false,  //是否展示插入 preview 弹框
-        hrefStatus: false,  //是否展示插入 链接 弹框
-
-      },
+      currentDateLeft: '0px', // 日期靠 left 多少像素
+      currentDateTop: '0px', // 日期靠 top 多少像素
       previewHtml: '',
       idList: [],  // 插入组件的类型 (text,select,radio,checkbox,date)
-
+      hrefStatus: false,
+      radioStatus: false,
+      checkboxStatus: false,
+      selectStatus: false,
+      tableStatus: false,
+      fixedStatus: false,
+      previewStatus: false,
     };
-    window.onChangeSelect = () => this.onChangeSelect();
-    window.onKeyUpTextArea = id => this.onKeyUpTextArea(id);
-    window.onClickRadio = id => this.onClickRadio(id);
-    window.onClickCheckbox = id => this.onClickCheckbox(id);
   }
 
   // 定义最后光标对象
   lastEditRange = null;
 
-  hrefTitle = '';
-
-  timeCount = 0;  // 缓存定时器
-
 
   componentDidMount() {
-    const { htmlString = '', editorId, defaultData=[] } = this.props;
 
+    this.props.onRef(this);   // 在父组件上绑定子组件方法
+    const { htmlString = '', editorId, defaultData = [] } = this.props;
     document.getElementById(editorId).innerHTML = htmlString;
-    const { idList } = this.state;
-    // 将id 变成 field
-    for (const item of defaultData) {
-      idList.push(item);
-    }
-    this.setState({ idList });
-    // 在父组件上绑定子组件方法
-    this.props.onRef(this);
-  }
 
-  // 实时更新checkbox 值
-  onClickCheckbox = () => {
-    const target = event.target;
-    const checked = target.getAttribute('checked');
-    if (!checked) {
+    this.initContent(defaultData); //对传入的值替换
+    this.setState({ idList: defaultData });
+
+
+    window.onChangeSelect = function (event) { // select 选中事件
+      const target = event.target;
+      const index = target.selectedIndex;
+
+      const options = document.getElementsByName(target.id);
+      for (let i = 0; i < options.length; i += 1) {
+        options[i].removeAttribute('selected');
+      }
+      target[index].setAttribute('selected', true);
+    };
+
+    window.onClickRadio = function (event) {   // radio 点击事件
+      const target = event.target;
+      const id = target.getAttribute('name');
+      const radios = document.getElementsByName(id);
+      for (let i = 0; i < radios.length; i += 1) {
+        radios[i].removeAttribute('checked');
+      }
       target.setAttribute('checked', true);
-    } else {
-      target.removeAttribute('checked');
-    }
-  };
+    };
 
-  // 实时更新 radio值
-  onClickRadio = (id) => {
-    const target = event.target;
-    const radios = document.getElementsByName(id);
-    for (let i = 0; i < radios.length; i += 1) {
-      radios[i].removeAttribute('checked');
-    }
-    target.setAttribute('checked', true);
-  };
-
-  // 实时更新 TextArea值
-  onKeyUpTextArea = (id) => {
-    const doc = document.getElementById(id);
-    doc.innerHTML = doc.value;
-  };
-
-  // 下拉框选择
-  onChangeSelect = () => {
-    const target = event.target;
-    const index = target.selectedIndex;
-    const options = document.getElementsByName(target.id);
-    for (let i = 0; i < options.length; i += 1) {
-      options[i].removeAttribute('selected');
-    }
-    target[index].setAttribute('selected', true);
-  };
+    window.onClickCheckbox = function (event) { // checkbox 点击事件
+      const target = event.target;
+      const checked = target.getAttribute('checked');
+      if (!checked) {
+        target.setAttribute('checked', true);
+      } else {
+        target.removeAttribute('checked');
+      }
+    };
+  }
 
 
   // 插入内容
@@ -158,7 +154,6 @@ class AcEditorSany extends Component {
       sel.removeAllRanges();                //移出所有选区
       sel.addRange(contentRange);           //添加修改后的选区
     }
-    this.showCloseBar();
   };
 
   // 插入table
@@ -166,40 +161,59 @@ class AcEditorSany extends Component {
     this.insertContent(initTable(rowNum, colNum));
   };
 
-
   // 插入Input
   onInsertInput = () => {
-    const id = uuid();
-    this.insertContent(initInput({ id }));
-    this.addTypeId(id, 'text', 'horizontal', '', '');
+    const field = uuid();
+    this.insertContent(initInput({ field }));
+    this.addNewComponent({ field });  // 将Input缓存
   };
 
   // 插入select
   onInsertSelect = (param) => {
-    const id = uuid();
-    this.insertContent(initSelect({
-      data: param,
-      id,
-    }));
-    this.addTypeId(id, 'select', 'horizontal', param.join('|||'), param[0]);
+    const field = uuid();
+    const { data } = param;
+    const item = {
+      ...param,
+      field,
+      data: data ? data.split('|||') : [], // 将 ||| 连接的字符串转换成数组
+    };
+    this.insertContent(initSelect(item));
+    this.addNewComponent({ // 将下拉缓存
+      ...param,
+      field,
+    });
   };
 
   // 插入radio
   onInsertRadio = (param) => {
-    const id = uuid();
-    param.id = id;
-    this.insertContent(initRadio(param));
-    const { data, check, direction } = param;
-    this.addTypeId(id, 'radio', direction, data.join('|||'), data[check - 1]);
+    const field = uuid();
+    const { data } = param;
+    const item = {
+      ...param,
+      field,
+      data: data ? data.split('|||') : [], // 将 ||| 连接的字符串转换成数组
+    };
+    this.insertContent(initRadio(item));
+    this.addNewComponent({ // 将单选框缓存
+      ...param,
+      field,
+    });
   };
 
   // 插入多选框
   onInsertCheckbox = (param) => {
-    const id = uuid();
-    param.id = id;
-    this.insertContent(initCheckbox(param));
-    const { data, check, direction } = param;
-    this.addTypeId(id, 'checkbox', direction, data.join('|||'), data[check - 1]);
+    const field = uuid();
+    const { data } = param;
+    const item = {
+      ...param,
+      field,
+      data: data ? data.split('|||') : [], // 将 ||| 连接的字符串转换成数组
+    };
+    this.insertContent(initCheckbox(item)); // 动态插入日期
+    this.addNewComponent({ // 将多选框缓存
+      ...param,
+      field,
+    });
   };
 
 
@@ -207,51 +221,43 @@ class AcEditorSany extends Component {
   onInsertFixed = (param) => {
     let htmlString = '';
     for (const fixedData of param) {
-      const {
-        data = '', type, field: id, defaultValue = '',
-      } = fixedData;
-
-      // 将字符串转换成数组
-      const dateArray = data ? data.split('|||') : [];
-
+      const { data = '', type } = fixedData;
       const item = {
-        data: dateArray,
-        type,
-        id,
-        defaultValue,
+        ...fixedData,
+        data: data ? data.split('|||') : [], // 将 ||| 连接的字符串转换成数组
       };
+      this.addNewComponent(fixedData);  // 将添加组件的信息缓存
 
-      if (type === 'text') {
-        htmlString += initInput(item);
+      switch (type) {  // 判断组件类型
+        case 'text':
+          htmlString += initInput(item);
+          break;
+        case 'select':
+          htmlString += initSelect(item);
+          break;
+        case 'date':
+          htmlString += initDate(item);
+          break;
+        case 'radio':
+          htmlString += initRadio(item);
+          break;
+        case 'checkbox':
+          htmlString += initCheckbox(item);
+          break;
+        default:
       }
-      if (type === 'select') {
-        htmlString += initSelect(item);
-      }
-      if (type === 'date') {
-        htmlString += initDate(item);
-      }
-      if (type === 'radio') {
-        htmlString += initRadio(item);
-      }
-      if (type === 'checkbox') {
-        htmlString += initCheckbox(item);
-      }
-      // 默认选中
-      this.addTypeId(id, type, 'horizontal', data, defaultValue);
     }
     this.insertContent(`<span>${htmlString}</span>`);
   };
 
   // 插入日期
   onDate = () => {
-    const id = uuid();
-    this.insertContent(initDate({ id }));
-    this.addTypeId(id, 'date', 'horizontal', '', '');
-  };
-
-  // 插入命令
-  insertCommand = (cmd, value = null) => {
-    window.document.execCommand(cmd, false, value);
+    const field = uuid();
+    this.insertContent(initDate({ field }));
+    this.addNewComponent({  // 将添加组件的信息缓存
+      field,
+      type: 'date',
+    });
   };
 
   // 编辑框按键弹起和点击事件
@@ -259,19 +265,20 @@ class AcEditorSany extends Component {
     // 缓存光标
     this.lastEditRange = window.getSelection()
       .getRangeAt(0);
-    this.hrefTitle = this.getChangeText();
-    this.showCloseBar();
   };
 
   //编辑点击事件
   onClickEditBody = (event) => {
     const _this = this;
-    // 缓存光标
-    this.lastEditRange = window.getSelection()
-      .getRangeAt(0);
-    const target = event.target;
-    // 强制关闭日期
-    _this.setState({ showDate: false });
+    try {
+      _this.lastEditRange = window.getSelection()
+        .getRangeAt(0); // 缓存光标
+    } catch (e) {
+      console.log('');
+    }
+    // 通过事件冒泡方法显示日期弹框
+    const { target } = event;
+    _this.setState({ showDate: false }); // 强制关闭日期
     // 判断是否为日期 input
     if (target.nodeName === 'INPUT' && target.getAttribute('acType') === 'date') {
       const currentDateId = target.getAttribute('id');
@@ -284,28 +291,22 @@ class AcEditorSany extends Component {
         showDate: true,
       });
     }
-    this.showCloseBar();
-    this.hrefTitle = this.getChangeText();
   };
 
-  //编辑点击事件
-  onChangeEditBody = (event) => {
-    this.showCloseBar();
-  };
 
   // 预览按钮
   onPreviewShow = () => {
     const { editorId } = this.props;
     const textHtml = document.getElementById(editorId).innerHTML;
-    this.setState({ previewHtml: textHtml });
-    this.showCloseBar('previewStatus');
+    this.setState({
+      previewHtml: textHtml,
+      previewStatus: true,
+    });
   };
 
   // 插入标题
-  onInsertTitle = (event) => {
-    const target = event.target;
-    this.insertContent(target.outerHTML);
-    event.stopPropagation();
+  onInsertTitle = (value) => {
+    this.insertContent(`<${value}>${value}</${value}>`);
   };
 
   // 添加href
@@ -315,7 +316,22 @@ class AcEditorSany extends Component {
     this.insertContent(htmlString);
   };
 
-  // 修改行高 letter-spacing: 3px;
+  // 下拉执行命令
+  onChangeCmd = (value) => {
+    window.document.execCommand(value, false, null);
+  };
+
+  // 下拉执行命令和值
+  onChangeCmdValue = (cmd, value) => {
+    window.document.execCommand(cmd, false, value);
+  };
+
+  // 下拉修改行高和字宽
+  onChangeHeightSpacing = (status, value) => {
+    this.onUpdateHeightSpacing(value, status);
+  };
+
+  // 修改行高
   onUpdateHeightSpacing = (value, status) => {
     const selectionObj = window.getSelection();
     const element = selectionObj.focusNode.parentElement;  //获取选择的元素
@@ -325,59 +341,6 @@ class AcEditorSany extends Component {
       element.style.letterSpacing = value;
     }
   };
-
-  //通过下拉获取 命令和值
-  onPopSelect = (cmd, event) => {
-    const target = event.target;
-    const value = target.getAttribute('value');
-    switch (cmd) {
-      case 'lineHeight':
-        this.onUpdateHeightSpacing(value, 'lineHeight');
-        break;
-      case 'letterSpacing':
-        this.onUpdateHeightSpacing(value, 'letterSpacing');
-        break;
-      default:
-        window.document.execCommand(cmd, false, value);
-    }
-    this.showCloseBar();
-  };
-
-  // 关闭或者打开弹框
-  showCloseBar = (param) => {
-    if (param) {
-      this.changeBarStatus(param);
-      const count = this.timeCount;
-      window.clearInterval(count);
-    } else {
-      // 设置定时器
-      const _this = this;
-      this.timeCount = setTimeout(() => {
-        _this.changeBarStatus();
-      }, 500);
-    }
-  };
-
-  // 修改bar 状态
-  changeBarStatus = (param) => {
-    const { barObj } = this.state;
-    for (const item in barObj) {
-      barObj[item] = false;
-    }
-    if (param) {
-      barObj[param] = true;
-    }
-    // 打开链接
-    if (param === 'hrefStatus') {
-      const selectionObj = window.getSelection();
-      const title = selectionObj.toString();
-      if (title) {
-        this.hrefTitle = title;
-      }
-    }
-    this.setState({ barObj });
-  };
-
 
   // 选择日期，将日期的值赋值给 选中的input
   onChangeDate = (param) => {
@@ -389,279 +352,447 @@ class AcEditorSany extends Component {
       .setAttribute('value', date);
   };
 
-  getChangeText = () => {
-    const selectionObj = window.getSelection();
-    const selectedText = selectionObj.toString();
-    return selectedText || '';
-  };
-
-
   //保存方法回调
   getHtml2String = () => {
-    const doc = document.getElementById(this.props.editorId).innerHTML;
     const { idList } = this.state;
-    console.log('xxxx', idList);
-    // 查看id是否真的有效
-    const list = idList.filter(item => document.getElementById(item.field));
-
-    // 对象去重
-    const clearList = arrayObjClear(list, 'field');
+    const list = idList.filter(item => document.getElementById(item.field));  // 查看id是否真的有效
+    const clearList = arrayObjClear(list, 'field');  // 对象去重
+    const updList = this.updateIdList(clearList);  // 替换默认值和更新修改后的值
+    const doc = document.getElementById(this.props.editorId).innerHTML; // 获取dom
     return {
       doc,
-      idList: clearList,
+      idList: updList,
     };
   };
 
-  // 添加类型和id
-  addTypeId = (id, type, direction, data, defaultValue) => {
+
+  // 重新修改组件默认值
+  updateIdList = array => array.map((item) => {
+    const { field, type } = item;
+    const doc = document.getElementById(field);
+    if (type === 'text') { // 文本类型 输入框
+      const textValue = doc.value;
+      doc.innerHTML = textValue; // 将值更新到textarea 中
+      item.data = textValue;
+      item.defaultValue = textValue;
+    }
+
+    if (type === 'date') {  // 文本类型 日期
+      const textValue = doc.value;
+      item.data = textValue;
+      item.defaultValue = textValue;
+    }
+
+    if (type === 'radio') {  // 单选框
+      let data = [];
+      let defaultValue = '';
+      const radios = document.getElementsByName(field);
+      // 对单选框 重新赋值
+      for (let i = 0; i < radios.length; i += 1) {
+        const checked = radios[i].getAttribute('checked');
+        const textValue = radios[i].parentNode.innerText;
+        data.push(textValue);
+        radios[i].setAttribute('value', textValue);
+        if (checked) { //修改默认选中值
+          defaultValue = textValue;
+        }
+      }
+      item.data = data.join('|||');
+      item.defaultValue = defaultValue;
+    }
+
+    if (type === 'checkbox') {  // 单选框
+      let data = [];
+      let defaultValue = [];
+      const checkboxs = document.getElementsByName(field);
+      // 对单选框 重新赋值
+      for (let i = 0; i < checkboxs.length; i += 1) {
+        const checked = checkboxs[i].getAttribute('checked');
+        const textValue = checkboxs[i].parentNode.innerText;
+        data.push(textValue);
+        checkboxs[i].setAttribute('value', textValue);
+        if (checked) { //修改默认选中值
+          defaultValue.push(textValue);
+        }
+      }
+      item.data = data.join('|||');
+      item.defaultValue = defaultValue.join('|||');
+    }
+
+    if (type === 'select') { // 下拉框
+      const selectedIndex = doc.selectedIndex; // 选中索引
+      item.defaultValue = doc.options[selectedIndex].value; // 选中值
+    }
+    return item;
+  });
+
+
+  // 初始化默认传入的值
+  initContent = (defaultData) => {
+
+    if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
+
+      // 插入组件的类型 (text,select,radio,checkbox,date)
+      for (const item of defaultData) {
+
+        const { type, field, data, defaultValue } = item;
+        const doc = document.getElementById(field);
+
+        // id是否存在
+        if (!doc || !defaultValue || !data) {
+          continue;
+        }
+        // 用于包裹 select radio checkbox
+        const newDoc = document.createElement('span');
+
+        switch (type) {  // 判断组件类型
+          case 'date': // 日期直接修改值
+            doc.setAttribute('value', defaultValue);
+            break;
+          case 'text':  // 文本类型
+            doc.innerHTML = defaultValue;
+            break;
+          case 'select':
+            newDoc.innerHTML = initSelect({
+              ...item,
+              data: data.split('|||'),
+            });
+          case 'radio':
+            newDoc.innerHTML = initRadio({
+              ...item,
+              data: data.split('|||'),
+            });
+          case 'checkbox':
+            newDoc.innerHTML = initCheckbox({
+              ...item,
+              data: data.split('|||'),
+            });
+          default:
+            if (newDoc.firstElementChild && doc.parentNode) {  // 有子节点才替换
+              doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
+            }
+        }
+      }
+    }
+
+  };
+
+
+  // 添加新元素属性
+  addNewComponent = (param) => {
     const { idList } = this.state;
+    const { field, direction = 'horizontal', data = '', type = 'text', defaultValue = '' } = param;
     idList.push({
-      field: id,
-      type,
+      field,
       direction,
       data,
+      type,
       defaultValue,
     });
     this.setState({ idList });
   };
 
+  // 展示弹框
+  onShowModal = (status) => {
+    if (status === 'fixedStatus') {
+      const { idList } = this.state;
+      const list = idList.filter(item => document.getElementById(item.field));  // 查看id是否真的有效
+      const clearList = arrayObjClear(list, 'field');  // 对象去重
+      const updList = this.updateIdList(clearList);  // 替换默认值和更新修改后的值
+      this.setState({
+        [status]: true,
+        idList: updList,
+      });
+    } else {
+      this.setState({ [status]: true });
+    }
+  };
+
+  // 关闭弹框
+  onHideModal = status => this.setState({ [status]: false });
 
   render() {
-    const {
-      showDate, currentDateLeft, currentDateTop, previewHtml, barObj,
-    } = this.state;
 
-    const {
-      hTitle, textAlign, tableStatus, radioStatus, checkboxStatus, selectStatus, fixedStatus, previewStatus, hrefStatus,
-    } = barObj;
+    const { showDate, currentDateLeft, currentDateTop, previewHtml, idList } = this.state;
+    const { editorId, height, } = this.props;
 
-    const { editorId, height, fixedDate } = this.props;
 
     return (
       <div className="editor-sany">
 
-        <div className="w-e-toolbar">
-
-          {/*对比*/}
-          <span className="w-e-menu tooltip">
-            <span className="iconfont icon-duibi" />
-            <span className="tooltip-text">对比</span>
-          </span>
-
+        <div className="toolbar-sany">
           {/*预览*/}
-          <span className="w-e-menu tooltip">
-            <span className="iconfont icon-eye" onClick={this.onPreviewShow} />
-            <span className="tooltip-text">预览</span>
+          <span tooltip="预览" flow="down" className="icon-span">
+            <img src={viewIcon} onClick={this.onPreviewShow}/>
+            {/*预览弹框*/}
+            <PreviewModal
+              status={this.state.previewStatus}
+              onHideModal={this.onHideModal}
+              htmlString={previewHtml}
+            />
           </span>
 
-          {/*单选*/}
-          <RadioModal
-            dropStatus={radioStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertRadio={this.onInsertRadio}
-          />
-          {/*多选*/}
-          <CheckboxModal
-            dropStatus={checkboxStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertCheckbox={this.onInsertCheckbox}
-          />
-
-          {/*文本 输入*/}
-          <span className="w-e-menu tooltip">
-            <span className="iconfont icon-danhangshurukuang" onClick={this.onInsertInput} />
-            <span className="tooltip-text">输入框</span>
+          {/*超链接*/}
+          <span tooltip="链接" flow="down" className="icon-span">
+            <img
+              src={hrefIcon}
+              onClick={this.onShowModal.bind(this, 'hrefStatus')}
+            />
+            <HrefModal
+              onInsert={this.onInsertURl}
+              status={this.state.hrefStatus}
+              onHideModal={this.onHideModal}
+            />
           </span>
 
-          {/*日期*/}
-          <span className="w-e-menu tooltip">
-            <span className="iconfont icon-calendar" onClick={this.onDate} />
-            <span className="tooltip-text">日期</span>
+          {/*单选框*/}
+          <span tooltip="单选框" flow="down" className="icon-span">
+            <img
+              src={radioIcon}
+              onClick={this.onShowModal.bind(this, 'radioStatus')}
+            />
+            <RadioModal
+              onInsert={this.onInsertRadio}
+              status={this.state.radioStatus}
+              onHideModal={this.onHideModal}
+            />
+          </span>
+
+          {/*多选框*/}
+          <span tooltip="多选框" flow="down" className="icon-span">
+            <img
+              src={checkboxIcon}
+              onClick={this.onShowModal.bind(this, 'checkboxStatus')}
+            />
+            <CheckboxModal
+              onInsert={this.onInsertCheckbox}
+              status={this.state.checkboxStatus}
+              onHideModal={this.onHideModal}
+            />
           </span>
 
           {/*下拉框*/}
-          <SelectModal
-            dropStatus={selectStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertSelect={this.onInsertSelect}
-          />
+          <span tooltip="下拉框" flow="down" className="icon-span">
+            <img
+              src={selectIcon}
+              onClick={this.onShowModal.bind(this, 'selectStatus')}
+            />
+            <SelectModal
+              onInsert={this.onInsertSelect}
+              status={this.state.selectStatus}
+              onHideModal={this.onHideModal}
+            />
+          </span>
+
+          {/*表格*/}
+          <span tooltip="表格" flow="down" className="icon-span">
+            <img
+              src={tableIcon}
+              onClick={this.onShowModal.bind(this, 'tableStatus')}
+            />
+            <TableModal
+              onInsert={this.onInsertTable}
+              status={this.state.tableStatus}
+              onHideModal={this.onHideModal}
+            />
+          </span>
+
+
+          {/*文本 输入*/}
+          <span tooltip="文本框" flow="down" className="icon-span">
+            <img src={inputIcon} onClick={this.onInsertInput}/>
+          </span>
+
+          {/*日期*/}
+          <span tooltip="日期" flow="down" className="icon-span">
+            <img src={dateIcon} onClick={this.onDate}/>
+          </span>
 
           {/*固定字段*/}
-          <FixedModal
-            dropStatus={fixedStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertFixed={this.onInsertFixed}
-            fixedDate={fixedDate}
-          />
-
-          {/*插入表格*/}
-          <TableModal
-            dropStatus={tableStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertTable={this.onInsertTable}
-          />
-
-          {/*链接*/}
-          <HrefModal
-            dropStatus={hrefStatus}
-            showCloseBar={this.showCloseBar}
-            onInsertURl={this.onInsertURl}
-          />
-
-          {/*标题*/}
-          <span
-            className="w-e-menu"
-            onMouseOver={() => {
-              if (!hTitle) {
-                this.showCloseBar('hTitle');
-              }
-            }}
-
-            // onMouseLeave={() => {
-            //   this.showCloseBar();
-            // }}
-          >
-            <span className="iconfont icon-zitibiaoti" />
-            <span className={hTitle ? 'w-e-droplist' : 'w-e-droplist-h'}>
-              <p className="w-e-dp-title">设置标题</p>
-              <ul className="w-e-list" onClick={this.onInsertTitle}>
-                <li className="w-e-item"><h1 className="clearWidth">H1</h1></li>
-                <li className="w-e-item"><h2 className="clearWidth">H2</h2></li>
-                <li className="w-e-item"><h3 className="clearWidth">H3</h3></li>
-                <li className="w-e-item"><h4 className="clearWidth">H4</h4></li>
-                <li className="w-e-item"><h5 className="clearWidth">H5</h5></li>
-                <li className="w-e-item"><p className="clearWidth">正文</p></li>
-              </ul>
-            </span>
+          <span tooltip="固定字段" flow="down" className="icon-span">
+            <img
+              src={fixedIcon}
+              onClick={this.onShowModal.bind(this, 'fixedStatus')}
+            />
+            <FixedModal
+              onInsert={this.onInsertFixed}
+              status={this.state.fixedStatus}
+              onHideModal={this.onHideModal}
+              fixedDate={this.props.fixedDate}
+              idList={this.state.idList}
+            />
+          </span>
+          <span tooltip="对齐方式" flow="down">
+            <Select
+              value={undefined}
+              placeholder="标题"
+              onChange={this.onInsertTitle}
+              style={{ width: '60px' }}
+              size="sm"
+            >
+                <Option value="H1">H1</Option>
+                <Option value="H2">H2</Option>
+                <Option value="H3">H3</Option>
+                <Option value="H4">H4</Option>
+                <Option value="H5">H5</Option>
+            </Select>
+            <img src={titleIcon} className="select-icon-img"/>
           </span>
 
-          {/*加粗*/}
-          {
-            iconCmdList.map((item) => {
-              const { cmd, icon, title } = item;
-              return (
-                <span className="w-e-menu tooltip" key={uuid()}>
-                  <button onClick={() => {
-                    this.insertCommand(cmd);
-                  }}
-                  >
-                    <span className={`iconfont ${icon}`} />
-                  </button>
-                  <span className="tooltip-text">{title}</span>
-                </span>
-              );
-            })
-          }
-
-
-          {/*文字对齐*/}
-          <span
-            className="w-e-menu"
-            // 清空所有的弹框
-            onMouseOver={() => {
-              if (!textAlign) {
-                this.showCloseBar('textAlign');
-              }
-            }}
-
-            // onMouseLeave={() => {
-            //   this.showCloseBar();
-            // }}
-          >
-            <span className="iconfont icon-align-left" />
-            <span className={textAlign ? 'w-e-droplist' : 'w-e-droplist-h'}>
-              <p className="w-e-dp-title">对齐方式</p>
-              <ul className="w-e-list">
-                {/*对齐方式*/}
-                {textAlignList.map((item) => {
-                  const { cmd, title, icon } = item;
-                  return (
-                    <li
-                      className="w-e-item"
-                      key={uuid()}
-                      onClick={event => this.onPopSelect(cmd, event)}
-                    >
-                      <button>
-                        <span value={cmd} className={`iconfont ${icon}`} />
-                        <span className="text-align-icon">{title}</span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-            </span>
+          {/*对齐方式*/}
+          <span tooltip="对齐方式" flow="down">
+            <Select
+              placeholder="对齐"
+              value={undefined}
+              defaultValue=""
+              onChange={this.onChangeCmd}
+              style={{ width: '60px' }}
+              size="sm"
+            >
+                <Option value="justifyLeft">靠左</Option>
+                <Option value="justifyCenter">居中</Option>
+                <Option value="justifyRight">靠右</Option>
+            </Select>
+            <img src={justifyIcon} className="select-icon-img"/>
           </span>
 
+
+          {/*缩进*/}
+          <span tooltip="缩进" flow="down">
+            <Select
+              placeholder="缩进"
+              value={undefined}
+              defaultValue=""
+              onChange={this.onChangeCmd}
+              style={{ width: '60px' }}
+              size="sm"
+            >
+                <Option value="indent">前进</Option>
+                <Option value="outdent">后退</Option>
+            </Select>
+            <img src={indentIcon} className="select-icon-img"/>
+          </span>
+
+
+          {/*字体颜色*/}
+          <span tooltip="字体颜色" flow="down">
+            <Select
+              placeholder="字体色"
+              value={undefined}
+              onChange={this.onChangeCmdValue.bind(this, 'foreColor')}
+              style={{ width: '80px' }}
+              size="sm"
+            >
+                <Option value="#1c487f">#1c487f</Option>
+                <Option value="#4d80bf">#4d80bf</Option>
+                <Option value="#c24f4a">#c24f4a</Option>
+                <Option value="#8baa4a">#8baa4a</Option>
+                <Option value="#7b5ba1">#7b5ba1</Option>
+                <Option value="#46acc8">#46acc8</Option>
+            </Select>
+            <img src={fontColorIcon} className="select-icon-img"/>
+          </span>
+
+          {/*背景色*/}
+          <span tooltip="背景色" flow="down">
+            <Select
+              placeholder="背景色"
+              value={undefined}
+              onChange={this.onChangeCmdValue.bind(this, 'backColor')}
+              style={{ width: '80px' }}
+              size="sm"
+            >
+                <Option value="#1c487f">#1c487f</Option>
+                <Option value="#4d80bf">#4d80bf</Option>
+                <Option value="#c24f4a">#c24f4a</Option>
+                <Option value="#8baa4a">#8baa4a</Option>
+                <Option value="#7b5ba1">#7b5ba1</Option>
+                <Option value="#46acc8">#46acc8</Option>
+            </Select>
+            <img src={backColorIcon} className="select-icon-img"/>
+          </span>
+
+          {/*行高*/}
+          <span tooltip="行高" flow="down">
+            <Select
+              placeholder="行高"
+              value={undefined}
+              onChange={this.onChangeHeightSpacing.bind(this, 'lineHeight')}
+              style={{ width: '60px' }}
+              size="sm"
+            >
+                <Option value={1}>1.0倍</Option>
+                <Option value={1.2}>1.2倍</Option>
+                <Option value={4}>4.0倍</Option>
+            </Select>
+            <img src={lineHeightIcon} className="select-icon-img"/>
+          </span>
+
+          {/*字间距*/}
+          <span tooltip="字间距" flow="down">
+            <Select
+              placeholder="字间距"
+              value={undefined}
+              onChange={this.onChangeHeightSpacing.bind(this, 'letterSpacing')}
+              style={{ width: '65px' }}
+              size="sm"
+            >
+                <Option value="3px">3px</Option>
+                <Option value="4px">4px</Option>
+                <Option value="6px">6px</Option>
+            </Select>
+            <img src={letterSpacingIcon} className="select-icon-img"/>
+          </span>
 
           {/*字体大小*/}
+          <span tooltip="字体大小" flow="down">
+            <Select
+              placeholder="字体大小"
+              value={undefined}
+              onChange={this.onChangeCmdValue.bind(this, 'fontSize')}
+              style={{ width: '85px' }}
+              size="sm"
+            >
+                <Option value="4">large</Option>
+                <Option value="5">x-large</Option>
+                <Option value="6">xx-large</Option>
+            </Select>
+            <img src={letterSpacingIcon} className="select-icon-img"/>
+          </span>
+
+
           {/*字体名称*/}
-          {/*文字颜色*/}
-          {
-            popList.map((pop, popIndex) => {
-              const {
-                icon, pTitle, width, cmd, selectList, ulCss, liCss,
-              } = pop;
-              return (
-                <span
-                  key={uuid()}
-                  className="w-e-menu"
-                  // 关闭所有的弹框
-                  onMouseOver={() => {
-                    if (!barObj[cmd]) {
-                      this.showCloseBar(cmd);
-                      // 清空定时器
-                      clearInterval(this.timeCount);
-                    }
-                  }}
+          <span tooltip="字体名称" flow="down">
+            <Select
+              placeholder="字体名称"
+              value={undefined}
+              onChange={this.onChangeCmdValue.bind(this, 'fontName')}
+              style={{ width: '85px' }}
+              size="sm"
+            >
+                <Option value="微软雅黑">微软雅黑</Option>
+                <Option value="Arial">Arial</Option>
+            </Select>
+            <img src={letterSpacingIcon} className="select-icon-img"/>
+          </span>
 
-                  // onMouseLeave={() => {
-                  //   this.showCloseBar();
-                  // }}
-                >
-                  <span className={`iconfont ${icon}`} />
-                  <div
-                    className={barObj[cmd] ? 'w-e-droplist' : 'w-e-droplist-h'}
-                    style={{ width }}
-                  >
-                    <p className="w-e-dp-title">{pTitle}</p>
-                    <ul className={ulCss} onClick={event => this.onPopSelect(cmd, event)}>
-                      {
-                        selectList.map((selectItem, selectIndex) => {
-                          const {
-                            value, liCssText, spanCssText, title,
-                          } = selectItem;
-                          return (
-                            <li className={liCss} style={liCssText} value={value} key={uuid()}>
-                              {liCss === 'w-e-item' && <button value={value}>{title}</button>}
-
-                              {/*对背景色和字体颜色特殊处理*/}
-                              {liCss === 'w-e-list-level'
-                              && (
-                                <button value={value}>
-                                  <span
-                                    className={`iconfont ${icon}`}
-                                    style={spanCssText}
-                                    value={value}
-                                  />
-                                </button>
-                              )}
-                            </li>
-                          );
-                        })
-                      }
-                    </ul>
-                  </div>
-                </span>
-              );
-            })
-          }
-
-
-          {/*插入图片*/}
-          {/*<div className="w-e-menu">*/}
-          {/*<span className="iconfont icon-image"/>*/}
-          {/*</div>*/}
-
+          {/*基本操作*/}
+          <span tooltip="其他操作" flow="down">
+            <Select
+              placeholder="其他操作"
+              value={undefined}
+              onChange={this.onChangeCmd}
+              style={{ width: '85px' }}
+              size="sm"
+            >
+                <Option value="bold">加粗</Option>
+                <Option value="underline">下划线</Option>
+                <Option value="italic">斜体</Option>
+                <Option value="strikeThrough">删除线</Option>
+                <Option value="removeFormat">格式刷</Option>
+            </Select>
+            <img src={otherActionIcon} className="select-icon-img"/>
+          </span>
         </div>
 
         {/*文本编辑器容器*/}
@@ -672,14 +803,7 @@ class AcEditorSany extends Component {
           style={{ height }}
           onKeyUp={this.onKeyUpEditBody}
           onClick={this.onClickEditBody}
-          onChange={this.onChangeEditBody}
-        />
-
-        {/*预览弹框*/}
-        <PreviewModal
-          visible={previewStatus}
-          colsePop={this.showCloseBar}
-          htmlString={previewHtml}
+          // onChange={this.onKeyUpEditBody}
         />
 
         {/*日期组件*/}

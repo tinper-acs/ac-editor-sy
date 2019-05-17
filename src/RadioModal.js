@@ -1,77 +1,135 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,no-param-reassign */
 import React, { Component } from 'react';
+
+import { Modal, Label, InputNumber, Button, Select } from 'tinper-bee';
+import Form from 'bee-form';
+
+import 'bee-select/build/Select.css';
 import './index.less';
+
+const { FormItem } = Form;
+
+const { Option } = Select;
 
 class RadioModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropStatus: false,
+      status: false,
     };
   }
 
+
   componentWillReceiveProps(nextProps) {
-    const { dropStatus } = nextProps;
-    this.setState({ dropStatus });
+    const { status } = nextProps;
+    this.setState({ status });
   }
 
-  // 获取单选框设置
-  getInputSetting = () => {
-    const totalNum = parseInt(document.getElementById('radio_num').value);
-    const check = parseInt(document.getElementById('radio_check').value);
-    const direction = document.getElementById('radio_direction').value;
-    const data = [];
-    for (let num = 1; num <= totalNum; num += 1) {
-      data.push(`${num}xxxxxxx`);
-    }
-    this.props.onInsertRadio({
-      data,
-      direction,
-      check,
-    });
-    this.setState({ dropStatus: false });
+
+  onClose = () => {
+    this.props.onHideModal('radioStatus');
   };
 
+  onSubmit = () => {
+    const { onInsert, onHideModal, form } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        onHideModal('radioStatus');
+        const dataArray = [];
+        let defaultValue = '';
+        const { totalNum, check, direction } = values;
+        for (let num = 1; num <= totalNum; num += 1) {
+          dataArray.push(`${num}XXXXX`);
+          // 添加默认值
+          if (check === num) {
+            defaultValue = `${num}XXXXX`;
+          }
+        }
+        const data = dataArray.join('|||');
+        onInsert({
+          data,
+          defaultValue,
+          direction,
+          type: 'radio',
+        });
+      }
+    });
+  };
 
   render() {
-    const { dropStatus } = this.state;
+    const { form } = this.props;
+    const { getFieldProps } = form;
+    const { status } = this.state;
+
+
     return (
-      <span
-        className="w-e-menu"
-        onMouseOver={() => {
-          if (!dropStatus) {
-            this.props.showCloseBar('radioStatus');
-          }
-        }}
-        // onMouseLeave={() => {
-        //   this.props.showCloseBar();
-        // }}
+      <Modal
+        show={status}
+        onHide={this.onClose}
+        className="sany-modal"
+        size="sm"
       >
-        <span className="iconfont icon-RectangleCopy" />
-        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
-          <p className="w-e-dp-title">插入单选框</p>
-          <div className="ac-input-body">
-            <div className="ac-input-item">
-              <label className="ac-item-label">方向</label>
-              <select className="ac-select" id="radio_direction">
-                <option value="horizontal">水平</option>
-                <option value="vertical">纵向</option>
-              </select>
+        <Modal.Header closeButton>
+          <Modal.Title>插入单选框组</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body className="form-body-padding">
+          <FormItem>
+            <Label>方向</Label>
+            <Select
+              {...getFieldProps('direction', {
+                initialValue: 'horizontal',
+              })}
+            >
+              <Option value="horizontal" key="horizontal">水平</Option>
+              <Option value="vertical" key="vertical">纵向</Option>
+
+            </Select>
+          </FormItem>
+
+
+          <FormItem style={{ height: 35 }}>
+            <div>
+              <div className="sany-input-number-label">
+                <Label>个数</Label>
+              </div>
+              <div className="sany-input-number">
+                <InputNumber
+                  iconStyle="one"
+                  min={1}
+                  {...getFieldProps('totalNum', {
+                    initialValue: 1,
+                  })}
+                />
+              </div>
             </div>
-            <div className="ac-input-item">
-              <label className="ac-item-label">个数</label>
-              <input type="number" className="ac-input-number" id="radio_num" min="1" defaultValue="1" />
+          </FormItem>
+
+          {/* inputNumber 不够友好 */}
+          <FormItem style={{ height: 35 }}>
+            <div>
+              <div className="sany-input-number-label">
+                <Label>默认</Label>
+              </div>
+              <div className="sany-input-number">
+                <InputNumber
+                  iconStyle="one"
+                  min={1}
+                  {...getFieldProps('check', {
+                    initialValue: 1,
+                  })}
+                />
+              </div>
             </div>
-            <div className="ac-input-item">
-              <label className="ac-item-label">默认</label>
-              <input type="number" className="ac-input-number" id="radio_check" min="1" defaultValue="1" />
-            </div>
-          </div>
-          <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
-        </div>
-      </span>
+          </FormItem>
+        </Modal.Body>
+
+        <Modal.Footer className="text-center">
+          <Button colors="primary" onClick={this.onSubmit}>确认</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
 
-export default RadioModal;
+export default Form.createForm()(RadioModal);

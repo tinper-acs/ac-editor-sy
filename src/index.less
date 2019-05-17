@@ -1,124 +1,57 @@
+// 全局样式
+
 .editor-sany {
   padding-right: 20px;
   padding-left: 20px;
   color: #050505;
 
-  textarea {
-    vertical-align: middle;
-    border-radius: 3px;
-    background-color: #fff;
-    border: 1px solid #d9d9d9;
-    height: 31px;
-  }
-
-  input {
-    vertical-align: middle;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    background-color: rgba(0, 0, 0, 0);
-    height: 32px;
-  }
-
-  .w-e-toolbar {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    padding: 0 5px;
+  //--------工具栏-----------
+  .toolbar-sany { // 文本编辑器 工具栏
+    padding: 5px;
     margin: 0;
     box-sizing: border-box;
     background-color: #f1f1f15e;
     border: 1px solid #ccc;
-  }
-  .w-e-menu {
-    position: relative;
-    text-align: center;
-    padding: 5px 10px;
-    cursor: pointer;
-    z-index: 10;
-    button {
-      border: 0px;
+    .icon-span { // iconImg 外层 span
+      padding: 3px 5px;
+      border: 1px solid #f1f1f15e;
+      img{
+        width: 16px;
+      }
+    }
+    .icon-span:hover { // iconImg 外层 span
+      border: 1px solid #0e90d2;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .select-icon-img {
+      margin-left: -22px;
+      width: 14px;
+      margin-right: 12px;
+    }
+
+    .u-select-selection:hover{
+      border: 1px solid #0e90d2;
+      cursor: pointer;
+    }
+
+
+    .u-select-selection, .u-select-selection--single {
       background-color: rgba(255, 255, 255, 0.0);
-      padding: 0px;
-    }
-  }
-
-  .w-e-menu:hover {
-    background-color: #f1f1f1;
-    color: #333;
-  }
-
-  .iconfont {
-    font-weight: bold;
-    color: #666666b5;
-  }
-
-  .w-e-droplist {
-    position: absolute;
-    left: 0;
-    top: 0;
-    background-color: #fff;
-    border: 1px solid #f1f1f1;
-    border-right-color: #ccc;
-    border-bottom-color: #ccc;
-    margin-top: 35px;
-    min-width: 100px;
-  }
-
-  .w-e-droplist-h {
-    display: none;
-  }
-
-  .w-e-dp-title {
-    text-align: center;
-    color: #999;
-    line-height: 2;
-    border-bottom: 1px solid #f1f1f1;
-    font-size: 13px;
-    margin: 0px;
-  }
-  .w-e-block {
-    list-style: none;
-    text-align: left;
-    padding: 5px;
-    .w-e-list-level {
-      display: inline-block;
-      float: left;
-      padding: 2px 6px;
-    }
-    .w-e-list-level:hover {
-      background-color: #f1f1f1;
-    }
-
-  }
-
-  .w-e-list {
-    list-style: none;
-    line-height: 1;
-    .w-e-item {
-      color: #333;
-      padding: 8px 0;
-      button {
-        border: 0px;
-        background-color: rgba(255, 255, 255, 0.0);
-        padding: 0px;
-        width: 100%;
+      .u-select-arrow {
+        display: none;
       }
-      .clearWidth {
-        margin: 0px;
-        padding: 0px;
-      }
-      .text-align-icon{
-        font-size: 14px;
-        margin-left: 8px;
+      .u-select-selection-rendered{
+        .u-select-selection-placeholder{
+          color: #4e4d4d !important;
+        }
       }
     }
-    .w-e-item:hover {
-      background-color: #f1f1f1;
-      color: #333;
-    }
+
   }
 
-  // tilte结束
+  //--------内容编辑框-------
   .editor-sany-content {
     width: 100%;
     //min-height: 500px;
@@ -128,236 +61,125 @@
       margin: 0px;
       padding: 0px;
     }
-  }
 
-  .rich-table {
-    border-collapse: collapse;
-    margin: 0 auto;
-    text-align: center;
-    td, th {
-      border: 1px solid #ccc;
-      color: #666;
-      height: 30px;
+    .ac-radio-group, .ac-checkbox-group {
+      border-bottom: 1px solid #999999;
     }
-  }
 
-}
-
-
-.fixedTable{
-  height: 250px;
-  overflow-y: auto;
-  margin-bottom: 5px;
-}
-
-
-.ac-select {
-  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
-  border: solid 1px #000;
-  /*很关键：将默认的select选择框样式清除*/
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  /*在选择框的最右侧中间显示小箭头图片*/
-  background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
-  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
-  width: 180px;
-  background-color: #fff;
-  border: 1px solid #d9d9d9;
-  border-radius: 4px;
-  font-size: 14px;
-  padding: 4px 6px 4px 11px;
-  background-origin: content-box;
-
-}
-
-/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
-.ac-select::-ms-expand {
-  display: none;
-}
-
-// 多行编辑器
-.ac-textarea {
-  vertical-align: bottom;
-}
-
-// 对日期进行处理
-.ac-date-body {
-  display: none;
-}
-
-// 弹框插入
-.ac-pop-action {
-  margin: 8px 4px;
-  font-size: 14px;
-  color: #1e88e5;
-  border: none;
-  padding: 5px 10px;
-  background-color: #fff;
-  cursor: pointer;
-  border-radius: 3px;
-}
-
-.ac-pop-action:hover {
-  background-color: #f1f1f1;
-}
-
-// 单选框,多选
-.ac-input-body {
-  .ac-input-item {
-    margin: 10px 0px;
-    //margin-bottom: 10px;
-    .ac-item-label {
-      display: inline-block;
-      text-align: right;
-      padding-right: 10px;
-      width: 55px;
+    // 自定义下拉
+    .ac-select {
+      //background: #fafdfe;
+      height: 32px;
+      width: 130px;
+      //line-height: 28px;
+      //border: 1px solid #9bc0dd;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
     }
-    .ac-input-number {
-      width: 180px;
+
+    textarea, input {
+      vertical-align: middle;
+      background-color: #fff;
+      border: 1px solid #d9d9d9;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      height: 32px;
     }
+
+    .rich-table { // 表单
+      border-collapse: collapse;
+      margin: 0 auto;
+      text-align: center;
+      td, th {
+        border: 1px solid #ccc;
+        color: #666;
+        height: 30px;
+      }
+    }
+
+    .sany-checkbox-label { //单选框label
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    .sany-checkbox-label { // 多选框label
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
   }
-}
-
-// 下拉框
-.pop-content-select {
-  .ac-auto-height {
-    min-height: 60px;
-    _height: 120px;
-    outline: 0;
-    border: 1px solid rgba(82, 168, 236, 0.8);
-    font-size: 14px;
-    line-height: 24px;
-    padding: 2px 12px;
-    word-wrap: break-word;
-    overflow-x: hidden;
-    overflow-y: auto;
-    //box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
-    text-align: left;
-    margin: 8px 5px;
-  }
-
-}
-
-// tooltip  文字提示
-.tooltip {
-  position: relative;
-  display: inline-block;
-  .tooltip-text {
-    visibility: hidden;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 2px;
-    padding: 2px 8px;
-    position: absolute;
-    z-index: 1;
-    top: 115%;
-    left: 50%;
-    margin-left: -30px;
-    min-width: 60px;
-  }
-  .tooltip-text::after {
-    content: "";
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent transparent black transparent;
-  }
-}
-
-.tooltip:hover .tooltip-text {
-  visibility: visible;
-}
-
-//----editor 盖章 样式 -------
-
-.seal-box {
-  width: 120px;
-  height: 120px;
-  position: absolute;
-}
-
-.seal-fa {
-  position: relative;
-}
-
-.seal-img {
-  width: 100%;
-  height: 100%;
-  cursor: move;
-}
-
-.scale-icon {
-  width: 10px;
-  height: 10px;
-  overflow: hidden;
-  cursor: se-resize;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  background-color: rgb(122, 191, 238);
-}
-
-/**----------------------
- *
- *
- * 打印样式
- *
- *
- *-----------------------
- */
-.editor-sany-pdf {
-  margin: 0 auto;
-  .html2Pdf {
+  .ac-date-body { // 日期隐藏
     display: none;
   }
 }
 
-/**----------------------
- *
- *
- * 条款样式
- *
- *
- *-----------------------
- */
-.ac-editor-term {
-  border: 1px solid #e5e5e5;
-  margin-bottom: 20px;
-  -webkit-box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-  box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-  .sany-term {
-    padding: 0 20px;
-    .sany-term-icon {
-      display: none;
-    }
+//----------- 弹框-----------------------
+.sany-modal {
+  .form-body-padding {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
   }
-  .sany-term:hover {
-    //box-shadow: 0 2px 6px hsla(0, 0%, 78%, .4);
-    //-webkit-box-shadow: 0px 5px 36px 0px rgba(0, 0, 0, 0.45);
-    //-moz-box-shadow: 0px 5px 36px 0px rgba(0, 0, 0, 0.45);
-    //box-shadow: 0px 5px 36px 0px rgba(0, 0, 0, 0.45);
-    //border-bottom: 1px solid #e5e6e9;
-    //border-top: 1px solid #e5e6e9;
-    .sany-term-icon {
-      margin-right: 20px;
-      display: block;
-      float: right;
-      .iconfont {
-        color: #1890ff;
-        font-size: 21px;
-        padding: 0px 5px;
-        margin-left: 2px;
-        cursor: pointer;
-      }
-      .iconfont:hover {
-        text-shadow: -1px 2px 20px #333333;
-      }
-    }
+  .u-modal-body {
+    background: #f7f9fb;
+    padding-top: 0px;
+    padding-bottom: 0px;
 
+    .u-form-item {
+      min-height: 0px;
+      margin-bottom: 8px;
+      margin-top: 8px;
+      textarea {
+        width: 100% !important;
+        height: 120px !important;
+      }
+      .u-label {
+        display: inline-block;
+        width: 60px;
+        text-align: right;
+        padding-right: 10px;
+      }
+      .u-form-control {
+        width: 190px;
+      }
+      .u-select {
+        width: 190px;
+      }
+
+      .sany-input-number {
+        width: 190px;
+        float: left;
+      }
+      .sany-input-number-label {
+        float: left;
+        margin-top: 5px;
+      }
+
+      .u-input-number.u-input-group.simple .u-input-group-btn .icon-group {
+        width: 20px !important;
+        height: 30px !important;
+      }
+    }
   }
+  .u-modal-body-padding {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+  }
+  .u-modal-footer {
+    padding: 10px 15px;
+    clear: both;
+  }
+}
+
+
+// 下拉选择 option
+.li-info{
+  font-size: 12px;
+  border-bottom: 1px solid rgba(153, 153, 153, 0.38);
+  height: 25px;
+  size: 12px;
+  color: #66666694;
+  background-color: #fffff0;
+  margin-top: -5px;
 }

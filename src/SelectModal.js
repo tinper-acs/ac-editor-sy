@@ -1,54 +1,88 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,no-param-reassign */
 import React, { Component } from 'react';
+
+import { Modal, FormControl, Button } from 'tinper-bee';
+
+import Form from 'bee-form';
 import './index.less';
+
+
+const { FormItem } = Form;
 
 class SelectModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dropStatus: false,
+      status: false,
     };
   }
 
+
   componentWillReceiveProps(nextProps) {
-    const { dropStatus } = nextProps;
-    this.setState({ dropStatus });
+    const { status } = nextProps;
+    this.setState({ status });
   }
 
-  // 获取单选框设置
-  getInputSetting = () => {
-    const textArray = window.document.getElementById('select_textarea').innerText.split(/[\n,]/g);
-    const filterArray= textArray.filter(item => item !=="" && item!==null);
-    this.props.onInsertSelect(filterArray);
-    this.setState({ dropStatus: false });
+
+  onClose = () => {
+    this.props.onHideModal('selectStatus');
   };
 
 
+  onSubmit = () => {
+    const { onInsert, onHideModal, form } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        onHideModal('selectStatus');
+        const { texareaValue } = values;
+        // 分割成数组
+        const textArray = texareaValue ? texareaValue.toString()
+          .split(/[\n,]/g) : [];
+        const filterArray = textArray.filter(item => item !== '' && item !== null);
+
+        onInsert({
+          data: filterArray.join('|||'),
+          defaultValue: (filterArray && filterArray.length > 0) ? filterArray[0] : '',
+          type: 'select'
+        });
+      }
+    });
+  };
 
   render() {
-    const { dropStatus } = this.state;
+    const { form } = this.props;
+    const { getFieldProps } = form;
+    const { status } = this.state;
+
     return (
-      <span className="w-e-menu"
-           onMouseOver={() => {
-             if (!dropStatus) {
-               this.props.showCloseBar('selectStatus');
-             }
-           }}
-           // onMouseLeave={() => {
-           //   this.props.showCloseBar();
-           // }}
+      <Modal
+        show={status}
+        onHide={this.onClose}
+        className="sany-modal"
+        size="sm"
       >
-        <span className="iconfont icon-xialakuang"/>
-        <div className={dropStatus ? 'w-e-droplist' : 'w-e-droplist-h'} style={{ width: '265px' }}>
-          <p className="w-e-dp-title">插入下拉框</p>
-          <div className="pop-content-select">
-            <div className="ac-auto-height" contentEditable="true" id="select_textarea"/>
-          </div>
-          <div className="ac-pop-action" onClick={this.getInputSetting}>插入</div>
-        </div>
-      </span>
+        <Modal.Header closeButton>
+          <Modal.Title>插入下拉框</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body className="form-body-padding">
+          <FormItem>
+            <FormControl
+              componentClass="textarea"
+              placeholder="请输入下拉框值，多值按回车分隔"
+              {...getFieldProps('texareaValue', {
+                initialValue: '',
+              })}
+            />
+          </FormItem>
+        </Modal.Body>
+
+        <Modal.Footer className="text-center">
+          <Button colors="primary" onClick={this.onSubmit}>确认</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
 }
 
-export default SelectModal;
+export default Form.createForm()(SelectModal);
