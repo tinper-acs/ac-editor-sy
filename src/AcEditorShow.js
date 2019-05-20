@@ -82,6 +82,7 @@ class AcEditorShow extends Component {
         }
         // 用于包裹 select radio checkbox
         const newDoc = document.createElement('span');
+        let status = false; // 是否创建新元素
 
         switch (type) {  // 判断组件类型
           case 'date': // 日期直接修改值
@@ -95,21 +96,30 @@ class AcEditorShow extends Component {
               ...item,
               data: data.split('|||'),
             });
+            status = true;
+            break;
           case 'radio':
             newDoc.innerHTML = initRadio({
               ...item,
               data: data.split('|||'),
             });
+            status = true;
+            break;
           case 'checkbox':
             newDoc.innerHTML = initCheckbox({
               ...item,
               data: data.split('|||'),
             });
+            status = true;
+            break;
           default:
-            if (newDoc.firstElementChild && doc.parentNode) {  // 有子节点才替换
-              doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
-            }
+
         }
+
+        if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
+          doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
+        }
+
       }
     }
 
@@ -190,6 +200,7 @@ class AcEditorShow extends Component {
       item.data = textValue;
       item.defaultValue = textValue;
     }
+
 
     if (type === 'date') {  // 文本类型 日期
       const textValue = doc.value;

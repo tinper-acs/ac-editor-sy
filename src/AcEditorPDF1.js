@@ -1,8 +1,7 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions,react/prop-types */
 import React, { Component } from 'react';
 
 import './index.less';
-import { initCheckbox, initRadio, initSelect } from './utils';
 
 class AcEditorPDF extends Component {
   constructor(props) {
@@ -10,75 +9,22 @@ class AcEditorPDF extends Component {
     this.state = {};
   }
 
-
-  initContent = (defaultData) => {
-    // 修改默认值
-    if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
-      // 插入组件的类型 (text,select,radio,checkbox,date)
-      for (const item of defaultData) {
-
-        const { type, field, data, defaultValue, } = item;
-        const doc = document.getElementById(field);
-
-        // id是否存在
-        if (!doc) {
-          continue;
-        }
-        // 用于包裹 select radio checkbox
-        const newDoc = document.createElement('span');
-        let status = false; // 是否创建新元素
-
-        switch (type) {  // 判断组件类型
-          case 'date': // 日期直接修改值
-            doc.setAttribute('value', defaultValue);
-            break;
-          case 'text':  // 文本类型
-          case 'select':
-            const width = defaultData ? (defaultData.length * 14 + 10) + 'px' : '40px';
-            newDoc.innerHTML = `<input type="text" value="${defaultValue}" acType="date" style="width: ${width}" readOnly="true"/>`;
-            status = true;
-            break;
-          case 'radio':
-            newDoc.innerHTML = initRadio({
-              ...item,
-              data: data.split('|||'),
-            });
-            status = true;
-            break;
-          case 'checkbox':
-            newDoc.innerHTML = initCheckbox({
-              ...item,
-              data: data.split('|||'),
-            });
-            status = true;
-            break;
-          default:
-
-        }
-
-        if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
-          doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
-        }
-
-      }
-    }
-  };
-
   onClickPrint = () => {
-    const { pdfId, formInfo } = this.props;
-    let { doc, idList } = formInfo();
-    document.getElementById('editor-sany-pdf-id').innerHTML = doc;
-    const newIdList = [...idList].map((item) => {
-      item.data = item.defaultValue;
-      return item;
-    });
-
-    this.initContent(newIdList);
-    const htmlString = document.getElementById('editor-sany-pdf-id').innerHTML;
-
+    const { pdfId } = this.props;
+    const oldDoc = document.getElementById(pdfId).parentElement;
+    const htmlString = oldDoc.innerHTML;
     const newDoc = document.createElement('span');
     newDoc.innerHTML = htmlString;
 
+    const textAreaList = newDoc.getElementsByTagName('textarea');
+    // 在textarea后面插入兄弟节点 最后通过隐藏textarea
+    for (const textArea of textAreaList) {
+      const newTextAreaParent = document.createElement('span');
+      const date = textArea.innerHTML;
+      const stringInput = `<input type="text" value="${date}" style="width: ${textArea.style.width}"/>`;
+      newTextAreaParent.innerHTML = stringInput;
+      textArea.parentNode.insertBefore(newTextAreaParent.firstElementChild, textArea.nextSibling);
+    }
     // 添加遮罩
     const backColor = `<div class="sany-pdf-bgColor" style="position: absolute;
       width: 100%;
@@ -109,6 +55,14 @@ class AcEditorPDF extends Component {
                   vertical-align: middle;
                  }
                  
+                 textarea {
+                 border: none;
+                     border-bottom: 1px solid #000;
+                     font-size: 16px;
+                     height: 80px;
+                     color: #000;
+                 
+                 }
                  select{
                   border: none;
                   appearance: none;
@@ -144,11 +98,6 @@ class AcEditorPDF extends Component {
     WinPrint.document.close();
     WinPrint.focus();
     WinPrint.print();
-    let el = document.getElementById('editor-sany-pdf-id'); // 清空缓存元素
-    let childs = el.childNodes;
-    for (let child of childs) {
-      el.removeChild(child);
-    }
     WinPrint.close();
   };
 
@@ -159,7 +108,6 @@ class AcEditorPDF extends Component {
     return (
       <span className="editor-sany-pdf">
          <span onClick={this.onClickPrint}>{title}</span>
-         <div id='editor-sany-pdf-id'></div>
        </span>
     );
   }

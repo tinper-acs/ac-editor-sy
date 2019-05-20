@@ -390,7 +390,7 @@ class AcEditorSany extends Component {
       // 对单选框 重新赋值
       for (let i = 0; i < radios.length; i += 1) {
         const checked = radios[i].getAttribute('checked');
-        const textValue = radios[i].parentNode.innerText;
+        const textValue = (radios[i].parentNode.innerText).trim();
         data.push(textValue);
         radios[i].setAttribute('value', textValue);
         if (checked) { //修改默认选中值
@@ -408,7 +408,7 @@ class AcEditorSany extends Component {
       // 对单选框 重新赋值
       for (let i = 0; i < checkboxs.length; i += 1) {
         const checked = checkboxs[i].getAttribute('checked');
-        const textValue = checkboxs[i].parentNode.innerText;
+        const textValue = (checkboxs[i].parentNode.innerText).trim();
         data.push(textValue);
         checkboxs[i].setAttribute('value', textValue);
         if (checked) { //修改默认选中值
@@ -444,6 +444,8 @@ class AcEditorSany extends Component {
         }
         // 用于包裹 select radio checkbox
         const newDoc = document.createElement('span');
+        let status = false; // 是否创建新元素
+
 
         switch (type) {  // 判断组件类型
           case 'date': // 日期直接修改值
@@ -457,20 +459,26 @@ class AcEditorSany extends Component {
               ...item,
               data: data.split('|||'),
             });
+            status = true;
+            break;
           case 'radio':
             newDoc.innerHTML = initRadio({
               ...item,
               data: data.split('|||'),
             });
+            status = true;
+            break;
           case 'checkbox':
             newDoc.innerHTML = initCheckbox({
               ...item,
               data: data.split('|||'),
             });
+            status = true;
+            break;
           default:
-            if (newDoc.firstElementChild && doc.parentNode) {  // 有子节点才替换
-              doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
-            }
+        }
+        if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
+          doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
         }
       }
     }

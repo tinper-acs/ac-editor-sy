@@ -20,7 +20,7 @@ class Demo1 extends Component {
 
   fixedDate = [
     {
-      field: 'buyerww1',
+      field: 'buyerwwyy1',
       type: 'text',
       filedType: '文本',
       fieldName: '买方名称',
@@ -28,7 +28,7 @@ class Demo1 extends Component {
       defaultValue: '买方名称',
     },
     {
-      field: 'salername22',
+      field: 'salernameyy22',
       type: 'text',
       filedType: '文本',
       fieldName: '卖方名称',
@@ -36,7 +36,7 @@ class Demo1 extends Component {
       defaultValue: '卖方名称',
     },
     {
-      field: 'contractswwwign3',
+      field: 'contractswwwignyy3',
       type: 'date',
       fieldName: '合同签订日期',
       filedType: '日期',
@@ -44,7 +44,7 @@ class Demo1 extends Component {
       defaultValue: '2019-02-20',
     },
     {
-      field: 'contractstrwww4',
+      field: 'contractstrwwwyy4',
       type: 'date',
       fieldName: '合同开始日期',
       filedType: '日期',
@@ -52,7 +52,7 @@ class Demo1 extends Component {
       defaultValue: '2019-02-20',
     },
     {
-      field: 'contractendxxx5',
+      field: 'contractendxxxyy5',
       type: 'date',
       fieldName: '合同结束日期',
       filedType: '日期',
@@ -60,7 +60,7 @@ class Demo1 extends Component {
       defaultValue: '2019-02-20',
     },
     {
-      field: 'paytewwwrm6',
+      field: 'paytewwwrmyy6',
       type: 'select',
       filedType: '下拉',
       fieldName: '付款条件',
@@ -68,7 +68,7 @@ class Demo1 extends Component {
       defaultValue: '微信支付',
     },
     {
-      field: 'isrebatwwwe7',
+      field: 'isrebatwwweyy7',
       type: 'radio',
       filedType: '单选',
       fieldName: '是否返利',

@@ -13,39 +13,78 @@ class Demo2 extends Component {
 
   saveFunc = () => {
     // 为文本编辑器里的html字符串
-    const {doc,idList} = this.child.getHtml2String();
-    console.log('文本编辑器内容为', doc,idList);
+    const { doc, idList } = this.child.getHtml2String();
+    console.log('文本编辑器内容为', doc, idList);
   };
 
   render() {
     const defaultData = [
       {
+        field: 'buyerww1',
         direction: 'horizontal',
+        data: '买方名称',
+        type: 'text',
+        defaultValue: '买方名称eee'
+      },
+      {
+        field: 'salername22',
+        direction: 'horizontal',
+        data: '卖方名称',
+        type: 'text',
+        defaultValue: '卖方名称'
+      },
+      {
+        field: 'contractswwwign3',
+        direction: 'horizontal',
+        data: '2019-02-20',
+        type: 'date',
+        defaultValue: '2019-02-20'
+      },
+      {
+        field: 'contractstrwww4',
+        direction: 'horizontal',
+        data: '2019-02-20',
+        type: 'date',
+        defaultValue: '2019-02-20'
+      },
+      {
+        field: 'contractendxxx5',
+        direction: 'horizontal',
+        data: '2019-02-20',
+        type: 'date',
+        defaultValue: '2019-02-20'
+      }, {
+        field: 'paytewwwrm6',
+        direction: 'horizontal',
+        data: '现金支付|||微信支付|||支付宝支付',
         type: 'select',
-        field: 'paytermDemo2',
-        data: '微信支付|||支付宝支付|||银行卡支付|||现金支付',
-        defaultValue: '银行卡支付',
+        defaultValue: '微信支付'
       },
       {
-        field: 'buyer',
-        type: 'text',
-        filedType: '文本',
-        fieldName: '买方名称',
-        defaultValue: '用友集团',
+        field: 'isrebatwwwe7',
+        direction: 'horizontal',
+        data: '是|||否',
+        type: 'radio',
+        defaultValue: '是'
       },
       {
-        field: 'salernamerr',
-        type: 'text',
-        filedType: '文本',
-        fieldName: '买方名称',
-        defaultValue: '777777',
+        field: 'dd74eab6-bccd-4b0c-843d-c33eecfe2580',
+        direction: 'horizontal',
+        data: '1YYYYY|||2YYYYY|||3YYYYY',
+        type: 'checkbox',
+        defaultValue: '1YYYYY'
       },
+
     ];
     const isActive = true;
-    const htmlString = '<div><h1 style="text-align: center;">xxx公司供应商合同</h1><div><div><span>买方名称</span><textarea rows="1" cols="30" id="buyer" onkeyup="onKeyUpTextArea(\'buyer\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>卖方名称</span><textarea rows="1" cols="30" id="salernamerr" onkeyup="onKeyUpTextArea(\'salernamerr\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span id="d11df29a-9f36-452c-8de8-b3b4a9c4ef62"><span><input name="d11df29a-9f36-452c-8de8-b3b4a9c4ef62" onclick="onClickRadio(\'d11df29a-9f36-452c-8de8-b3b4a9c4ef62\')" type="radio" style="vertical-align: middle;" value="1xxxxxxx" actype="radio">&nbsp;&nbsp;&nbsp;&nbsp;1xxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span><span><input name="d11df29a-9f36-452c-8de8-b3b4a9c4ef62" onclick="onClickRadio(\'d11df29a-9f36-452c-8de8-b3b4a9c4ef62\')" type="radio" style="vertical-align: middle;" value="2xxxxxxx" actype="radio" checked>&nbsp;&nbsp;&nbsp;&nbsp;2xxxxxxx&nbsp;&nbsp;&nbsp;&nbsp;</span></span><span>合同签订日期</span><input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"><span>合同开始日期</span><input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"><span>合同结束日期</span><input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"><span>付款条件</span><select id="paytermDemo2" class="select ac-select" onchange="onChangeSelect()"><option name="paytermDemo2" value="0" selected="">现金支付</option>,<option name="paytermDemo2" value="1">微信支付</option>,<option name="paytermDemo2" value="2">支付宝支付</option></select></div><br></div><div><br></div><ul><li><div class="form"><div class="row"></div></div></li></ul></div>';
+    const htmlString = '<span><textarea rows="1" cols="30" id="buyerww1" style="resize: horizontal;vertical-align: middle;width: 80px;">买方名称</textarea><textarea rows="1" cols="30" id="salername22" style="resize: horizontal;vertical-align: middle;width: 80px;">卖方名称</textarea><input type="text" id="contractswwwign3" value="2019-02-20" actype="date" style="width: 100px" readonly="true"><input type="text" id="contractstrwww4" value="2019-02-20" actype="date" style="width: 100px" readonly="true"><input type="text" id="contractendxxx5" value="2019-02-20" actype="date" style="width: 100px" readonly="true"><select id="paytewwwrm6" class="select ac-select" onchange="onChangeSelect(event)"><option name="paytewwwrm6" value="现金支付">现金支付</option>,<option name="paytewwwrm6" value="微信支付" selected="">微信支付</option>,<option name="paytewwwrm6" value="支付宝支付">支付宝支付</option></select><span id="dd74eab6-bccd-4b0c-843d-c33eecfe2580" class="ac-checkbox-group"><span><input name="dd74eab6-bccd-4b0c-843d-c33eecfe2580" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" checked="true" value="1YYYYY"><span style="margin: 0 10px">1YYYYY</span></span><span><input name="dd74eab6-bccd-4b0c-843d-c33eecfe2580" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="2YYYYY"><span style="margin: 0 10px">2YYYYY</span></span><span><input name="dd74eab6-bccd-4b0c-843d-c33eecfe2580" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="3YYYYY"><span style="margin: 0 10px">3YYYYY</span></span></span><span id="isrebatwwwe7" class="ac-radio-group"><span><input name="isrebatwwwe7" onclick="onClickRadio(event)" type="radio" style="vertical-align: middle;" value="是" actype="radio" checked="true"><span style="margin: 0 10px">是</span></span><span><input name="isrebatwwwe7" onclick="onClickRadio(event)" type="radio" style="vertical-align: middle;" value="否" actype="radio"><span style="margin: 0 10px">否</span></span></span></span>';
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc} style={{marginLeft:'20px',marginBottom:"10px"}}>保存</button>
+        <button onClick={this.saveFunc} style={{
+          marginLeft: '20px',
+          marginBottom: '10px'
+        }}>保存
+        </button>
         <AcEditorShow
           htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
           editorId="showId" // 组件 id
@@ -61,4 +100,5 @@ class Demo2 extends Component {
     );
   }
 }
+
 export default Demo2;
