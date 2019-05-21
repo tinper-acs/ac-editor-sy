@@ -19,16 +19,14 @@ class Demo4 extends Component {
 
 
     const defaultData = [
-      {
-        direction: 'horizontal',
-        type: 'select',
-        id: 'payterm',
-        data: '微信支付|||支付宝支付|||银行卡支付|||现金支付',
-        defaultValue: '银行卡支付',
-      },
-    ];
+      {field: "ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9", direction: "horizontal", data: "1YYYYY|||2YYYYY|||3YYYYY|||4YYYYY", type: "checkbox", defaultValue: "1YYYYY"},
+      {field: "629180d0-ff59-44a5-8f86-9c7360961e12", direction: "horizontal", data: "1XXXXX|||2XXXXX|||3XXXXX", type: "radio", defaultValue: "1XXXXX"},
+      {field: "9013b8fc-e610-419d-bba0-196ec76b73cd", direction: "horizontal", data: "法师打发斯蒂芬", type: "text", defaultValue: "法师打发斯蒂芬"},
+      {field: "a0a8252d-94b3-4436-9433-d37e589508eb", direction: "horizontal", data: "支付宝|||银行卡|||微信", type: "select", defaultValue: "支付宝"},
+    ]
+
     const isActive = false;
-    let htmlString = '<span>嘿嘿<textarea rows="1" cols="30" id="buyerqq" onkeyup="onKeyUpTextArea(\'buyerqq\')" style="resize: horizontal;vertical-align: middle;width: 80px;">asdfa</textarea>嘿嘿<textarea rows="1" cols="30" id="salernameqq" onkeyup="onKeyUpTextArea(\'salernameqq\')" style="resize: horizontal;vertical-align: middle;width: 80px;">adsf</textarea>嘿嘿<input type="text" id="contractsignqq" value="2019-04-17" actype="date" style="width: 100px" readonly="true">嘿嘿<input type="text" id="contractstr4" value="2019-04-24" actype="date" style="width: 100px" readonly="true">嘿嘿<select id="paytermqq" class="select ac-select" onchange="onChangeSelect()"><option name="payterm6" value="0">现金支付</option>,<option name="payterm6" value="1">微信支付</option>,<option name="payterm6" value="2" selected="true">支付宝支付</option></select><span id="isrebateqq"><span><input name="isrebateqq" onclick="onClickRadio(\'isrebateqq\')" type="radio" style="vertical-align: middle;" value="是" actype="radio">&nbsp;&nbsp;&nbsp;&nbsp;是&nbsp;&nbsp;&nbsp;&nbsp;</span><span><input name="isrebateqq" onclick="onClickRadio(\'isrebateqq\')" type="radio" checked="" style="vertical-align: middle;" value="否" actype="radio">&nbsp;&nbsp;&nbsp;&nbsp;否&nbsp;&nbsp;&nbsp;&nbsp;</span></span></span><div class="ac-date-body"><div><span class="datepicker-input-group u-input-group simple" style=""><input placeholder="选择日期" readonly="" type="text" class="u-form-control md" value="2019-04-24"><span shape="border" class="u-input-group-btn"><i class="uf uf-calendar"></i></span></span></div></div>'
+    let htmlString = '<span id="ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9" class="ac-checkbox-group"><span><input name="ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" checked="true" value="1YYYYY"><span style="margin: 0 10px">1YYYYY</span></span><span><input name="ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="2YYYYY"><span style="margin: 0 10px">2YYYYY</span></span><span><input name="ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="3YYYYY"><span style="margin: 0 10px">3YYYYY</span></span><span><input name="ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="4YYYYY"><span style="margin: 0 10px">4YYYYY</span></span></span><span style="color: rgb(66, 66, 66);">互<span id="629180d0-ff59-44a5-8f86-9c7360961e12" class="ac-radio-group"><span><input name="629180d0-ff59-44a5-8f86-9c7360961e12" onclick="onClickRadio(event)" type="radio" checked="true" style="vertical-align: middle;" value="1XXXXX" actype="radio"><span style="margin: 0 10px">1XXXXX</span></span><span><input name="629180d0-ff59-44a5-8f86-9c7360961e12" onclick="onClickRadio(event)" type="radio" style="vertical-align: middle;" value="2XXXXX" actype="radio"><span style="margin: 0 10px">2XXXXX</span></span><span><input name="629180d0-ff59-44a5-8f86-9c7360961e12" onclick="onClickRadio(event)" type="radio" style="vertical-align: middle;" value="3XXXXX" actype="radio"><span style="margin: 0 10px">3XXXXX</span></span></span></span><span style="color: rgb(66, 66, 66);">交<input id="9013b8fc-e610-419d-bba0-196ec76b73cd" type="text" value="法师打发斯蒂芬" onkeyup="onKeyUpInput(event)" actype="text" style="width: 158px;"><select id="a0a8252d-94b3-4436-9433-d37e589508eb" class="select ac-select" onchange="onChangeSelect(event)"><option name="a0a8252d-94b3-4436-9433-d37e589508eb" value="支付宝" selected="">支付宝</option>,<option name="a0a8252d-94b3-4436-9433-d37e589508eb" value="银行卡">银行卡</option>,<option name="a0a8252d-94b3-4436-9433-d37e589508eb" value="微信">微信</option></select></span>'
 
     return (
       <div className="wordTest">
