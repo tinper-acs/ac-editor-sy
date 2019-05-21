@@ -1,16 +1,12 @@
 /* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,react/prop-types,react/destructuring-assignment */
 import React, { Component } from 'react';
 import './index.less';
+import cancelIcon from '../assets/icon/cancel.png';
 
 class EditorModal extends Component {
   constructor(props) {
     super(props);
   }
-
-  // 提交
-  onClickOk = () => {
-    this.props.onInsert();
-  };
 
   // 关闭
   onClickClose = () => {
@@ -25,13 +21,10 @@ class EditorModal extends Component {
         <div className="pop-body" style={{ width }}>
           <div className="pop-title">
             <span className="pop-title-content">{title}</span>
+            <img src={cancelIcon} alt="" className="cancelIcon" onClick={this.onClickClose}/>
           </div>
           <div className="pop-content">
             {this.props.children}
-          </div>
-          <div className="pop-buttonBox">
-            <button className="pop-button" type="default" onClick={this.onClickClose}>取消</button>
-            <button className="pop-button" type="primary" onClick={this.onClickOk}>确定</button>
           </div>
         </div>
       </div>

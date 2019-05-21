@@ -528,10 +528,7 @@ class AcEditorSany extends Component {
 
   render() {
 
-    // previewHtml: '', // 预览html
-    //   previewStatus: false, //预览状态
-    //   previewIdList: [], // 预览默认值
-    const { showDate, currentDateLeft, currentDateTop, previewHtml, idList } = this.state;
+    const { showDate, currentDateLeft, currentDateTop, previewHtml, previewStatus, previewIdList = [] } = this.state;
     const { editorId, height } = this.props;
 
 
@@ -544,10 +541,10 @@ class AcEditorSany extends Component {
             <img src={viewIcon} onClick={this.onPreviewShow}/>
             {/*预览弹框*/}
             <PreviewModal
-              status={this.state.previewStatus}
+              status={previewStatus}
               onHideModal={this.onHideModal}
               htmlString={previewHtml}
-
+              defaultData={[...previewIdList]}
             />
           </span>
 
