@@ -45,6 +45,7 @@ import {
   initRadio,
   initCheckbox,
   initDate,
+  getStringLenght,
 } from './utils';
 import zhCN from 'rc-calendar/lib/locale/zh_CN';
 
@@ -66,7 +67,7 @@ class AcEditorSany extends Component {
       currentDateId: '',
       currentDateLeft: '0px', // 日期靠 left 多少像素
       currentDateTop: '0px', // 日期靠 top 多少像素
-      previewHtml: '',
+
       idList: [],  // 插入组件的类型 (text,select,radio,checkbox,date)
       hrefStatus: false,
       radioStatus: false,
@@ -74,7 +75,10 @@ class AcEditorSany extends Component {
       selectStatus: false,
       tableStatus: false,
       fixedStatus: false,
-      previewStatus: false,
+
+      previewHtml: '', // 预览html
+      previewStatus: false, //预览状态
+      previewIdList: [], // 预览默认值
     };
   }
 
@@ -122,6 +126,14 @@ class AcEditorSany extends Component {
         target.removeAttribute('checked');
       }
     };
+
+    window.onKeyUpInput = function (event) { // input 根据输入框的值自动改变宽度
+      const target = event.target;
+      const { value } = target;
+      const width = value ? `${getStringLenght(value) * 7 + 60}px` : '60px';
+      target.style.width = width;
+    };
+
   }
 
 
@@ -296,11 +308,11 @@ class AcEditorSany extends Component {
 
   // 预览按钮
   onPreviewShow = () => {
-    const { editorId } = this.props;
-    const textHtml = document.getElementById(editorId).innerHTML;
+    const { doc, idList } = this.getHtml2String();
     this.setState({
-      previewHtml: textHtml,
+      previewHtml: doc,
       previewStatus: true,
+      previewIdList: idList,
     });
   };
 
@@ -370,17 +382,12 @@ class AcEditorSany extends Component {
   updateIdList = array => array.map((item) => {
     const { field, type } = item;
     const doc = document.getElementById(field);
-    if (type === 'text') { // 文本类型 输入框
-      const textValue = doc.value;
-      doc.innerHTML = textValue; // 将值更新到textarea 中
-      item.data = textValue;
-      item.defaultValue = textValue;
-    }
 
-    if (type === 'date') {  // 文本类型 日期
+    if (type === 'date' || type === 'text') {  // 文本类型 日期||普通文本
       const textValue = doc.value;
       item.data = textValue;
       item.defaultValue = textValue;
+      doc.setAttribute('value', textValue); // 修改输入框里的内容
     }
 
     if (type === 'radio') {  // 单选框
@@ -521,8 +528,11 @@ class AcEditorSany extends Component {
 
   render() {
 
+    // previewHtml: '', // 预览html
+    //   previewStatus: false, //预览状态
+    //   previewIdList: [], // 预览默认值
     const { showDate, currentDateLeft, currentDateTop, previewHtml, idList } = this.state;
-    const { editorId, height, } = this.props;
+    const { editorId, height } = this.props;
 
 
     return (
@@ -537,6 +547,7 @@ class AcEditorSany extends Component {
               status={this.state.previewStatus}
               onHideModal={this.onHideModal}
               htmlString={previewHtml}
+
             />
           </span>
 

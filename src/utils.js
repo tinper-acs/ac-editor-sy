@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /**
  * 生成唯一字符串
  */
@@ -49,7 +50,8 @@ export function initInput(param) {
   // 输入框类型为文本
   const { field, defaultValue } = param;
   const title = defaultValue || '';
-  return `<textarea rows="1" cols="30" id="${field}"  style="resize: horizontal;vertical-align: middle;width: 80px;">${title}</textarea>`;
+  const width = title ? (getStringLenght(title) * 7 + 60) + 'px' : '60px';
+  return `<input id="${field}" type="text" value="${title}" onkeyup="onKeyUpInput(event)" acType="text" style="width: ${width}"/>`;
 }
 
 
@@ -157,6 +159,15 @@ export function arrayObjClear(arr, key) {
   }
   return result;
 }
+
+/**
+ * 获取字符串的长度，
+ * @param string 将中文字符串用两个 'aa' 替换然后计算宽度
+ */
+export function getStringLenght(str) {
+  return str.replace(/[\u0391-\uFFE5]/g, 'aa').length;
+}
+
 
 // 下拉列表
 export var popList = [

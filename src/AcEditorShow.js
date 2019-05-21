@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'tinper-bee/lib/Datepicker';
 import zhCN from 'rc-calendar/lib/locale/zh_CN';
 
-import { initSelect, initRadio, initCheckbox, arrayObjClear } from './utils';
+import { initSelect, initRadio, initCheckbox, arrayObjClear, getStringLenght } from './utils';
 
 import './AcEditorShow.less';
 
@@ -86,10 +86,8 @@ class AcEditorShow extends Component {
 
         switch (type) {  // 判断组件类型
           case 'date': // 日期直接修改值
-            doc.setAttribute('value', defaultValue);
-            break;
           case 'text':  // 文本类型
-            doc.innerHTML = defaultValue;
+            doc.setAttribute('value', defaultValue);
             break;
           case 'select':
             newDoc.innerHTML = initSelect({
@@ -126,11 +124,7 @@ class AcEditorShow extends Component {
     // 是否让组件 disabled
     if (!isActive) {
       const activeDoc = document.getElementById(editorId);
-      // 修改 textarea
-      const textAreaList = activeDoc.getElementsByTagName('textarea');
-      for (const item of textAreaList) {
-        item.setAttribute('disabled', true);
-      }
+
       // 修改 input
       const inputList = activeDoc.getElementsByTagName('input');
       for (const item of inputList) {
@@ -173,6 +167,15 @@ class AcEditorShow extends Component {
         target.removeAttribute('checked');
       }
     };
+
+    window.onKeyUpInput = function (event) { // input 根据输入框的值自动改变宽度
+      const target = event.target;
+      const { value } = target;
+      const width = value ? (getStringLenght(value) * 7 + 60) + 'px' : '60px';
+      target.style.width = width;
+    };
+
+
   };
 
 
@@ -194,18 +197,12 @@ class AcEditorShow extends Component {
   updateIdList = array => array.map((item) => {
     const { field, type } = item;
     const doc = document.getElementById(field);
-    if (type === 'text') { // 文本类型 输入框
-      const textValue = doc.value;
-      doc.innerHTML = textValue; // 将值更新到textarea 中
-      item.data = textValue;
-      item.defaultValue = textValue;
-    }
 
-
-    if (type === 'date') {  // 文本类型 日期
+    if (type === 'date' || type === 'text') {  // 文本类型 日期||普通文本
       const textValue = doc.value;
       item.data = textValue;
       item.defaultValue = textValue;
+      doc.setAttribute('value', textValue); // 修改输入框里的内容
     }
 
     if (type === 'radio') {  // 单选框

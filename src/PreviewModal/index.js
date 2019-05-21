@@ -29,7 +29,7 @@ class PreviewModal extends Component {
   render() {
     const { status } = this.state;
     const { htmlString } = this.props;
-    console.log("htmlString",htmlString)
+    console.log('htmlString', htmlString);
 
 
     return (
@@ -45,14 +45,14 @@ class PreviewModal extends Component {
         </Modal.Header>
 
         <Modal.Body className="form-body-padding">
-          {/*<AcEditorShow*/}
-            {/*isShow={status}*/}
-            {/*htmlString={htmlString} // 用 AcEditorShow 生成的html字符串*/}
-            {/*editorId="pop-content-preview" // 组件 id*/}
-            {/*isActive // 组件是否可以操作*/}
-            {/*defaultData={[]} // 替换组件默认值*/}
-            {/*// waterMarkerText="用友网络" // 添加水印*/}
-          {/*/>*/}
+          <AcEditorShow
+            isShow={status}
+            htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
+            editorId="pop-content-preview" // 组件 id
+            isActive // 组件是否可以操作
+            defaultData={[]} // 替换组件默认值
+            // waterMarkerText="用友网络" // 添加水印
+          />
 
         </Modal.Body>
       </Modal>
