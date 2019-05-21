@@ -773,7 +773,7 @@ class AcEditorSany extends Component {
                 <Option value="5">x-large</Option>
                 <Option value="6">xx-large</Option>
             </Select>
-            <img src={letterSpacingIcon} className="select-icon-img"/>
+            <img src={fontSizeIcon} className="select-icon-img"/>
           </span>
 
 
@@ -789,7 +789,7 @@ class AcEditorSany extends Component {
                 <Option value="微软雅黑">微软雅黑</Option>
                 <Option value="Arial">Arial</Option>
             </Select>
-            <img src={letterSpacingIcon} className="select-icon-img"/>
+            <img src={fontNameIcon} className="select-icon-img"/>
           </span>
 
           {/*基本操作*/}

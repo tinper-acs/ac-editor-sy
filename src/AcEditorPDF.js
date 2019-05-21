@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import './index.less';
-import { initCheckbox, initRadio, initSelect } from './utils';
+import { initCheckbox, initRadio, getStringLenght } from './utils';
 
 class AcEditorPDF extends Component {
   constructor(props) {
@@ -28,13 +28,15 @@ class AcEditorPDF extends Component {
         const newDoc = document.createElement('span');
         let status = false; // 是否创建新元素
 
+        const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '60px';
+
         switch (type) {  // 判断组件类型
+          case 'text':  // 文本类型
           case 'date': // 日期直接修改值
             doc.setAttribute('value', defaultValue);
+            doc.style.width = width;
             break;
-          case 'text':  // 文本类型
           case 'select':
-            const width = defaultData ? (defaultData.length * 14 + 10) + 'px' : '40px';
             newDoc.innerHTML = `<input type="text" value="${defaultValue}" acType="date" style="width: ${width}" readOnly="true"/>`;
             status = true;
             break;
