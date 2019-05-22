@@ -21,6 +21,7 @@ import checkboxIcon from './assets/icon/checkbox.png';
 import selectIcon from './assets/icon/select.png';
 import tableIcon from './assets/icon/table.png';
 import inputIcon from './assets/icon/input.png';
+import textareaIcon from './assets/icon/textarea.png';
 import dateIcon from './assets/icon/date.png';
 import fixedIcon from './assets/icon/fixed.png';
 import viewIcon from './assets/icon/view.png';
@@ -46,6 +47,7 @@ import {
   initCheckbox,
   initDate,
   getStringLenght,
+  initTextarea,
 } from './utils';
 import zhCN from 'rc-calendar/lib/locale/zh_CN';
 
@@ -133,7 +135,6 @@ class AcEditorSany extends Component {
       const width = value ? `${getStringLenght(value) * 7 + 60}px` : '60px';
       target.style.width = width;
     };
-
   }
 
 
@@ -178,6 +179,17 @@ class AcEditorSany extends Component {
     const field = uuid();
     this.insertContent(initInput({ field }));
     this.addNewComponent({ field });  // 将Input缓存
+  };
+
+
+  // 插入 textarea
+  onInsertTextarea = () => {
+    const field = uuid();
+    this.insertContent(initTextarea({ field }));
+    this.addNewComponent({ // 将Textarea缓存
+      field,
+      type: 'textarea',
+    });
   };
 
   // 插入select
@@ -243,6 +255,9 @@ class AcEditorSany extends Component {
       switch (type) {  // 判断组件类型
         case 'text':
           htmlString += initInput(item);
+          break;
+        case 'textarea':
+          htmlString += initTextarea(item);
           break;
         case 'select':
           htmlString += initSelect(item);
@@ -390,6 +405,13 @@ class AcEditorSany extends Component {
       doc.setAttribute('value', textValue); // 修改输入框里的内容
     }
 
+    if (type === 'textarea') { // 多行文本输入
+      const { value } = doc;
+      doc.innerHTML = value;
+      item.data = value;
+      item.defaultValue = value;
+    }
+
     if (type === 'radio') {  // 单选框
       let data = [];
       let defaultValue = '';
@@ -430,6 +452,7 @@ class AcEditorSany extends Component {
       const selectedIndex = doc.selectedIndex; // 选中索引
       item.defaultValue = doc.options[selectedIndex].value; // 选中值
     }
+
     return item;
   });
 
@@ -456,9 +479,10 @@ class AcEditorSany extends Component {
 
         switch (type) {  // 判断组件类型
           case 'date': // 日期直接修改值
+          case 'text':  // 文本类型
             doc.setAttribute('value', defaultValue);
             break;
-          case 'text':  // 文本类型
+          case 'textarea': // 多行文本
             doc.innerHTML = defaultValue;
             break;
           case 'select':
@@ -618,6 +642,13 @@ class AcEditorSany extends Component {
           <span tooltip="文本框" flow="down" className="icon-span">
             <img src={inputIcon} onClick={this.onInsertInput}/>
           </span>
+
+
+          {/*文本 多行文本*/}
+          <span tooltip="多行文本框" flow="down" className="icon-span">
+            <img src={textareaIcon} onClick={this.onInsertTextarea}/>
+          </span>
+
 
           {/*日期*/}
           <span tooltip="日期" flow="down" className="icon-span">

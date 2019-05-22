@@ -36,6 +36,10 @@ class AcEditorPDF extends Component {
             doc.setAttribute('value', defaultValue);
             doc.style.width = width;
             break;
+          case 'textarea':
+            newDoc.innerHTML = `<div>${defaultValue}</div>`;
+            status = true;
+            break;
           case 'select':
             newDoc.innerHTML = `<input type="text" value="${defaultValue}" acType="date" style="width: ${width}" readOnly="true"/>`;
             status = true;

@@ -89,6 +89,9 @@ class AcEditorShow extends Component {
           case 'text':  // 文本类型
             doc.setAttribute('value', defaultValue);
             break;
+          case 'textarea': // 多行文本
+            doc.innerHTML = defaultValue.replace(/↵/g, '&#13;&#10;'); // 替换回车
+            break;
           case 'select':
             newDoc.innerHTML = initSelect({
               ...item,
@@ -204,6 +207,14 @@ class AcEditorShow extends Component {
       item.defaultValue = textValue;
       doc.setAttribute('value', textValue); // 修改输入框里的内容
     }
+
+    if (type === 'textarea') { // 多行文本输入
+      const { value } = doc;
+      doc.innerHTML = value;
+      item.data = value;
+      item.defaultValue = value;
+    }
+
 
     if (type === 'radio') {  // 单选框
       let data = [];
