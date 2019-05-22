@@ -28,34 +28,20 @@ class AcEditorPDF extends Component {
         const newDoc = document.createElement('span');
         let status = false; // 是否创建新元素
 
-        const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '60px';
+        const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '80px';
 
         switch (type) {  // 判断组件类型
           case 'text':  // 文本类型
+          case 'select':  // 下拉
+          case 'radio':  // 下拉
+          case 'checkbox':  // 下拉
           case 'date': // 日期直接修改值
-            doc.setAttribute('value', defaultValue);
-            doc.style.width = width;
+            newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue ? defaultValue : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
+            status = true;
             break;
+
           case 'textarea':
-            newDoc.innerHTML = `<div>${defaultValue}</div>`;
-            status = true;
-            break;
-          case 'select':
-            newDoc.innerHTML = `<input type="text" value="${defaultValue}" acType="date" style="width: ${width}" readOnly="true"/>`;
-            status = true;
-            break;
-          case 'radio':
-            newDoc.innerHTML = initRadio({
-              ...item,
-              data: data.split('|||'),
-            });
-            status = true;
-            break;
-          case 'checkbox':
-            newDoc.innerHTML = initCheckbox({
-              ...item,
-              data: data.split('|||'),
-            });
+            newDoc.innerHTML = `<div class="textarea-div">${defaultValue}</div>`;
             status = true;
             break;
           default:
@@ -101,30 +87,6 @@ class AcEditorPDF extends Component {
                  body {
                    -webkit-print-color-adjust: exact;
                 }
-                 input{
-                     border: none;
-                     border-bottom: 1px solid #000;
-                     font-size: 16px;
-                     height: 20px;
-                     color: #000;
-                 }
-                 input[type="radio"] {
-                  vertical-align: middle;
-                 }
-                 input[type="checkbox"] {
-                  vertical-align: middle;
-                 }
-                 
-                 select{
-                  border: none;
-                  appearance: none;
-                  -moz-appearance: none;
-                  -webkit-appearance: none;
-                  border-radius: 0px;
-                  border-bottom: 1px solid #000;
-                  font-size: 16px;
-                  color: #000;
-                 }
                  .sany-pdf-bgColor{
                   display: none;
                  }
@@ -143,6 +105,15 @@ class AcEditorPDF extends Component {
                  table{
                    border: 1px solid #999;
                    border-collapse:collapse;
+                 }
+                
+                 .text-div{
+                  text-decoration: underline;
+                  margin-right: 15px;
+                 
+                 }
+                 .textarea-div{
+                     text-decoration: underline;
                  }
             }
                        
