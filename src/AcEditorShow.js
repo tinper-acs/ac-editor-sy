@@ -75,7 +75,7 @@ class AcEditorShow extends Component {
         const doc = document.getElementById(field);
 
         // id是否存在
-        if (!doc || !defaultValue || !data) {
+        if (!doc) {
           continue;
         }
         // 用于包裹 select radio checkbox
@@ -86,6 +86,8 @@ class AcEditorShow extends Component {
           case 'date': // 日期直接修改值
           case 'text':  // 文本类型
             doc.setAttribute('value', defaultValue);
+            const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '60px';
+            doc.style.width = width;
             break;
           case 'textarea': // 多行文本
             doc.innerHTML = defaultValue.replace(/↵/g, '&#13;&#10;'); // 替换回车
