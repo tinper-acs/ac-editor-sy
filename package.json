@@ -92,7 +92,7 @@
     "bee-form": "^2.0.11",
     "bee-select": "^2.0.11",
     "print-js": "^1.0.54",
-    "tinper-bee": "^2.0.10",
-    "bee-input-number": "latest"
+    "tinper-bee": "2.0.10",
+    "bee-input-number": "2.0.14"
   }
 }

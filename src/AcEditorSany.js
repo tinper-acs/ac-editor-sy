@@ -1,4 +1,4 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,react/jsx-indent-props,jsx-a11y/alt-text,object-curly-newline,padded-blocks,no-restricted-syntax,react/prop-types,object-curly-spacing,react/destructuring-assignment,no-param-reassign,no-shadow,prefer-const,no-underscore-dangle,prefer-destructuring,import/no-extraneous-dependencies,no-fallthrough,no-continue,import/order,react/jsx-indent,react/jsx-no-bind */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,react/jsx-indent-props,jsx-a11y/alt-text,object-curly-newline,padded-blocks,no-restricted-syntax,react/prop-types,object-curly-spacing,react/destructuring-assignment,no-param-reassign,no-shadow,prefer-const,no-underscore-dangle,prefer-destructuring,import/no-extraneous-dependencies,no-fallthrough,no-continue,import/order,react/jsx-indent,react/jsx-no-bind,react/jsx-one-expression-per-line,key-spacing,comma-spacing */
 import React, { Component } from 'react';
 import DatePicker from 'tinper-bee/lib/Datepicker';
 import { Select } from 'tinper-bee';
@@ -699,12 +699,15 @@ class AcEditorSany extends Component {
               style={{ width: '80px' }}
               size="sm"
             >
-                <Option value="#1c487f">#1c487f</Option>
-                <Option value="#4d80bf">#4d80bf</Option>
-                <Option value="#c24f4a">#c24f4a</Option>
-                <Option value="#8baa4a">#8baa4a</Option>
-                <Option value="#7b5ba1">#7b5ba1</Option>
-                <Option value="#46acc8">#46acc8</Option>
+                <Option value="#000000"><span style={{ color: '#000000' }}>#000000</span></Option>
+                <Option value="#1c487f"><span style={{ color: '#1c487f' }}>#1c487f</span></Option>
+                <Option value="#4d80bf"><span style={{ color: '#4d80bf' }}>#4d80bf</span></Option>
+                <Option value="#f9963b"><span style={{ color: '#f9963b' }}>#f9963b</span></Option>
+                <Option value="#c24f4a"><span style={{ color: '#c24f4a' }}>#c24f4a</span></Option>
+                <Option value="#8baa4a"><span style={{ color: '#8baa4a' }}>#8baa4a</span></Option>
+                <Option value="#7b5ba1"><span style={{ color: '#7b5ba1' }}>#7b5ba1</span></Option>
+                <Option value="#46acc8"><span style={{ color: '#46acc8' }}>#46acc8</span></Option>
+                <Option value="#ff0000"><span style={{ color: '#ff0000' }}>#ff0000</span></Option>
             </Select>
             <img src={fontColorIcon} className="select-icon-img"/>
           </span>
@@ -718,12 +721,14 @@ class AcEditorSany extends Component {
               style={{ width: '80px' }}
               size="sm"
             >
-                <Option value="#1c487f">#1c487f</Option>
-                <Option value="#4d80bf">#4d80bf</Option>
-                <Option value="#c24f4a">#c24f4a</Option>
-                <Option value="#8baa4a">#8baa4a</Option>
-                <Option value="#7b5ba1">#7b5ba1</Option>
-                <Option value="#46acc8">#46acc8</Option>
+                <Option style={{ backgroundColor: '#000000' }} value="#000000">#000000</Option>
+                <Option style={{ backgroundColor: '#4d80bf' }} value="#4d80bf">#4d80bf</Option>
+                <Option style={{ backgroundColor: '#f9963b' }} value="#f9963b">#f9963b</Option>
+                <Option style={{ backgroundColor: '#c24f4a' }} value="#c24f4a">#c24f4a</Option>
+                <Option style={{ backgroundColor: '#8baa4a' }} value="#8baa4a">#8baa4a</Option>
+                <Option style={{ backgroundColor: '#7b5ba1' }} value="#7b5ba1">#7b5ba1</Option>
+                <Option style={{ backgroundColor: '#46acc8' }} value="#46acc8">#46acc8</Option>
+                <Option style={{ backgroundColor: '#ff0000' }} value="#ff0000">#ff0000</Option>
             </Select>
             <img src={backColorIcon} className="select-icon-img"/>
           </span>
@@ -737,9 +742,14 @@ class AcEditorSany extends Component {
               style={{ width: '60px' }}
               size="sm"
             >
-                <Option value={1}>1.0倍</Option>
+                <Option value={1.0}>1.0倍</Option>
                 <Option value={1.2}>1.2倍</Option>
-                <Option value={4}>4.0倍</Option>
+                <Option value={1.5}>1.5倍</Option>
+                <Option value={1.8}>1.8倍</Option>
+                <Option value={2.0}>2.0倍</Option>
+                <Option value={2.5}>2.5倍</Option>
+                <Option value={3.0}>3.0倍</Option>
+                <Option value={4.0}>4.0倍</Option>
             </Select>
             <img src={lineHeightIcon} className="select-icon-img"/>
           </span>
@@ -753,8 +763,12 @@ class AcEditorSany extends Component {
               style={{ width: '65px' }}
               size="sm"
             >
+                <Option value="0px">0px</Option>
+                <Option value="1px">1px</Option>
+                <Option value="2px">2px</Option>
                 <Option value="3px">3px</Option>
                 <Option value="4px">4px</Option>
+                <Option value="5px">5px</Option>
                 <Option value="6px">6px</Option>
             </Select>
             <img src={letterSpacingIcon} className="select-icon-img"/>
@@ -769,6 +783,9 @@ class AcEditorSany extends Component {
               style={{ width: '85px' }}
               size="sm"
             >
+                <Option value="1">x-small</Option>
+                <Option value="2">small</Option>
+                <Option value="3">normal</Option>
                 <Option value="4">large</Option>
                 <Option value="5">x-large</Option>
                 <Option value="6">xx-large</Option>
@@ -785,9 +802,19 @@ class AcEditorSany extends Component {
               onChange={this.onChangeCmdValue.bind(this, 'fontName')}
               style={{ width: '85px' }}
               size="sm"
+              // open={true}
             >
-                <Option value="微软雅黑">微软雅黑</Option>
-                <Option value="Arial">Arial</Option>
+                <Option value="Microsoft Yahei"
+                        style={{ fontFamily: 'Microsoft Yahei' }}>微软雅黑</Option>
+                <Option value="SimHei " style={{ fontFamily: 'SimHei ' }}>黑体</Option>
+                <Option value="KaiTi" style={{ fontFamily: 'KaiTi' }}><span>楷体</span></Option>
+                <Option value="FangSong" style={{ fontFamily: 'FangSong' }}>仿宋</Option>
+                <Option value="NSimSun" style={{ fontFamily: 'NSimSun' }}>新宋体</Option>
+                <Option value="SimSun" style={{ fontFamily: 'SimSun' }}>宋体</Option>
+                <Option value="STSong" style={{ fontFamily: 'STSong' }}>华文宋体</Option>
+                <Option value="STZhongsong" style={{ fontFamily: 'STZhongsong' }}>华文中宋</Option>
+                <Option value="STKaiti" style={{ fontFamily: 'STKaiti' }}>华文楷体</Option>
+                <Option value="LiSu" style={{ fontFamily: 'LiSu' }}>隶书</Option>
             </Select>
             <img src={fontNameIcon} className="select-icon-img"/>
           </span>
@@ -801,10 +828,11 @@ class AcEditorSany extends Component {
               style={{ width: '85px' }}
               size="sm"
             >
-                <Option value="bold">加粗</Option>
-                <Option value="underline">下划线</Option>
-                <Option value="italic">斜体</Option>
-                <Option value="strikeThrough">删除线</Option>
+                <Option value="bold" style={{ fontWeight: 'bold' }}>加粗</Option>
+                <Option value="underline" style={{ textDecoration: 'underline' }}>下划线</Option>
+                <Option value="italic" style={{ fontStyle: 'italic' }}>斜体</Option>
+                <Option value="strikeThrough"
+                        style={{ textDecoration: 'line-through' }}>删除线</Option>
                 <Option value="removeFormat">格式刷</Option>
             </Select>
             <img src={otherActionIcon} className="select-icon-img"/>
@@ -816,7 +844,7 @@ class AcEditorSany extends Component {
           id={editorId}
           className="editor-sany-content"
           contentEditable="true"
-          style={{ height }}
+          style={{ minHeight: height ? height : '200px' }}
           onKeyUp={this.onKeyUpEditBody}
           onClick={this.onClickEditBody}
           // onChange={this.onKeyUpEditBody}

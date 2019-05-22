@@ -11,6 +11,7 @@ import '../../src/index.less';
 
 class Demo2 extends Component {
 
+
   saveFunc = () => {
     // 为文本编辑器里的html字符串
     const { doc, idList } = this.child.getHtml2String();
