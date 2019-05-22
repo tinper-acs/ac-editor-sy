@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getStringLenght } from './utils';
 
 // todo 支持图表，例如echart
 const propTypes = {
@@ -19,6 +20,8 @@ const defaultProps = {
 };
 
 class ExportWord extends Component {
+
+
   exportWord = () => {
     const { wordId, fileName } = this.props;
     this.getBlob(wordId, fileName);
@@ -27,6 +30,10 @@ class ExportWord extends Component {
   // 替换input
   replaceInput = (activeDoc) => {
     const inputList = activeDoc.getElementsByTagName('input');
+
+    // console.log("ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9",activeDoc.getElementById("ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9"))
+
+
     for (const item of inputList) {
       const newDoc = document.createElement('span');
 
@@ -40,6 +47,7 @@ class ExportWord extends Component {
       // 单选框 未选中
       if (type === 'radio' && !checked) {
         newDoc.innerHTML = '○';
+        item.parentNode.parentNode.replaceChild(newDoc, item.parentNode);
       }
 
       // 多选框 选中
@@ -56,7 +64,7 @@ class ExportWord extends Component {
         newDoc.innerHTML = htmlText || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
         newDoc.style.textDecoration = 'underline';
       }
-      item.parentNode.replaceChild(newDoc, item);
+
     }
     if (activeDoc.getElementsByTagName('input').length > 0) {
       this.replaceInput(activeDoc, 'input');
@@ -122,6 +130,61 @@ class ExportWord extends Component {
   };
 
 
+  parseToDOM = (str) => {
+    const div = document.createElement('div');
+    if (typeof str === 'string') {
+      div.innerHTML = str;
+    }
+    return div.childNodes;
+  };
+
+
+  initContent = (defaultData) => {
+    // 修改默认值
+    if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
+      // 插入组件的类型 (text,select,radio,checkbox,date)
+      for (const item of defaultData) {
+
+        const { type, field, data, defaultValue, } = item;
+        const doc = document.getElementById(field);
+
+        // id是否存在
+        if (!doc) {
+          continue;
+        }
+        // 用于包裹 select radio checkbox
+        const newDoc = document.createElement('span');
+        let status = false; // 是否创建新元素
+
+        const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '80px';
+
+        switch (type) {  // 判断组件类型
+          case 'text':  // 文本类型
+          case 'select':  // 下拉
+          case 'radio':  // 下拉
+          case 'checkbox':  // 下拉
+          case 'date': // 日期直接修改值
+            newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue ? defaultValue : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
+            status = true;
+            break;
+
+          case 'textarea':
+            newDoc.innerHTML = `<div class="textarea-div">${defaultValue}</div>`;
+            status = true;
+            break;
+          default:
+
+        }
+
+        if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
+          doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
+        }
+
+      }
+    }
+  };
+
+
   getBlob = (wordId, fileName) => {
     // IE10 以下
     if (typeof window === 'undefined' || (typeof navigator !== 'undefined' && /MSIE [1-9]\./.test(navigator.userAgent))) {
@@ -135,18 +198,15 @@ class ExportWord extends Component {
     };
 
     // 获取导出文本dom 节点
+
+
+    const { pdfId, formInfo } = this.props;
+    let { doc, idList } = formInfo();
+    this.initContent(idList);
+
+
     const activeDoc = document.getElementById(wordId)
       .cloneNode(true);
-
-    // 删除日期弹框
-    this.delDateModal(activeDoc);
-    // 替换单选 多选 input
-    this.replaceInput(activeDoc);
-    // 对 textarea 处理
-    this.replaceTextArea(activeDoc);
-
-    this.replaceSelect(activeDoc);
-
 
     // 文件尾信息
     const mHtmlBottom = '\n--NEXT.ITEM-BOUNDARY--';
@@ -158,6 +218,7 @@ class ExportWord extends Component {
     const blob = new Blob([fileContent], { type: 'application/msword;charset=utf-8' });
     // 下载word文件
     this.saveAs(blob, `${fileName}.doc`);
+    this.props.success();
   };
 
   saveAs = (blob, name) => {
@@ -172,14 +233,16 @@ class ExportWord extends Component {
     // 模拟点击事件
     a.download = name;
     a.click(); // 下载
+
   };
 
 
   render() {
     const { title } = this.props;
     return (
-      <span className="editor-sany-pdf">
+      <span className="editor-sany-word">
         <span onClick={this.exportWord}>{title}</span>
+        <div id="editor-sany-word"></div>
       </span>
     );
   }

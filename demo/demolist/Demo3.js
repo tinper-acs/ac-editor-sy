@@ -84,7 +84,6 @@ class Demo3 extends Component {
         }}
         >
           <AcEditorPDF
-            pdfId="demo3EditorId"
             title={<button>打印PDF</button>}
             // htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
             formInfo={() => this.child.getHtml2String()} // 数据格式 {doc, idList}

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 import './index.less';
-import { initCheckbox, initRadio, getStringLenght } from './utils';
+import { getStringLenght } from './utils';
 
 class AcEditorPDF extends Component {
   constructor(props) {

@@ -40,10 +40,8 @@ class AcEditorShow extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { htmlString } = this.props;
-    // 阅览弹框
-    if (nextProps.isShow && (htmlString !== nextProps.htmlString)) {
-      this.initContent(nextProps);
-    }
+    // 阅览弹框 待优化
+    this.initContent(nextProps);
   }
 
   componentDidMount() {
