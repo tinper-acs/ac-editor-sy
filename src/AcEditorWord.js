@@ -1,4 +1,4 @@
-/* eslint-disable react/require-default-props,no-unused-expressions */
+/* eslint-disable react/require-default-props,no-unused-expressions,no-multi-spaces,react/prop-types,react/destructuring-assignment,padded-blocks,react/no-unused-prop-types */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -16,140 +16,26 @@ const defaultProps = {
   wordId: '',
   fileName: 'filename',
   title: '导出Word',
-  styles: 'table{width:100%}',
+  styles: 'table{width:100%} ',
 };
 
 class ExportWord extends Component {
-
 
   exportWord = () => {
     const { wordId, fileName } = this.props;
     this.getBlob(wordId, fileName);
   };
 
-  // 替换input
-  replaceInput = (activeDoc) => {
-    const inputList = activeDoc.getElementsByTagName('input');
 
-    // console.log("ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9",activeDoc.getElementById("ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9"))
+  initContent = (defaultData) => { // 修改默认值
 
-
-    for (const item of inputList) {
-      const newDoc = document.createElement('span');
-
-      const type = item.getAttribute('type');
-      const { checked } = item;
-      // 单选框 选中
-      if (type === 'radio' && checked) {
-        newDoc.innerHTML = '●';
-      }
-
-      // 单选框 未选中
-      if (type === 'radio' && !checked) {
-        newDoc.innerHTML = '○';
-        item.parentNode.parentNode.replaceChild(newDoc, item.parentNode);
-      }
-
-      // 多选框 选中
-      if (type === 'checkbox' && checked) {
-        newDoc.innerHTML = '■';
-      }
-      // 多选框 未选中
-      if (type === 'checkbox' && !checked) {
-        newDoc.innerHTML = '□';
-      }
-      // input
-      if (type === 'text') {
-        const htmlText = item.getAttribute('value');
-        newDoc.innerHTML = htmlText || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-        newDoc.style.textDecoration = 'underline';
-      }
-
-    }
-    if (activeDoc.getElementsByTagName('input').length > 0) {
-      this.replaceInput(activeDoc, 'input');
-    }
-  };
-
-  // 替换 textarea
-  replaceTextArea = (activeDoc) => {
-    const textareaList = activeDoc.getElementsByTagName('textarea');
-    for (const item of textareaList) {
-      const newDoc = document.createElement('span');
-      const htmlText = item.value;
-      newDoc.innerHTML = htmlText || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
-      newDoc.style.textDecoration = 'underline';
-      item.parentNode.replaceChild(newDoc, item);
-    }
-    if (activeDoc.getElementsByTagName('textarea').length > 0) {
-      this.replaceTextArea(activeDoc, 'textarea');
-    }
-  };
-
-  // 替换下拉框
-  replaceSelect = (activeDoc) => {
-    const selectList = activeDoc.getElementsByTagName('select');
-    for (const item of selectList) {
-      const newDoc = document.createElement('span');
-      let title = '';
-      const options = item.getElementsByTagName('option');
-      for (const option of options) {
-        // 获取选中的slect
-        if (option.selected) {
-          title = option.innerText;
-          break;
-        }
-      }
-      newDoc.innerHTML = title;
-      newDoc.style.textDecoration = 'underline';
-      item.parentNode.replaceChild(newDoc, item);
-    }
-
-    if (activeDoc.getElementsByTagName('select').length > 0) {
-      this.replaceSelect(activeDoc, 'select');
-    }
-  };
-
-
-  // 删除日期弹框
-  delDateModal = (activeDoc) => {
-    const acDateBody = activeDoc.getElementsByClassName('ac-date-body');
-    // 删除日期弹框
-    for (const dateItem of acDateBody) {
-      // 删除子节点
-      if (dateItem) {
-        dateItem.parentNode.removeChild(dateItem);
-      }
-    }
-
-    // 检查是否都替换了
-    const twoAcDateBody = activeDoc.getElementsByClassName('ac-date-body');
-    if (twoAcDateBody && twoAcDateBody.length > 0) {
-      this.delDateModal(activeDoc);
-    }
-  };
-
-
-  parseToDOM = (str) => {
-    const div = document.createElement('div');
-    if (typeof str === 'string') {
-      div.innerHTML = str;
-    }
-    return div.childNodes;
-  };
-
-
-  initContent = (defaultData) => {
-    // 修改默认值
     if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
       // 插入组件的类型 (text,select,radio,checkbox,date)
       for (const item of defaultData) {
-
-        const { type, field, data, defaultValue, } = item;
+        const { type, field, defaultValue } = item;
         const doc = document.getElementById(field);
 
-        // id是否存在
-        if (!doc) {
+        if (!doc) {  // id是否存在
           continue;
         }
         // 用于包裹 select radio checkbox
@@ -158,13 +44,13 @@ class ExportWord extends Component {
 
         const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '80px';
 
-        switch (type) {  // 判断组件类型
+        switch (type) {  // 根据类型替换元素
           case 'text':  // 文本类型
           case 'select':  // 下拉
-          case 'radio':  // 下拉
+          case 'radio':  // 单选
           case 'checkbox':  // 下拉
           case 'date': // 日期直接修改值
-            newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue ? defaultValue : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
+            newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
             status = true;
             break;
 
@@ -173,13 +59,11 @@ class ExportWord extends Component {
             status = true;
             break;
           default:
-
         }
 
         if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
           doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
         }
-
       }
     }
   };
@@ -198,30 +82,31 @@ class ExportWord extends Component {
     };
 
     // 获取导出文本dom 节点
+    const { getDefaultInfo } = this.props;
+    const idList = getDefaultInfo() || []; // 获取默认值
 
+    this.initContent(idList); // 执行默认替换
 
-    const { pdfId, formInfo } = this.props;
-    let { doc, idList } = formInfo();
-    this.initContent(idList);
-
-
-    const activeDoc = document.getElementById(wordId)
+    const activeDoc = document.getElementById(wordId) // 获取 dom 节点
       .cloneNode(true);
 
-    // 文件尾信息
-    const mHtmlBottom = '\n--NEXT.ITEM-BOUNDARY--';
-    // 文件样式
-    const { wordStyles: styles } = this.props;
+    const { wordStyles: styles } = this.props; // 文件样式
+    // 默认样式
+    const defaultStyle = '.text-div{ text-decoration: underline; margin-right: 15px; } .textarea-div{ text-decoration: underline; }';
+    const mHtmlBottom = '\n--NEXT.ITEM-BOUNDARY--';// 文件尾信息
+
     // 替换模板里的内容
-    const fileContent = mHtml.top.replace('_html_', mHtml.head.replace('_styles_', styles) + mHtml.body.replace('_body_', activeDoc.innerHTML)) + mHtmlBottom;
+    const fileContent = mHtml.top.replace('_html_', mHtml.head.replace('_styles_', defaultStyle + styles) + mHtml.body.replace('_body_', activeDoc.innerHTML)) + mHtmlBottom;
     // 创建包含文件内容的blob
     const blob = new Blob([fileContent], { type: 'application/msword;charset=utf-8' });
     // 下载word文件
     this.saveAs(blob, `${fileName}.doc`);
+    // 下载成功后执行回调方法
     this.props.success();
   };
 
-  saveAs = (blob, name) => {
+
+  saveAs = (blob, name) => { // 实现下载操作
     // IE 10+ (native saveAs)
     if (typeof navigator !== 'undefined' && navigator.msSaveOrOpenBlob) {
       return navigator.msSaveOrOpenBlob(blob, name);
@@ -233,7 +118,6 @@ class ExportWord extends Component {
     // 模拟点击事件
     a.download = name;
     a.click(); // 下载
-
   };
 
 
@@ -242,7 +126,6 @@ class ExportWord extends Component {
     return (
       <span className="editor-sany-word">
         <span onClick={this.exportWord}>{title}</span>
-        <div id="editor-sany-word"></div>
       </span>
     );
   }
