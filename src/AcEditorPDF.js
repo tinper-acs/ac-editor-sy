@@ -91,6 +91,39 @@ class AcEditorPDF extends Component {
                  .ac-date-body{
                    display: none ;
                  }
+                 
+                 
+                 @page {
+                      size: A4 portrait;
+                  }
+                 
+                /*section {page-break-before: always;}*/
+                .table-page-star {page-break-before: always;} /*单页*/
+                .table-page-end {page-break-after: always;} /*单页*/
+                /*.table-page {page-break-after: always;page-break-before: always;} !*单页*!*/
+                .always{
+                   page-break-after: always;
+                  
+                }
+                
+                .table-page{
+                  page-break-before: always;
+                  
+                  /*height: 1200px;*/
+                  /*margin-top: 400px;*/
+                  /*margin-right: 800px;*/
+                  /*margin-top: 100px;*/
+                 /*transform-origin:600px 400px*/
+                }
+                    
+                tr {page-break-after: always;page-break-before: always;height: 40px}
+                /*p {page-break-inside: avoid;}*/
+                p {orphans:3; widows:2;}
+                
+                th{
+                  background-color: #80808029;
+                }
+                
                  div{
                  font-size: 16px !important;
                  }
@@ -112,11 +145,30 @@ class AcEditorPDF extends Component {
                  }
                  .textarea-div{
                      text-decoration: underline;
+                     page-break-after: always;
                  }
             }
+            
+         
+            
+            
+            @page {
+                /*size: A4 landscape;*/
+                size: A4 portrait;
+            }
+            
+            
+               /*@page .table-page{*/
+            /*size: A4 portrait;*/
+            /*}*/
+            
+           
+            
+            
                        
            </style>`);
     WinPrint.document.close();
+
     WinPrint.focus();
     WinPrint.print();
 
@@ -125,6 +177,8 @@ class AcEditorPDF extends Component {
     for (let child of childs) { // 删除所有子节点
       el.removeChild(child);
     }
+
+
     WinPrint.close(); // 关闭打印
   };
 
