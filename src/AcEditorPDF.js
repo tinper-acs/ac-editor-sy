@@ -1,23 +1,25 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions,react/prop-types,prefer-const,no-param-reassign,no-restricted-syntax */
 import React, { Component } from 'react';
 
 import './index.less';
 import { getStringLenght } from './utils';
 
 class AcEditorPDF extends Component {
+
+
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-
   initContent = (defaultData) => {
     // 修改默认值
     if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
+
       // 插入组件的类型 (text,select,radio,checkbox,date)
       for (const item of defaultData) {
 
-        const { type, field, data, defaultValue, } = item;
+        const { type, field, defaultValue } = item;
         const doc = document.getElementById(field);
 
         // id是否存在
@@ -26,8 +28,7 @@ class AcEditorPDF extends Component {
         }
         // 用于包裹 select radio checkbox
         const newDoc = document.createElement('span');
-        let status = false; // 是否创建新元素
-
+        // 计算宽
         const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '80px';
 
         switch (type) {  // 判断组件类型
@@ -37,18 +38,16 @@ class AcEditorPDF extends Component {
           case 'checkbox':  // 下拉
           case 'date': // 日期直接修改值
             newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue ? defaultValue : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
-            status = true;
             break;
 
           case 'textarea':
             newDoc.innerHTML = `<div class="textarea-div">${defaultValue}</div>`;
-            status = true;
             break;
           default:
 
         }
 
-        if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
+        if (newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
           doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
         }
 
@@ -57,17 +56,15 @@ class AcEditorPDF extends Component {
   };
 
   onClickPrint = () => {
-    const { pdfId, formInfo } = this.props;
+
+    const { formInfo } = this.props;
     let { doc, idList } = formInfo();
     document.getElementById('editor-sany-pdf-id').innerHTML = doc;
-    const newIdList = [...idList].map((item) => {
-      item.data = item.defaultValue;
-      return item;
-    });
 
-    this.initContent(newIdList);
-    const htmlString = document.getElementById('editor-sany-pdf-id').innerHTML;
+    const newIdList = [...idList]; // 拷贝数组
+    this.initContent(newIdList); // 初始化
 
+    const htmlString = document.getElementById('editor-sany-pdf-id').innerHTML; // 获取 dom 节点
     const newDoc = document.createElement('span');
     newDoc.innerHTML = htmlString;
 
@@ -81,6 +78,7 @@ class AcEditorPDF extends Component {
     // 拼接打印内容
     WinPrint.document.write(`${backColor}${newDoc.innerHTML}`);
 
+    // 添加打印样式
     WinPrint.document.write(`<style>
            @media print
             {
@@ -106,7 +104,7 @@ class AcEditorPDF extends Component {
                    border: 1px solid #999;
                    border-collapse:collapse;
                  }
-                
+               
                  .text-div{
                   text-decoration: underline;
                   margin-right: 15px;
@@ -121,12 +119,13 @@ class AcEditorPDF extends Component {
     WinPrint.document.close();
     WinPrint.focus();
     WinPrint.print();
+
     let el = document.getElementById('editor-sany-pdf-id'); // 清空缓存元素
     let childs = el.childNodes;
-    for (let child of childs) {
+    for (let child of childs) { // 删除所有子节点
       el.removeChild(child);
     }
-    WinPrint.close();
+    WinPrint.close(); // 关闭打印
   };
 
 

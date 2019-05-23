@@ -1,4 +1,4 @@
-/* eslint-disable react/require-default-props,no-unused-expressions,no-multi-spaces,react/prop-types,react/destructuring-assignment,padded-blocks,react/no-unused-prop-types */
+/* eslint-disable react/require-default-props,no-unused-expressions,no-multi-spaces,react/prop-types,react/destructuring-assignment,padded-blocks,react/no-unused-prop-types,consistent-return */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';

@@ -1,4 +1,4 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,no-restricted-syntax,react/prop-types,react/forbid-prop-types,react/no-unused-prop-types,react/sort-comp,react/destructuring-assignment,prefer-destructuring,no-param-reassign,prefer-const,react/jsx-tag-spacing */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-vars,import/extensions,no-restricted-syntax,react/prop-types,react/forbid-prop-types,react/no-unused-prop-types,react/sort-comp,react/destructuring-assignment,prefer-destructuring,no-param-reassign,prefer-const,react/jsx-tag-spacing,object-curly-newline */
 import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -39,8 +39,7 @@ class AcEditorShow extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    const { htmlString } = this.props;
-    // 阅览弹框 待优化
+    // todo 待优化
     this.initContent(nextProps);
   }
 
@@ -85,6 +84,7 @@ class AcEditorShow extends Component {
         switch (type) {  // 判断组件类型
           case 'date': // 日期直接修改值
           case 'text':  // 文本类型
+            // if(defaultValue)
             doc.setAttribute('value', defaultValue);
             const width = defaultValue ? `${getStringLenght(defaultValue) * 7 + 60}px` : '60px';
             doc.style.width = width;
@@ -114,7 +114,6 @@ class AcEditorShow extends Component {
             status = true;
             break;
           default:
-
         }
 
         if (status && newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
@@ -127,7 +126,6 @@ class AcEditorShow extends Component {
     // 是否让组件 disabled
     if (!isActive) {
       const activeDoc = document.getElementById(editorId);
-
       // 修改 input
       const inputList = activeDoc.getElementsByTagName('input');
       for (const item of inputList) {
@@ -177,7 +175,6 @@ class AcEditorShow extends Component {
       const width = value ? (getStringLenght(value) * 7 + 60) + 'px' : '60px';
       target.style.width = width;
     };
-
 
   };
 

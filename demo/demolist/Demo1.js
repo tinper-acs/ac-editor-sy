@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const,spaced-comment,no-multi-spaces,react/sort-comp */
 /**
  *
  * @title AcEditorSany
@@ -8,15 +9,17 @@
 import React, { Component } from 'react';
 import { AcEditorSany } from '../../src/index';
 import '../../src/index.less';
-import AcEditorShow from '../../src/AcEditorShow';
+
 
 class Demo1 extends Component {
+
   saveFunc = () => {
     // doc 为文本编辑器里的html字符串
     // idList 为组件的id,type,direction
     const { doc, idList } = this.child.getHtml2String();
     console.log('文本编辑器内容为', doc, idList);
   };
+
 
   fixedDate = [
     {
@@ -81,22 +84,41 @@ class Demo1 extends Component {
   render() {
     const defaultData = [
       {
+        field: 'buyerwwyy1',
         direction: 'horizontal',
-        type: 'select',
-        field: 'payterm1',
-        data: '微信支付|||支付宝支付|||银行卡支付|||现金支付|||其他支付',
-        defaultValue: '银行卡支付',
+        data: '买方名称',
+        type: 'text',
+        defaultValue: '买方名称'
+      },
+      {
+        field: 'salernameyy22',
+        direction: 'horizontal',
+        data: '卖方名称',
+        type: 'text',
+        defaultValue: '卖方名称'
+      },
+      {
+        field: 'contractswwwignyy3',
+        direction: 'horizontal',
+        data: '2019-02-20',
+        type: 'date',
+        defaultValue: '2019-02-20'
       },
     ];
-    let htmlString = '<div><h1 style="text-align: center;">xxx公司供应商合同</h1><div><div><span>买方名称</span><textarea rows="1" cols="30" id="buyer1" onkeyup="onKeyUpTextArea(\'buyer1\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>卖方名称</span><textarea rows="1" cols="30" id="salername" onkeyup="onKeyUpTextArea(\'salername\')" style="resize: horizontal;vertical-align: middle;width: 80px;">xxxx</textarea><span>合同签订日期</span><input type="text" id="contractsign" value="2019-03-13" actype="date" style="width: 90px"><span>合同开始日期</span><input type="text" id="contractstr" value="2019-03-13" actype="date" style="width: 90px"><span>合同结束日期</span><input type="text" id="contractend" value="2019-03-13" actype="date" style="width: 90px"><span>付款条件</span><select id="payterm1" class="select ac-select" onchange="onChangeSelect()"><option name="payterm" value="0" selected="">现金支付</option>,<option name="payterm" value="1">微信支付</option>,<option name="payterm" value="2">支付宝支付</option></select></div><br></div><div><br></div><ul><li><div class="form"><div class="row"></div></div></li></ul></div>';
+    let htmlString = '<h1 style="text-align: center;">xxx公司供应商合同</h1><div><div><span><input id="buyerwwyy1" type="text" value="买方名称" onkeyup="onKeyUpInput(event)" actype="text" style="width: 116px"><input id="salernameyy22" type="text" value="卖方名称" onkeyup="onKeyUpInput(event)" actype="text" style="width: 116px"><input type="text" id="contractswwwignyy3" value="2019-02-20" actype="date" style="width: 100px" readonly="true"></span><br></div><br></div><div><br></div><ul><li><div class="form"><div class="row"></div></div></li></ul>';
 
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc} style={{
-          marginLeft: '20px',
-          marginBottom: '10px'
-        }}>保存
+        <button
+          onClick={this.saveFunc}
+          style={{
+            marginLeft: '20px',
+            marginBottom: '10px',
+          }}
+        >
+          保存
         </button>
+
         <AcEditorSany
           // 组件id
           editorId="acEditorSanyId"
@@ -105,11 +127,10 @@ class Demo1 extends Component {
             this.child = ref;
           }}
           // 文本框默认值
-          htmlString={''}
-          // defaultData={defaultData} // 替换组件默认值
-          // 文本框默认最小高
-          height="300px"
-          fixedDate={this.fixedDate}
+          htmlString={htmlString}
+          defaultData={defaultData} // 替换组件默认值
+          height="300px"  // 文本框默认最小高
+          fixedDate={this.fixedDate} // 固定字段
         />
       </div>
     );

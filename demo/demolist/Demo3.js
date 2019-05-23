@@ -1,3 +1,4 @@
+/* eslint-disable padded-blocks,indent,arrow-body-style,no-multi-spaces */
 /**
  *
  * @title AcEditorPDF
@@ -11,22 +12,14 @@ import '../../src/index.less';
 
 
 class Demo3 extends Component {
-  getFormInfo = () => {
-    // 为文本编辑器里的html字符串
-    // const { doc, idList } = this.child.getHtml2String();
-    // const { doc, idList } = this.child.getHtml2String();
-    console.log('this.child.getHtml2String();', this.child.getHtml2String());
-    return this.child.getHtml2String();
-    // console.log('文本编辑器内容为', doc, idList);
-  };
 
   render() {
     const defaultData = [{
       field: 'd9e40ab6-a2e1-48ea-8e5e-a5b451bdd132',
       direction: 'horizontal',
-      data: '',
+      data: 'xxx',
       type: 'text',
-      defaultValue: '',
+      defaultValue: 'xxx',
     },
       {
         field: '1d560209-1347-4133-9b7f-b01b6ff491f7',
@@ -69,7 +62,7 @@ class Demo3 extends Component {
         direction: 'horizontal',
         field: '3cb3d3f0-fb05-4ad8-9bbc-9e85a32e6d4a',
         type: 'textarea',
-      }
+      },
 
     ];
     const isActive = true;
@@ -85,8 +78,16 @@ class Demo3 extends Component {
         >
           <AcEditorPDF
             title={<button>打印PDF</button>}
-            // htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
-            formInfo={() => this.child.getHtml2String()} // 数据格式 {doc, idList}
+            formInfo={() => { // 回调获取打印数据
+
+              // return {
+              //   doc: htmlString, // dom 节点
+              //   idList: defaultData, // dom 要被替换的内容
+              //
+              // };
+
+              return this.child.getHtml2String();
+            }}
           />
         </div>
         <AcEditorShow
@@ -95,8 +96,7 @@ class Demo3 extends Component {
           isActive={isActive} // 组件是否可以操作
           defaultData={defaultData} // 替换组件默认值
           waterMarkerText="用友网络" // 添加水印
-          // 设置ref属性
-          onRef={(ref) => {
+          onRef={(ref) => {  // 设置ref属性
             this.child = ref;
           }}
         />
