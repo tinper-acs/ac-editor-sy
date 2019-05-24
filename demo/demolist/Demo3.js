@@ -13,6 +13,29 @@ import '../../src/index.less';
 
 class Demo3 extends Component {
 
+
+
+
+  initTable=(rowNum, colNum)=> {
+    // 表头
+    let thList = '';
+    for (let num = 0; num < colNum; num += 1) {
+      thList += ` <th>旋转${num}</th>`;
+    }
+    const trTh = `<tr>${thList}</tr>`;
+    // 多少行
+    let trTdList = '';
+    for (let trNum = 0; trNum < rowNum; trNum += 1) {
+      let tdList = '';
+      for (let num = 0; num < colNum; num += 1) {
+        tdList += ' <td></td>';
+      }
+      trTdList += `<tr>${tdList}</tr>`;
+    }
+    return `<table id="rotate-table-sany" border="1" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
+  }
+
+
   render() {
     const defaultData = [{
       field: 'd9e40ab6-a2e1-48ea-8e5e-a5b451bdd132',
@@ -66,8 +89,8 @@ class Demo3 extends Component {
 
     ];
     const isActive = true;
-    const htmlString = '<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
-      + '<div>合同内容</div><table border="1" id="rotate-table-sany" width="100%" cellpadding="0" cellspacing="0" class="rich-table"><tbody><tr> <th>&nbsp;标题</th> <th>标题&nbsp;</th> <th>标题&nbsp;</th> <th>标题&nbsp;</th> <th>&nbsp;标题</th> <th>&nbsp;标题</th> <th>&nbsp;标题</th></tr><tr> <td>a</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>b</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>c</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>d</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>e</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>f</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>g</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>h</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>i</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>j</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>k</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>l</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>m</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>n</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>o</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>p</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>q</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>r</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>s</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>t</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>u</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>v</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>w</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>x</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>y</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>z</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>1</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>2</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>3</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr><tr> <td>4</td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr></tbody></table>';
+    const htmlString = `<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
+      <div>合同内容</div> ${this.initTable(10000,8)}`
 
     return (
       <div className="demoPadding">
