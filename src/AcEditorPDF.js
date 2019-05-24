@@ -1,12 +1,10 @@
-/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions,react/prop-types,prefer-const,no-param-reassign,no-restricted-syntax */
+/* eslint-disable no-multiple-empty-lines,spaced-comment,no-multi-spaces,no-unused-lets,import/extensions,react/prop-types,prefer-const,no-param-reassign,no-restricted-syntax,no-trailing-spaces */
 import React, { Component } from 'react';
 
 import './index.less';
 import { getStringLenght } from './utils';
 
 class AcEditorPDF extends Component {
-
-
   constructor(props) {
     super(props);
     this.state = {};
@@ -15,10 +13,8 @@ class AcEditorPDF extends Component {
   initContent = (defaultData) => {
     // 修改默认值
     if (defaultData && Array.isArray(defaultData) && defaultData.length > 0) {
-
       // 插入组件的类型 (text,select,radio,checkbox,date)
       for (const item of defaultData) {
-
         const { type, field, defaultValue } = item;
         const doc = document.getElementById(field);
 
@@ -37,35 +33,88 @@ class AcEditorPDF extends Component {
           case 'radio':  // 下拉
           case 'checkbox':  // 下拉
           case 'date': // 日期直接修改值
-            newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue ? defaultValue : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
+            newDoc.innerHTML = `<span class="text-div" style="width: ${width}">${defaultValue || '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'}</span>`;
             break;
 
           case 'textarea':
             newDoc.innerHTML = `<div class="textarea-div">${defaultValue}</div>`;
             break;
           default:
-
         }
 
         if (newDoc.firstElementChild && doc.parentNode) { // 有子节点才替换
           doc.parentNode.replaceChild(newDoc.firstElementChild, doc);
         }
-
       }
     }
   };
 
   onClickPrint = () => {
-
-    const { formInfo } = this.props;
+    const { formInfo, tableRow = 15 } = this.props;
     let { doc, idList } = formInfo();
+
+
     document.getElementById('editor-sany-pdf-id').innerHTML = doc;
+
+    const rotateTable = document.getElementById('rotate-table-sany');
+
+    // 拆分表格数组
+    const newTableList = [];
+
+    const trList = rotateTable ? rotateTable.getElementsByTagName('tr') : '';
+
+    // 将一个大的table 分解成几个小table
+    if (trList && trList.length > 0) {
+      let trString = `<tr>${trList[0].innerHTML}</tr>`;
+      for (let i = 1; i < trList.length; i++) {
+        trString += `<tr>${trList[i].innerHTML}</tr>`;
+
+        if (i % tableRow === 0 || (tableRow > trList.length) || (trList.length - 1 === i)) {
+          // marginLeft 计算
+          let marginLeft = (i / tableRow) > 1 ? (100 - ((i / tableRow) - 1) * 10) + 'px' : '0px';
+          // 判断是否最后一个
+          if (trList.length - 1 === i) {
+            marginLeft = (i / tableRow) > 1 ? (100 - (i / tableRow) * 10) + 'px' : '0px';
+          }
+          // 判断展示的行大于 表格行数
+          if (tableRow > trList.length) {
+            marginLeft = '0px';
+          }
+
+          const rotateStart = `<table border="1" cellpadding="0" cellspacing="0" style="float: left;width:1500px;margin-left: ${marginLeft}">`;
+          const rotateEnd = '</table>';
+
+          newTableList.push(rotateStart + trString + rotateEnd);
+          // 设置表头
+          trString = `<tr>${trList[0].innerHTML}</tr>`;
+        }
+
+
+      }
+
+      // 将分解的表格拼接成一个字符串
+      let tableString = '';
+      for (const newTable of newTableList) {
+        tableString += newTable;
+      }
+
+      // 创建一个新元素
+      const newDoc = document.createElement('span');
+      // 动态计算表格容器的宽
+      const paddingWidth = newTableList.length * 1500 + (newTableList.length - 1) * 100 + 'px';
+
+      // 替换元素
+      newDoc.innerHTML = `<div class="table-page-star" style="transform: rotate(90deg);width: 1500px;height: 1500px;"><div style="padding-top:430px;width: ${paddingWidth}">${tableString}</div></div>`;
+      rotateTable.parentNode.replaceChild(newDoc.firstElementChild, rotateTable);
+    }
 
     const newIdList = [...idList]; // 拷贝数组
     this.initContent(newIdList); // 初始化
 
     const htmlString = document.getElementById('editor-sany-pdf-id').innerHTML; // 获取 dom 节点
     const newDoc = document.createElement('span');
+
+
     newDoc.innerHTML = htmlString;
 
     // 添加遮罩
@@ -103,17 +152,10 @@ class AcEditorPDF extends Component {
                 /*.table-page {page-break-after: always;page-break-before: always;} !*单页*!*/
                 .always{
                    page-break-after: always;
-                  
                 }
                 
                 .table-page{
                   page-break-before: always;
-                  
-                  /*height: 1200px;*/
-                  /*margin-top: 400px;*/
-                  /*margin-right: 800px;*/
-                  /*margin-top: 100px;*/
-                 /*transform-origin:600px 400px*/
                 }
                     
                 tr {page-break-after: always;page-break-before: always;height: 40px}
@@ -149,22 +191,10 @@ class AcEditorPDF extends Component {
                  }
             }
             
-         
-            
-            
+        
             @page {
-                /*size: A4 landscape;*/
                 size: A4 portrait;
             }
-            
-            
-               /*@page .table-page{*/
-            /*size: A4 portrait;*/
-            /*}*/
-            
-           
-            
-            
                        
            </style>`);
     WinPrint.document.close();
@@ -178,7 +208,6 @@ class AcEditorPDF extends Component {
       el.removeChild(child);
     }
 
-
     WinPrint.close(); // 关闭打印
   };
 
@@ -188,9 +217,9 @@ class AcEditorPDF extends Component {
 
     return (
       <span className="editor-sany-pdf">
-         <span onClick={this.onClickPrint}>{title}</span>
-         <div id='editor-sany-pdf-id'></div>
-       </span>
+        <span onClick={this.onClickPrint}>{title}</span>
+        <div id="editor-sany-pdf-id"/>
+      </span>
     );
   }
 }
