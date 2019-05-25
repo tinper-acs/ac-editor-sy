@@ -1,4 +1,4 @@
-/* eslint-disable padded-blocks,indent,arrow-body-style,no-multi-spaces */
+/* eslint-disable padded-blocks,indent,arrow-body-style,no-multi-spaces,jsx-quotes */
 /**
  *
  * @title AcEditorPDF
@@ -14,9 +14,23 @@ import '../../src/index.less';
 class Demo3 extends Component {
 
 
+  // 生成随机字符串
+  randomText = (len) => {
+    let i = 0;
+    let str = '';
+    const base = 20000;
+    const range = 1000;
+    while (i < len) {
+      i++;
+      const lower = parseInt(Math.random() * range);
+      str += String.fromCharCode(base + lower);
+    }
+    return str;
+  };
 
 
-  initTable=(rowNum, colNum)=> {
+  // 生成 table 函数
+  initTable = (rowNum, colNum) => {
     // 表头
     let thList = '';
     for (let num = 0; num < colNum; num += 1) {
@@ -28,12 +42,18 @@ class Demo3 extends Component {
     for (let trNum = 0; trNum < rowNum; trNum += 1) {
       let tdList = '';
       for (let num = 0; num < colNum; num += 1) {
-        tdList += ' <td></td>';
+        const title = this.randomText(parseInt(20 * Math.random()));
+        if (num === 0) {
+          tdList += `<td> ${trNum}</td>`;
+        } else {
+          tdList += `<td> ${title}</td>`;
+        }
+
       }
       trTdList += `<tr>${tdList}</tr>`;
     }
     return `<table id="rotate-table-sany" border="1" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
-  }
+  };
 
 
   render() {
@@ -90,7 +110,11 @@ class Demo3 extends Component {
     ];
     const isActive = true;
     const htmlString = `<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
-      <div>合同内容</div> ${this.initTable(10000,8)}`
+      <div>合同内容</div> 
+      <!--<h3 id="tableTitleId" class='print-display'>附件一</h3>-->
+      ${this.initTable(500, 8)}
+      <!--<h3 id="tableNoticeId" class='print-display'>注：以上单价均为不含税单价，卖方应向买方提供税率约定的增值税专用发票</h3>-->
+`;
 
     return (
       <div className="demoPadding">
@@ -103,7 +127,7 @@ class Demo3 extends Component {
           <AcEditorPDF
             title={<button>打印PDF</button>}
 
-            tableRow={20} // 旋转table 的A4 最多多少行
+            tableRow={21} // 旋转table 的A4 最多多少行
             formInfo={() => { // 回调获取打印数据
 
               // return {
@@ -114,8 +138,11 @@ class Demo3 extends Component {
 
               return this.child.getHtml2String();
             }}
+            tableTitleId="tableTitleId"
+            tableNoticeId="tableNoticeId"
           />
         </div>
+
         <AcEditorShow
           htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
           editorId="demo3EditorId" // 组件 id

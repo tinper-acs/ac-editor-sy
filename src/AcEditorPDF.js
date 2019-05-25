@@ -50,7 +50,7 @@ class AcEditorPDF extends Component {
   };
 
   onClickPrint = () => {
-    const { formInfo, tableRow = 15 } = this.props;
+    const { formInfo, tableRow = 15, tableTitleId = 'tableTitleId', tableNoticeId = 'tableNoticeId' } = this.props;
     let { doc, idList } = formInfo();
 
 
@@ -67,22 +67,40 @@ class AcEditorPDF extends Component {
     // 将一个大的table 分解成几个小table
     if (trList && trList.length > 0) {
       let trString = `<tr>${trList[0].innerHTML}</tr>`;
-      for (let i = 1; i < trList.length; i++) {
-        trString += `<tr>${trList[i].innerHTML}</tr>`;
+      const rotateStart = '<table class="always" border="1" cellpadding="0" cellspacing="0" style="float: left;width:1500px;margin-right: 72px">';
+      const rotateEnd = '</table>';
 
-        if (i % tableRow === 0 || (tableRow > trList.length) || (trList.length - 1 === i)) {
-          const rotateStart = `<table class="always" border="1" cellpadding="0" cellspacing="0" style="float: left;width:1500px;margin-right: 72px">`;
-          const rotateEnd = '</table>';
-
-          newTableList.push(rotateStart + trString + rotateEnd);
-          // 设置表头
-          trString = `<tr>${trList[0].innerHTML}</tr>`;
+      // 页面table tr 小于 A4 容纳行数
+      if (tableRow > trList.length) {
+        for (let i = 1; i < trList.length; i++) {
+          trString += `<tr>${trList[i].innerHTML}</tr>`;
+        }
+        newTableList.push(rotateStart + trString + rotateEnd);
+      } else { // 当打印行数>= A4 最大函数
+        for (let i = 1; i < trList.length; i++) {
+          trString += `<tr>${trList[i].innerHTML}</tr>`;
+          if (i % tableRow === 0 || (trList.length - 1 === i)) {
+            newTableList.push(rotateStart + trString + rotateEnd);
+            // 设置表头
+            trString = `<tr>${trList[0].innerHTML}</tr>`;
+          }
         }
       }
 
       // 将分解的表格拼接成一个字符串
       let tableString = '';
-      for (const newTable of newTableList) {
+      for (let [index, tableItem] of newTableList.entries()) {
+        let newTable = tableItem;
+        if (index === 0) {
+          // 表格第一页一页 添加表格标题
+          const tableTitle = document.getElementById(tableTitleId);
+          newTable = `${tableTitle ? `<h4>${tableTitle.innerHTML}</h4>` : ''}${tableItem}`;
+        }
+
+        if (index === (newTableList.length - 1)) { // 表格最后一页 添加注意事项
+          const tableNotice = document.getElementById(tableNoticeId);
+          newTable = `${newTable}${tableNotice ? `<h4>${tableNotice.innerHTML}</h4>` : ''}`;
+        }
         tableString += newTable;
       }
 
@@ -101,7 +119,6 @@ class AcEditorPDF extends Component {
 
     const htmlString = document.getElementById('editor-sany-pdf-id').innerHTML; // 获取 dom 节点
     const newDoc = document.createElement('span');
-
 
     newDoc.innerHTML = htmlString;
 
@@ -127,6 +144,9 @@ class AcEditorPDF extends Component {
                  }
                  .ac-date-body{
                    display: none ;
+                 }
+                 .print-display{
+                    display: none ;
                  }
                  
                  
@@ -206,7 +226,7 @@ class AcEditorPDF extends Component {
     return (
       <span className="editor-sany-pdf">
         <span onClick={this.onClickPrint}>{title}</span>
-        <div id="editor-sany-pdf-id" />
+        <div id="editor-sany-pdf-id"/>
       </span>
     );
   }
