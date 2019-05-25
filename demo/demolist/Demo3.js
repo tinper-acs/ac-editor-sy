@@ -111,9 +111,9 @@ class Demo3 extends Component {
     const isActive = true;
     const htmlString = `<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
       <div>合同内容</div> 
-      <!--<h3 id="tableTitleId" class='print-display'>附件一</h3>-->
+      <h3 id="tableTitleId" class='print-display'>附件一</h3>
       ${this.initTable(500, 8)}
-      <!--<h3 id="tableNoticeId" class='print-display'>注：以上单价均为不含税单价，卖方应向买方提供税率约定的增值税专用发票</h3>-->
+      <h3 id="tableNoticeId" class='print-display'>注：以上单价均为不含税单价，卖方应向买方提供税率约定的增值税专用发票</h3>
 `;
 
     return (
@@ -128,6 +128,8 @@ class Demo3 extends Component {
             title={<button>打印PDF</button>}
 
             tableRow={21} // 旋转table 的A4 最多多少行
+            tableTitleId="tableTitleId"
+            tableNoticeId="tableNoticeId"
             formInfo={() => { // 回调获取打印数据
 
               // return {
@@ -138,8 +140,6 @@ class Demo3 extends Component {
 
               return this.child.getHtml2String();
             }}
-            tableTitleId="tableTitleId"
-            tableNoticeId="tableNoticeId"
           />
         </div>
 
