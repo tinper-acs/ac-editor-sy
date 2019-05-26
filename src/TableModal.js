@@ -42,16 +42,15 @@ class TableModal extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, sanyTheme } = this.props;
     const { getFieldProps } = form;
     const { status } = this.state;
-
 
     return (
       <Modal
         show={status}
         onHide={this.onClose}
-        className="sany-modal"
+        className={'sany-modal ' + sanyTheme}
         size="sm"
       >
         <Modal.Header closeButton>
@@ -77,7 +76,7 @@ class TableModal extends Component {
           </FormItem>
 
           {/* inputNumber 不够友好 */}
-          <FormItem style={{ height: 35 }}>
+          <FormItem style={{ height: 35,marginTop: 15, }}>
             <div>
               <div className="sany-input-number-label">
                 <Label>列数</Label>

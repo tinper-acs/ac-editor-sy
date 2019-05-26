@@ -555,7 +555,7 @@ class AcEditorSany extends Component {
   render() {
 
     const { showDate, currentDateLeft, currentDateTop, previewHtml, previewStatus, previewIdList = [] } = this.state;
-    const { editorId, height } = this.props;
+    const { editorId, height,sanyTheme } = this.props;
 
 
     return (
@@ -584,6 +584,7 @@ class AcEditorSany extends Component {
               onInsert={this.onInsertURl}
               status={this.state.hrefStatus}
               onHideModal={this.onHideModal}
+              sanyTheme={sanyTheme}
             />
           </span>
 
@@ -597,6 +598,8 @@ class AcEditorSany extends Component {
               onInsert={this.onInsertRadio}
               status={this.state.radioStatus}
               onHideModal={this.onHideModal}
+              sanyTheme={sanyTheme}
+
             />
           </span>
 
@@ -610,6 +613,7 @@ class AcEditorSany extends Component {
               onInsert={this.onInsertCheckbox}
               status={this.state.checkboxStatus}
               onHideModal={this.onHideModal}
+              sanyTheme={sanyTheme}
             />
           </span>
 
@@ -623,6 +627,7 @@ class AcEditorSany extends Component {
               onInsert={this.onInsertSelect}
               status={this.state.selectStatus}
               onHideModal={this.onHideModal}
+              sanyTheme={sanyTheme}
             />
           </span>
 
@@ -636,6 +641,7 @@ class AcEditorSany extends Component {
               onInsert={this.onInsertTable}
               status={this.state.tableStatus}
               onHideModal={this.onHideModal}
+              sanyTheme={sanyTheme}
             />
           </span>
 
@@ -669,6 +675,7 @@ class AcEditorSany extends Component {
               onHideModal={this.onHideModal}
               fixedDate={this.props.fixedDate}
               idList={this.state.idList}
+              sanyTheme={sanyTheme}
             />
           </span>
           <span tooltip="对齐方式" flow="down">

@@ -57,7 +57,7 @@ class RadioModal extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, sanyTheme } = this.props;
     const { getFieldProps } = form;
     const { status } = this.state;
 
@@ -66,11 +66,11 @@ class RadioModal extends Component {
       <Modal
         show={status}
         onHide={this.onClose}
-        className="sany-modal"
+        className={'sany-modal ' + sanyTheme}
         size="sm"
       >
         <Modal.Header closeButton>
-          <Modal.Title>插入单选框组</Modal.Title>
+          <Modal.Title>单选框组</Modal.Title>
         </Modal.Header>
 
         <Modal.Body className="form-body-padding">
@@ -106,7 +106,10 @@ class RadioModal extends Component {
           </FormItem>
 
           {/* inputNumber 不够友好 */}
-          <FormItem style={{ height: 35 }}>
+          <FormItem style={{
+            height: 35,
+            marginTop: 15,
+          }}>
             <div>
               <div className="sany-input-number-label">
                 <Label>默认</Label>

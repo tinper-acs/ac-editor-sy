@@ -103,11 +103,13 @@ class FixedModal extends Component {
 
   render() {
     const { status, fixedDate } = this.state;
+    const { sanyTheme } = this.props;
+
     return (
       <Modal
         show={status}
         onHide={this.onClose}
-        className="sany-modal"
+        className={'sany-modal ' + sanyTheme}
         size="sm"
       >
         <Modal.Header closeButton>
@@ -119,6 +121,7 @@ class FixedModal extends Component {
             rowKey={(r, i) => i} // 生成行的key
             columns={this.columns}
             data={fixedDate}
+            scroll={{ y: 350 }}
           />
         </Modal.Body>
 

@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,prefer-template */
 import React, { Component } from 'react';
 
 import { Modal, FormControl, Label, Button } from 'tinper-bee';
@@ -39,7 +39,7 @@ class HrefModal extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, sanyTheme } = this.props;
     const { getFieldProps } = form;
     const { status } = this.state;
 
@@ -47,7 +47,7 @@ class HrefModal extends Component {
       <Modal
         show={status}
         onHide={this.onClose}
-        className="sany-modal"
+        className={'sany-modal ' + sanyTheme}
         size="sm"
       >
         <Modal.Header closeButton>
@@ -59,8 +59,8 @@ class HrefModal extends Component {
             <Label>URL</Label>
             <FormControl
               placeholder="请输入URL"
-              {...getFieldProps('url',{
-                initialValue:'',
+              {...getFieldProps('url', {
+                initialValue: '',
               })}
             />
           </FormItem>
@@ -69,8 +69,8 @@ class HrefModal extends Component {
             <Label>文本</Label>
             <FormControl
               placeholder="请输入文本"
-              {...getFieldProps('text',{
-                initialValue:'',
+              {...getFieldProps('text', {
+                initialValue: '',
               })}
             />
           </FormItem>

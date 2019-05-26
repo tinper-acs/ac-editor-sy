@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,no-param-reassign */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,no-param-reassign,prefer-template */
 import React, { Component } from 'react';
 
 import { Modal, FormControl, Button } from 'tinper-bee';
@@ -50,7 +50,7 @@ class SelectModal extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, sanyTheme } = this.props;
     const { getFieldProps } = form;
     const { status } = this.state;
 
@@ -58,7 +58,7 @@ class SelectModal extends Component {
       <Modal
         show={status}
         onHide={this.onClose}
-        className="sany-modal"
+        className={'sany-modal ' + sanyTheme}
         size="sm"
       >
         <Modal.Header closeButton>

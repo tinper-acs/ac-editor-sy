@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,no-param-reassign */
+/* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline,no-param-reassign,prefer-template */
 import React, { Component } from 'react';
 
 import { Modal, Label, Button, Select } from 'tinper-bee';
@@ -61,7 +61,7 @@ class CheckboxModal extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, sanyTheme } = this.props;
     const { getFieldProps } = form;
     const { status } = this.state;
 
@@ -70,11 +70,11 @@ class CheckboxModal extends Component {
       <Modal
         show={status}
         onHide={this.onClose}
-        className="sany-modal"
+        className={'sany-modal ' + sanyTheme}
         size="sm"
       >
         <Modal.Header closeButton>
-          <Modal.Title>插入多选框组</Modal.Title>
+          <Modal.Title>多选框组</Modal.Title>
         </Modal.Header>
 
         <Modal.Body className="form-body-padding">
@@ -110,7 +110,10 @@ class CheckboxModal extends Component {
           </FormItem>
 
           {/* inputNumber 不够友好 */}
-          <FormItem style={{ height: 35 }}>
+          <FormItem style={{
+            height: 35,
+            marginTop: 15,
+          }}>
             <div>
               <div className="sany-input-number-label">
                 <Label>默认</Label>
