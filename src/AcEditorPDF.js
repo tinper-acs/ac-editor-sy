@@ -166,7 +166,7 @@ class AcEditorPDF extends Component {
                   page-break-before: always;
                 }
                     
-                tr {page-break-after: always;page-break-before: always;height: 40px}
+                tr {height: 40px}
                 /*p {page-break-inside: avoid;}*/
                 p {orphans:3; widows:2;}
                 
