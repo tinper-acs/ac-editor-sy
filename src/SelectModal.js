@@ -59,7 +59,7 @@ class SelectModal extends Component {
         show={status}
         onHide={this.onClose}
         className={'sany-modal ' + sanyTheme}
-        size="sm"
+        width="360px"
       >
         <Modal.Header closeButton>
           <Modal.Title>插入下拉框</Modal.Title>
