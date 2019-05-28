@@ -49,12 +49,49 @@ class AcEditorPDF extends Component {
     }
   };
 
+  // 表格分页
+  onPageTable = (tablePageList) => {
+
+    if (tablePageList && Array.isArray(tablePageList)) {
+      for (const tablePage of tablePageList) {
+        const tableStart = '<table class="table-page" border="1" cellpadding="0" cellspacing="0" >';
+        const tableEnd = '</table>';
+        const { id, rowNum } = tablePage;
+        const table = document.getElementById(id);
+        const trList = table ? table.getElementsByTagName('tr') : '';
+
+        let trString = `<tr>${trList[0].innerHTML}</tr>`;
+        let newTableList = [];
+        if (trList.length > rowNum) { // 大于多行分页
+          for (let i = 1; i < trList.length; i++) {
+            trString += `<tr>${trList[i].innerHTML}</tr>`;
+            if (i % rowNum === 0 || (trList.length - 1 === i)) {
+              newTableList.push(tableStart + trString + tableEnd);
+              // 设置表头
+              trString = `<tr>${trList[0].innerHTML}</tr>`;
+            }
+          }
+        }
+
+        // 创建一个新元素
+        const newDoc = document.createElement('div');
+        newDoc.innerHTML = `<div>${newTableList.join('')}</div>`;
+        table.parentNode.replaceChild(newDoc.firstElementChild, table);
+      }
+    }
+  };
+
+
   onClickPrint = () => {
-    const { formInfo, tableRow = 15, tableTitleId = 'tableTitleId', tableNoticeId = 'tableNoticeId' } = this.props;
+    const { formInfo, tableRow = 15, tablePageList, tableTitleId = 'tableTitleId', tableNoticeId = 'tableNoticeId' } = this.props;
     let { doc, idList } = formInfo();
 
 
     document.getElementById('editor-sany-pdf-id').innerHTML = doc;
+
+
+    // 表格分页
+    this.onPageTable(tablePageList);
 
     const rotateTable = document.getElementById('rotate-table-sany');
 
@@ -62,6 +99,7 @@ class AcEditorPDF extends Component {
     const newTableList = [];
 
     const trList = rotateTable ? rotateTable.getElementsByTagName('tr') : '';
+
 
     // let marginLeftWidth = 0;
     // 将一个大的table 分解成几个小table

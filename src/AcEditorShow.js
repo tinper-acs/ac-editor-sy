@@ -71,8 +71,14 @@ class AcEditorShow extends Component {
       for (const item of defaultData) {
 
         const { type, field, data, defaultValue, } = item;
-        const doc = document.getElementById(field);
+        // const doc = document.getElementById(field);
 
+        let doc;
+        try {
+          doc = document.querySelector('#' + editorId + ' #' + field.toString());
+        } catch (err) {
+          doc = document.getElementById(field);
+        }
         // id是否存在
         if (!doc) {
           continue;

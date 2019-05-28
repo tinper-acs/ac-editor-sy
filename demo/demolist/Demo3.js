@@ -30,11 +30,11 @@ class Demo3 extends Component {
 
 
   // 生成 table 函数
-  initTable = (rowNum, colNum) => {
+  initTable = (rowNum, colNum, id, tableTitle,) => {
     // 表头
     let thList = '';
     for (let num = 0; num < colNum; num += 1) {
-      thList += ` <th>旋转${num}</th>`;
+      thList += ` <th>${tableTitle + num}</th>`;
     }
     const trTh = `<tr>${thList}</tr>`;
     // 多少行
@@ -52,7 +52,7 @@ class Demo3 extends Component {
       }
       trTdList += `<tr>${tdList}</tr>`;
     }
-    return `<table id="rotate-table-sany" border="1" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
+    return `<table id="${id}" border="1" width="100%" cellPadding="0" cellSpacing="0" class="rich-table">${trTh}${trTdList}</table>`;
   };
 
 
@@ -108,12 +108,18 @@ class Demo3 extends Component {
       },
 
     ];
+
+
     const isActive = true;
     const htmlString = `<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
       <div>合同内容</div> 
-      <h3 id="tableTitleId" class='print-display'>附件一</h3>
-      ${this.initTable(500, 8)}
+      ${this.initTable(100, 4, 'table-page', '分页')}
+      ${this.initTable(100, 5, 'table-page-two', '分页2')}
+       <h3 id="tableTitleId" class='print-display'>附件一</h3>
+      ${this.initTable(500, 8, 'rotate-table-sany', '旋转')}
       <h3 id="tableNoticeId" class='print-display'>注：以上单价均为不含税单价，卖方应向买方提供税率约定的增值税专用发票</h3>
+
+         
 `;
 
     return (
@@ -130,6 +136,16 @@ class Demo3 extends Component {
             tableRow={21} // 旋转table 的A4 最多多少行
             tableTitleId="tableTitleId"
             tableNoticeId="tableNoticeId"
+            tablePageList={[
+              {
+                id: 'table-page',
+                rowNum: 35
+              },
+              {
+                id: 'table-page-two',
+                rowNum: 35
+              },
+            ]}
             formInfo={() => { // 回调获取打印数据
 
               // return {
@@ -152,6 +168,8 @@ class Demo3 extends Component {
           onRef={(ref) => {  // 设置ref属性
             this.child = ref;
           }}
+
+
         />
       </div>
     );

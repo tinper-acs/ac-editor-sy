@@ -14,6 +14,7 @@ export function uuid() {
   s[13] = '-';
   s[18] = '-';
   s[23] = '-';
+  s[0] = 'abcdefghigklmnopqrst'.substr(Math.floor(Math.random() * 0x10), 1);
   return s.join('');
 }
 
