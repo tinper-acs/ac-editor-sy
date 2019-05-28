@@ -138,8 +138,8 @@ class Demo3 extends Component {
             tableNoticeId="tableNoticeId"
             tablePageList={[
               {
-                id: 'table-page',
-                rowNum: 35
+                id: 'table-page', //分页表格id
+                rowNum: 35 // 分页条数
               },
               {
                 id: 'table-page-two',
