@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types,react/destructuring-assignment,react/jsx-filename-extension,object-curly-newline */
 import React, { Component } from 'react';
 
-import { Modal, Checkbox, Table, Button } from 'tinper-bee';
+import { Modal, Checkbox, Table, Button, FormControl } from 'tinper-bee';
+import Form from 'bee-form';
 
 import './index.less';
+
+const { FormItem } = Form;
 
 class FixedModal extends Component {
   constructor(props) {
@@ -11,6 +14,7 @@ class FixedModal extends Component {
     this.state = {
       status: false,
       fixedDate: [...this.props.fixedDate],
+      name: '',
     };
   }
 
@@ -33,6 +37,7 @@ class FixedModal extends Component {
 
   onClose = () => {
     this.props.onHideModal('fixedStatus');
+    this.setState({ name: '' });
   };
 
 
@@ -43,6 +48,7 @@ class FixedModal extends Component {
     const list = fixedDate.filter(item => item.status);
     onInsert(list);
     onHideModal('fixedStatus');
+    this.setState({ name: '' });
 
   };
 
@@ -101,9 +107,32 @@ class FixedModal extends Component {
   };
 
 
+  onFilterName = (name) => {
+    const { fixedDate = [], idList } = this.props;
+    const result = [];
+    for (let [index, item] of fixedDate.entries()) {
+      const { fieldName } = item;
+      if (fieldName.includes(name)) {
+        result.push(item);
+      }
+    }
+
+    const newfixedDate = [...result.map((item) => { //去掉选中
+      delete item.status;
+      return item;
+    })];
+    const data = this.clearCheckData(idList, newfixedDate);
+    this.setState({
+      fixedDate: data,
+      name,
+    });
+  };
+
+
   render() {
-    const { status, fixedDate } = this.state;
-    const { sanyTheme } = this.props;
+    const { status, fixedDate, name } = this.state;
+    const { sanyTheme, form } = this.props;
+    const { getFieldProps } = form;
 
     return (
       <Modal
@@ -117,6 +146,21 @@ class FixedModal extends Component {
         </Modal.Header>
 
         <Modal.Body>
+
+          <FormItem>
+            <FormControl
+              placeholder="请输入名称"
+              {...getFieldProps('name', {
+                initialValue: name,
+              })}
+              onChange={(value) => {
+                this.onFilterName(value);
+              }}
+
+            />
+          </FormItem>
+
+
           <Table
             rowKey={(r, i) => i} // 生成行的key
             columns={this.columns}
@@ -133,4 +177,4 @@ class FixedModal extends Component {
   }
 }
 
-export default FixedModal;
+export default Form.createForm()(FixedModal);

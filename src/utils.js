@@ -127,7 +127,7 @@ export function initCheckbox(param) {
 
 export function initDate(param) {
   const { defaultValue = '', field } = param;
-  return `<input type="text" id="${field}" value="${defaultValue}" acType="date" style="width: 100px" readOnly="true"/>`;
+  return `<input type="text" id="${field}" value="${defaultValue}" acType="date" style="width: 120px" readOnly="true"/>`;
 }
 
 

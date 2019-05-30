@@ -9,7 +9,7 @@ import { initSelect, initRadio, initCheckbox, arrayObjClear, getStringLenght } f
 
 import './AcEditorShow.less';
 
-const formatRule = 'YYYY-MM-DD';
+const formatRule = 'YYYY年MM月DD日';
 
 
 const propTypes = {

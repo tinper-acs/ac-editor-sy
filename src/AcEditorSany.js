@@ -57,7 +57,7 @@ import './tooltip.less';
 
 import moment from 'moment';
 
-const formatRule = 'YYYY-MM-DD';
+const formatRule = 'YYYY年MM月DD日';
 const { Option } = Select;
 
 
