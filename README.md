@@ -12,6 +12,8 @@ React复杂文本编辑器组件，可插入日期、下拉框、单选框、多
 1.AcEditorSany使用
 ```js
 import { AcEditorSany } from 'ac-editor-sany';
+import 'ac-editor-sany/dist/index.css';
+
 
 class Demo1 extends Component {
   saveFunc = () => {
