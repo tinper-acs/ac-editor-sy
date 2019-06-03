@@ -115,7 +115,8 @@ export function initCheckbox(param) {
   let checkboxString = '';
 
   for (let i = 0; i < data.length; i += 1) {
-    const checked = defaultValue === data[i] ? 'checked="true"' : '';
+
+    const checked = defaultValue.split('|||').includes(data[i]) ? 'checked="true"' : '';
     if (direction && direction !== 'horizontal') {
       checkboxString += `<div><input name="${field}" onclick="onClickCheckbox(event)" type="checkbox" acType="checkbox" ${checked} value=${data[i]} /><span style="margin: 0 10px">${data[i]}</span></div>`;
     } else {
