@@ -20,10 +20,8 @@ class Demo4 extends Component {
   }
 
   render() {
-    // word 样式
+    // 自定义导出样式
     const styles = '.testClass{background-color: #ff00ff;}';
-
-
     const defaultData = [
       {
         field: 'ff55b00a-f4aa-43b7-b7eb-f545ccac0fd9',
@@ -68,19 +66,16 @@ class Demo4 extends Component {
           title={<button>导出word</button>}
 
           getDefaultInfo={() => { // 获取默认值回调函数
-
             _this.setState({ status: true }); // 正在导出
-
             // return defaultData || []; // 替换数据
-
             const { idList = [] } = _this.child.getHtml2String();
             return idList;
-
           }}
 
           success={() => { // 导出成功回调
             _this.setState({ status: true });
           }}
+
         />
 
         <AcEditorShow

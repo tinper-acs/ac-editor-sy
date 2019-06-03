@@ -1,4 +1,4 @@
-/* eslint-disable padded-blocks,indent,arrow-body-style,no-multi-spaces,jsx-quotes */
+/* eslint-disable padded-blocks,indent,arrow-body-style,no-multi-spaces,jsx-quotes,no-return-assign */
 /**
  *
  * @title AcEditorPDF
@@ -12,7 +12,6 @@ import '../../src/index.less';
 
 
 class Demo3 extends Component {
-
 
   // 生成随机字符串
   randomText = (len) => {
@@ -57,13 +56,14 @@ class Demo3 extends Component {
 
 
   render() {
-    const defaultData = [{
-      field: 'd9e40ab6-a2e1-48ea-8e5e-a5b451bdd132',
-      direction: 'horizontal',
-      data: 'xxx',
-      type: 'text',
-      defaultValue: 'xxx',
-    },
+    const defaultData = [
+      {
+        field: 'd9e40ab6-a2e1-48ea-8e5e-a5b451bdd132',
+        direction: 'horizontal',
+        data: 'xxx',
+        type: 'text',
+        defaultValue: 'xxx',
+      },
       {
         field: '1d560209-1347-4133-9b7f-b01b6ff491f7',
         direction: 'horizontal',
@@ -81,9 +81,9 @@ class Demo3 extends Component {
       {
         field: '26222e13-2782-4495-893a-b1eb13097450',
         direction: 'horizontal',
-        data: '现金支付|||微信支付|||展示用 AcEditorSany 组件生成的 html 字符串，生成的内容可以交互，同时支持生成水印',
+        data: '现金支付|||微信支付',
         type: 'select',
-        defaultValue: '展示用 AcEditorSany 组件生成的 html 字符串，生成的内容可以交互，同时支持生成水印',
+        defaultValue: '微信支付',
       },
       {
         field: '065c0a49-fb1d-4171-9c2d-057836b2220c',
@@ -106,11 +106,11 @@ class Demo3 extends Component {
         field: '3cb3d3f0-fb05-4ad8-9bbc-9e85a32e6d4a',
         type: 'textarea',
       },
-
     ];
 
 
     const isActive = true;
+
     const htmlString = `<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
       <div>合同内容</div> 
       ${this.initTable(100, 4, 'table-page', '分页')}
@@ -118,7 +118,6 @@ class Demo3 extends Component {
        <h3 id="tableTitleId" class='print-display'>附件一</h3>
       ${this.initTable(500, 8, 'rotate-table-sany', '旋转')}
       <h3 id="tableNoticeId" class='print-display'>注：以上单价均为不含税单价，卖方应向买方提供税率约定的增值税专用发票</h3>
-
          
 `;
 
@@ -132,13 +131,9 @@ class Demo3 extends Component {
           {/* 只能一个表格旋转 而且表格的id 为 rotate-table-sany */}
           <AcEditorPDF
             title={<button>打印PDF</button>}
-
-            tableRow={21} // 旋转table 的A4 最多多少行
-            tableTitleId="tableTitleId"
-            tableNoticeId="tableNoticeId"
             tablePageList={[
               {
-                id: 'table-page', //分页表格id
+                id: 'table-page', // 分页表格id
                 rowNum: 35 // 分页条数
               },
               {
@@ -147,15 +142,17 @@ class Demo3 extends Component {
               },
             ]}
             formInfo={() => { // 回调获取打印数据
-
               // return {
               //   doc: htmlString, // dom 节点
               //   idList: defaultData, // dom 要被替换的内容
               //
               // };
-
               return this.child.getHtml2String();
             }}
+
+            tableRow={21} // 最后一个旋转table 的A4 最多多少行
+            tableTitleId="tableTitleId" // 表标题 例如："附件一"
+            tableNoticeId="tableNoticeId" // 表格备注 例如:"注:xxxx"
           />
         </div>
 
@@ -165,11 +162,7 @@ class Demo3 extends Component {
           isActive={isActive} // 组件是否可以操作
           defaultData={defaultData} // 替换组件默认值
           waterMarkerText="用友网络" // 添加水印
-          onRef={(ref) => {  // 设置ref属性
-            this.child = ref;
-          }}
-
-
+          onRef={ref => this.child = ref}
         />
       </div>
     );
