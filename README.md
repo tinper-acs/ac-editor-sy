@@ -482,7 +482,7 @@ success| function                |  非必须       | 导出成功回调
 
 
 ### defaultData 参数
-----------|----------------------|--------------|------------------
+-------------|----------------------|--------------|------------------
 field        | string               | 必填项        | 分页表格id
 direction    | string               |"horizontal"  | 组件布局方向(horizontal,vertical)
 data         | string               | ""           | 组件值(select、checkbox、radio 用 "|||" 链接)
