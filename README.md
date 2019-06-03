@@ -480,12 +480,21 @@ title     | string/element       | "导出wrod"    | 导出word按钮
 getDefaultInfo| function         | 非必须        | 获取导出默认值 
 success| function                |  非必须       | 导出成功回调
 
+### fixedDate 参数
+
+ 参数      | 类型                 | 默认值        | 说明
+----------|----------------------|--------------|------------------
+field     | string               | 必填项        | 固定字段唯一标识
+direction | string               |"horizontal"  | 固定字段布局方向(horizontal,vertical)
+data      | string               | ""           | 固定字段值(select、checkbox、radio 用 "|||" 链接)
+type      | string               | "text"       | 固定字段类型(text,date,checkbox,radio,select,textarea)
+filedType | string               | "文本"        | 固定字段中文类型
+defaultValue| string               | ""           | 固定字段默认值( checkbox用 "|||" 链接)
 
 ### defaultData 参数
 
  参数      | 类型                 | 默认值        | 说明
 ----------|----------------------|--------------|------------------
-wordId    | string               | 必填项        | 与要导出的 dom id 保持一致
 field     | string               | 必填项        | 分页表格id
 direction | string               |"horizontal"  | 组件布局方向(horizontal,vertical)
 data      | string               | ""           | 组件值(select、checkbox、radio 用 "|||" 链接)
