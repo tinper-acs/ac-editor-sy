@@ -82,7 +82,10 @@ class Demo2 extends Component {
     const htmlString = '<span><input type="text" value="买方名称" onkeyup="onKeyUpInput(event)" id="buyerww1" acType="text" /><input type="text" value="买方名称" onkeyup="onKeyUpInput(event)" id="salername22" value="卖方名称" acType="text" /><input type="text" id="contractswwwign3" value="2019-02-20" actype="date" style="width: 100px" readonly="true"><input type="text" id="contractstrwww4" value="2019-02-20" actype="date" style="width: 100px" readonly="true"><input type="text" id="contractendxxx5" value="2019-02-20" actype="date" style="width: 100px" readonly="true"><select id="paytewwwrm6" class="select ac-select" onchange="onChangeSelect(event)"><option name="paytewwwrm6" value="现金支付">现金支付</option>,<option name="paytewwwrm6" value="微信支付" selected="">微信支付</option>,<option name="paytewwwrm6" value="支付宝支付">支付宝支付</option></select><span id="dd74eab6-bccd-4b0c-843d-c33eecfe2580" class="ac-checkbox-group"><span><input name="dd74eab6-bccd-4b0c-843d-c33eecfe2580" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" checked="true" value="1YYYYY"><span style="margin: 0 10px">1YYYYY</span></span><span><input name="dd74eab6-bccd-4b0c-843d-c33eecfe2580" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="2YYYYY"><span style="margin: 0 10px">2YYYYY</span></span><span><input name="dd74eab6-bccd-4b0c-843d-c33eecfe2580" onclick="onClickCheckbox(event)" type="checkbox" actype="checkbox" value="3YYYYY"><span style="margin: 0 10px">3YYYYY</span></span></span><span id="isrebatwwwe7" class="ac-radio-group"><span><input name="isrebatwwwe7" onclick="onClickRadio(event)" type="radio" style="vertical-align: middle;" value="是" actype="radio" checked="true"><span style="margin: 0 10px">是</span></span><span><input name="isrebatwwwe7" onclick="onClickRadio(event)" type="radio" style="vertical-align: middle;" value="否" actype="radio"><span style="margin: 0 10px">否</span></span></span></span>';
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc}>保存</button>
+        <button onClick={this.saveFunc} style={{
+          marginLeft: '20px',
+          marginBottom: '10px',
+        }}>保存</button>
         <AcEditorShow
           htmlString={htmlString} // 用 AcEditorShow 生成的html字符串
           editorId="showId" // 组件 id

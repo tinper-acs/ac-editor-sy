@@ -113,10 +113,9 @@ class Demo3 extends Component {
 
     const htmlString = `<div class="always"><h1 style="text-align: center;" >xxx公司供应商合同</h1><div>\n'
       <div>合同内容</div> 
-      ${this.initTable(100, 4, 'table-page', '分页')}
-      ${this.initTable(100, 5, 'table-page-two', '分页2')}
+      ${this.initTable(60, 4, 'table-page', '分页')}
        <h3 id="tableTitleId" class='print-display'>附件一</h3>
-      ${this.initTable(500, 8, 'rotate-table-sany', '旋转')}
+      ${this.initTable(40, 8, 'rotate-table-sany', '旋转')}
       <h3 id="tableNoticeId" class='print-display'>注：以上单价均为不含税单价，卖方应向买方提供税率约定的增值税专用发票</h3>
          
 `;
@@ -135,10 +134,6 @@ class Demo3 extends Component {
               {
                 id: 'table-page', // 分页表格id
                 rowNum: 35 // 分页条数
-              },
-              {
-                id: 'table-page-two',
-                rowNum: 35
               },
             ]}
             formInfo={() => { // 回调获取打印数据

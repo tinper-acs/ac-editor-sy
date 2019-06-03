@@ -59,7 +59,10 @@ class Demo1 extends Component {
   render() {
     return (
       <div className="demoPadding">
-        <button onClick={this.saveFunc}>保存</button>
+        <button onClick={this.saveFunc} style={{
+          marginLeft: '20px',
+          marginBottom: '10px',
+        }}>保存</button>
         <AcEditorSany
           editorId="acEditorSanyId" // 组件id
           onRef={ref => this.child = ref} // 设置ref属性
