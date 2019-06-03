@@ -480,14 +480,13 @@ title     | string/element       | "导出wrod"    | 导出word按钮
 getDefaultInfo| function         | 非必须        | 获取导出默认值 
 success| function                |  非必须       | 导出成功回调
 
-
 ### defaultData 参数
--------------|----------------------|--------------|------------------
-field        | string               | 必填项        | 分页表格id
-direction    | string               |"horizontal"  | 组件布局方向(horizontal,vertical)
-data         | string               | ""           | 组件值(select、checkbox、radio 用 "|||" 链接)
-type         | string               | "text"       | 组件类型(text,date,checkbox,radio,select,textarea)
-defaultValue | string               | ""           | 组件默认值( checkbox用 "|||" 链接)
+----------|----------------------|--------------|------------------
+field     | string               | 必填项        | 分页表格id
+direction | string               |"horizontal"  | 组件布局方向(horizontal,vertical)
+data      | string               | ""           | 组件值(select、checkbox、radio 用 "|||" 链接)
+type      | string               | "text"       | 组件类型(text,date,checkbox,radio,select,textarea)
+defaultValue| string               | ""           | 组件默认值( checkbox用 "|||" 链接)
 
 
 ### tablePageList 参数
