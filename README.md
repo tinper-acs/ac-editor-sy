@@ -6,12 +6,8 @@ React复杂文本编辑器组件，可插入日期、下拉框、单选框、多
 ## 如何使用
 ```js
 npm install ac-editor-sany --save
-// 文本编辑器组件
-import { AcEditorSany } from 'ac-editor-sany';
-// 内容展示组件
-import { AcEditorShow } from 'ac-editor-sany';
-// 导出pdf,word
-import { AcEditorPDF,AcEditorWord } from 'ac-editor-sany';
+// 文本编辑器组件,内容展示组件, 导出pdf组件,word组件
+import { AcEditorSany,AcEditorShow,AcEditorPDF,AcEditorWord } from 'ac-editor-sany';
 import 'ac-editor-sany/dist/index.css';
 ```
 
