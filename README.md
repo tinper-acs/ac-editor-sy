@@ -477,11 +477,7 @@ wordId    | string               | 必填项        | 与要导出的 dom id 保
 fileName  | string               | 非必须        | 导出word名
 wordStyles| string               | 非必须        | 导出word 样式
 title     | string/element       | "导出wrod"    | 导出word按钮
-<<<<<<< HEAD
 getDefaultInfo| function         | 非必须        | 获取导出默认值
-=======
-getDefaultInfo| function         | 非必须        | 获取导出默认值
->>>>>>> 6b185a8b7e0ad0a0be6a29021da55c9a0944b188
 success| function                |  非必须       | 导出成功回调
 
 ### fixedDate 参数
