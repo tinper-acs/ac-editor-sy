@@ -54,7 +54,7 @@ class TableModal extends Component {
         width="360px"
       >
         <Modal.Header closeButton>
-          <Modal.Title>插入表格</Modal.Title>
+          <Modal.Title>表格</Modal.Title>
         </Modal.Header>
 
         <Modal.Body className="form-body-padding">
