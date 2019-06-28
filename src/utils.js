@@ -64,7 +64,7 @@ export function initInput(param) {
 export function initTextarea(param) {
   // 输入框类型为文本
   const { field, defaultValue } = param;
-  const title = defaultValue || 'XXX';
+  const title = defaultValue || '';
   return `<textarea  id="${field}" acType="textarea" style="width: 100%;height: 60px">${title}</textarea>`;
 }
 

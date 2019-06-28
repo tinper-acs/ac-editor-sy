@@ -97,6 +97,10 @@ class AcEditorShow extends Component {
             break;
           case 'textarea': // 多行文本
             doc.innerHTML = defaultValue.replace(/↵/g, '&#13;&#10;'); // 替换回车
+            const docWidth=doc.offsetWidth;
+            const height= defaultValue?`${parseInt(getStringLenght(defaultValue) * 7/docWidth+1)*30}px`:'60px';
+            console.log(getStringLenght(defaultValue) * 7);
+            doc.style.height=height;
             break;
           case 'select':
             newDoc.innerHTML = initSelect({
