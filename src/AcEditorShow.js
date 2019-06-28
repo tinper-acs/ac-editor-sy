@@ -142,6 +142,12 @@ class AcEditorShow extends Component {
       for (const item of selectList) {
         item.setAttribute('disabled', true);
       }
+
+      // 修改 textarea
+      const textareaList = activeDoc.getElementsByTagName('textarea');
+      for (const item of textareaList) {
+        item.setAttribute('disabled', true);
+      }
     }
 
     window.onChangeSelect = function (event) { // select 选中事件
